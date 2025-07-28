@@ -7,6 +7,13 @@ const createWindow = () => {
   })
 
   win.loadFile('../index.html')
+  win.setMenuBarVisibility(false)
+  win.setAutoHideMenuBar(true)
+  win.webContents.on('before-input-event', (event, input) => {
+    if(input.key === 'Alt'){
+      event.preventDefault()
+    }
+  })
 }
 
 app.whenReady().then(() => {
