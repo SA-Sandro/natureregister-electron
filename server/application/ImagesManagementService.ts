@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { Image } from '../domain/images/Image'
+import { Image } from '../domain/entities/Image'
 
 export class ImagesManagementService {
   private images: Image[] = []
