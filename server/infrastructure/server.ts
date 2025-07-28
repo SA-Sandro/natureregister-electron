@@ -3,6 +3,7 @@ import cors from 'cors'
 import { ImagesRoutes } from './routes/ImagesRoutes'
 import { ImagesController } from './controllers/ImagesController'
 import { ImagesManagementService } from '../application/ImagesManagementService'
+import { FileSystemImageRepository } from './repositories/FileSystemImageRepository'
 
 const app = express()
 
@@ -14,7 +15,8 @@ app.use(
   }),
 )
 
-const imagesService = new ImagesManagementService()
+const imageRepository = new FileSystemImageRepository()
+const imagesService = new ImagesManagementService(imageRepository)
 const imagesController = new ImagesController(imagesService)
 const imagesRoutes = new ImagesRoutes(imagesController)
 
