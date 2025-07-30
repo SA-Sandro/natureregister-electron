@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-  onMounted(async () => {
+onMounted(async () => {
   try {
     const res = await fetch('http://localhost:3000/api/images/retrieveAllImages')
     const images = await res.json()
@@ -19,6 +19,4 @@ import { onMounted } from 'vue'
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
