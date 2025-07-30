@@ -1,9 +1,9 @@
 import express from 'express'
 import cors from 'cors'
-import { ImagesRoutes } from './routes/ImagesRoutes'
-import { ImagesController } from './controllers/ImagesController'
-import { ImagesManagementService } from '../application/ImagesManagementService'
-import { FileSystemImageRepository } from './repositories/FileSystemImageRepository'
+import { ImagesRoutes } from '@routes/ImagesRoutes'
+import { ImagesController } from '@controllers/ImagesController'
+import { ImagesManagementService } from '@application/ImagesManagementService'
+import { FileSystemImageRepository } from '@repositories/FileSystemImageRepository'
 
 const app = express()
 
