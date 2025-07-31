@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-import { Image } from '@entities/Image'
-import { ImageRepository } from '@repositories/ImageRepository'
+import { Image } from '@domain/entities/Image'
+import { ImageRepository } from '@domain/repositories/ImageRepository'
 
 export class FileSystemImageRepository implements ImageRepository {
   constructor(private readonly VALID_EXT: string[] = ['.jpg', '.jpeg', '.png', '.webp']) {}

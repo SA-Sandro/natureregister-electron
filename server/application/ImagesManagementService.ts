@@ -1,4 +1,4 @@
-import { Image } from '@entities/Image'
+import { Image } from "@domain/entities/Image" 
 import { ImageRepository } from '@domain/repositories/ImageRepository'
 
 export class ImagesManagementService {

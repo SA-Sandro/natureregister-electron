@@ -6,7 +6,8 @@
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "eslint.config.*"
+    "eslint.config.*",
+    "server/**/*"
   ],
   "compilerOptions": {
     "noEmit": true,
@@ -19,11 +20,7 @@
       "@/*": ["./server/*"],
       "@application/*": ["./server/application/*"],
       "@domain/*": ["./server/domain/*"],
-      "@entities/*": [".server/domain/entities/*"],
-      "@repositories/*": [".server/domain/repositories/*"],
-      "@infraestructure/*": [".server/domain/infraestructure/*"],
-      "@controllers/*": ["./server/controllers/*"],
-      "@routes/*": ["./server/routes/*"]
+      "@infrastructure/*": ["./server/infrastructure/*"],
     }
   }
 }

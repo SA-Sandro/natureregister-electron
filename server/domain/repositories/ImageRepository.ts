@@ -1,4 +1,4 @@
-import { Image } from '@entities//Images'
+import { Image } from "@domain/entities/Image";
 
 export interface ImageRepository {
   /**
