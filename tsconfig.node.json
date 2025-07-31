@@ -6,7 +6,8 @@
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "eslint.config.*"
+    "eslint.config.*",
+    "server/**/*"
   ],
   "compilerOptions": {
     "noEmit": true,
@@ -14,6 +15,12 @@
 
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@/*": ["./server/*"],
+      "@application/*": ["./server/application/*"],
+      "@domain/*": ["./server/domain/*"],
+      "@infrastructure/*": ["./server/infrastructure/*"],
+    }
   }
 }
