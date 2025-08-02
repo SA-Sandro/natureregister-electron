@@ -1,9 +1,9 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain } from 'electron'
 import { fileURLToPath } from 'url'
-import { dirname } from 'path'
+import path from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __dirname = path.dirname(__filename)
 
 const isDev = process.env.NODE_ENV === 'development' || true
 
@@ -12,6 +12,7 @@ const createWindow = () => {
     width: 1200,
     height: 800,
     webPreferences: {
+      preload: path.join(__dirname, '..', 'dist', 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
       webSecurity: false,
@@ -54,4 +55,10 @@ process.on('SIGINT', () => {
 process.on('SIGTERM', () => {
   console.log('Received SIGTERM, gracefully shutting down')
   app.quit()
+})
+
+ipcMain.handle('select-folder', async () => {
+  const result = await dialog.showOpenDialog({ properties: ['openDirectory'] })
+  if (result.canceled || result.filePaths.length === 0) return null
+  return result.filePaths[0]
 })
