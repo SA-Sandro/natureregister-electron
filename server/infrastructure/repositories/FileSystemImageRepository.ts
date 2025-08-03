@@ -15,6 +15,7 @@ export class FileSystemImageRepository implements ImageRepository {
     }
   }
   public async getImagesFromFolder(folderPath: string): Promise<Image[]> {
+    console.log('FileSystemImageRepository: leyendo carpeta:', folderPath)
     const allImages: Image[] = []
     let files: string[]
 
