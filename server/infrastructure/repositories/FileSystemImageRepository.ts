@@ -1,7 +1,7 @@
 import { promises as fs, Stats } from 'fs'
 import path from 'path'
-import { Image } from '../../domain/entities/Image'
-import { ImageRepository } from '../../domain/repositories/ImageRepository'
+import { Image } from '@domain/entities/Image'
+import { ImageRepository } from '@domain/repositories/ImageRepository'
 
 export class FileSystemImageRepository implements ImageRepository {
   private readonly VALID_EXT: string[] = ['.jpg', '.jpeg', '.png', '.webp']

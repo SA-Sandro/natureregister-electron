@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { ImagesController } from '../controllers/ImagesController'
+import { ImagesController } from '@controllers/ImagesController'
 
 export class ImagesRoutes {
   public readonly router: Router
