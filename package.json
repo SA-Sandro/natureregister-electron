@@ -6,17 +6,16 @@
   "scripts": {
     "node": "node --import=tsx server/infrastructure/server.ts",
     "dev:vite": "vite",
-    "dev:electron": "wait-on http://localhost:5173 && npx electron dist/electron-main.js",
+    "dev:electron": "wait-on http://localhost:5173 && npx electron electron/electron-main.mjs",
     "dev": "concurrently -k \"npm run dev:vite\" \"npm run dev:electron\"",
-    "build": "npm run type-check && npm run build:electron && npm run build-only",
-    "build:electron": "tsc -p tsconfig.electron-main.json && tsc -p tsconfig.preload.json",
+    "build": "npm run type-check -p && npm run build-only",
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "start": "electron ./dist/electron-main.js",
+    "start": "electron electron/electron-main.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -58,7 +57,7 @@
     "wait-on": "^8.0.4"
   },
   "description": "This template should help get you started developing with Vue 3 in Vite.",
-  "main": "dist/electron-main.js",
+  "main": "electron-main.mjs",
   "keywords": [],
   "author": "",
   "license": "ISC"
