@@ -1,30 +1,14 @@
 <script setup lang="ts">
 async function selectPath() {
-  try {
-    const selectedPath = await window.electronAPI.selectFolder()
-    if (selectedPath) {
-      const encodedPath = encodeURIComponent(selectedPath)
-      const url = `http://localhost:3000/api/images/retrieveAllImages?folderPath=${encodedPath}`
-
-      const response = await fetch(url)
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error(`Request to backend failed with status[${response.status}]:`, errorText)
-        return
-      }
-
-      const data = await response.json()
-
-      if (data && data.length > 0) {
-        // Aquí haces lo que necesites con las imágenes
-        console.log('Images:', JSON.stringify(data, null, 2))
-      }
-    }
-  } catch (err) {
-    console.error('An error has occurred:', err)
+  const selectedPath = await window.electronAPI.selectFolder()
+  if (!selectedPath) {
+    console.error('No se seleccionó ninguna carpeta')
+    return
   }
+  const url = `${import.meta.env.VITE_API_URL}/retrieveAllImages?folderPath=${encodeURIComponent(selectedPath)}`
+  return url
 }
+defineExpose({ selectPath })
 </script>
 <template>
   <button @click="selectPath">Seleccionar carpeta</button>

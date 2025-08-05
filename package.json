@@ -4,8 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:server": "vite-node server/infrastructure/server.ts",
-    "node": "node --import=tsx server/infrastructure/server.ts",
+    "node": "vite-node server/infrastructure/server.ts",
     "dev:vite": "vite",
     "dev:electron": "wait-on http://localhost:5173 && npx electron electron/electron-main.mjs",
     "dev": "concurrently -k \"npm run dev:vite\" \"npm run dev:electron\"",

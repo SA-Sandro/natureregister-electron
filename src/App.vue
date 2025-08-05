@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import SelectFolder from './components/SelectFolder.vue'
+const selectFolderRef = ref<InstanceType<typeof SelectFolder> | null>(null)
 
 onMounted(async () => {
+  if (!selectFolderRef.value) return
   try {
-    const res = await fetch('http://localhost:3000/api/images/retrieveAllImages')
+    const url = await selectFolderRef.value.selectPath()
+    if (!url) return
+    const res = await fetch(url)
     const images = await res.json()
     console.log('Imágenes:', images)
   } catch (err) {
@@ -17,7 +21,7 @@ onMounted(async () => {
   <div>
     <h1>Imágenes</h1>
     <p>Revisa la consola para ver las imágenes obtenidas.</p>
-    <select-folder></select-folder>
+    <select-folder ref="selectFolderRef"></select-folder>
   </div>
 </template>
 
