@@ -1,27 +1,41 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import SelectFolder from './components/SelectFolder.vue'
-const selectFolderRef = ref<InstanceType<typeof SelectFolder> | null>(null)
 
-onMounted(async () => {
-  if (!selectFolderRef.value) return
+async function fetchImages(folderPath: string) {
   try {
-    const url = await selectFolderRef.value.selectPath()
-    if (!url) return
-    const res = await fetch(url)
+    localStorage.setItem('selectedFolderPath', folderPath)
+
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/retrieveAllImages?folderPath=${encodeURIComponent(folderPath)}`,
+    )
+    if (!res.ok) {
+      throw new Error(`Failed to retrieve images: ${res.statusText}`)
+    }
     const images = await res.json()
     console.log('Imágenes:', images)
   } catch (err) {
     console.error('Error al obtener imágenes:', err)
   }
+}
+
+onMounted(() => {
+  const storedPath = localStorage.getItem('selectedFolderPath')
+  if (storedPath) {
+    fetchImages(storedPath)
+  }
 })
+
+function handleFolderSelected(folderPath: string) {
+  fetchImages(folderPath)
+}
 </script>
 
 <template>
   <div>
     <h1>Imágenes</h1>
     <p>Revisa la consola para ver las imágenes obtenidas.</p>
-    <select-folder ref="selectFolderRef"></select-folder>
+    <select-folder @folder-selected="handleFolderSelected"></select-folder>
   </div>
 </template>
 

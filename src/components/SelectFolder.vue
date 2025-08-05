@@ -1,14 +1,13 @@
 <script setup lang="ts">
+const emit = defineEmits<{ (e: 'folder-selected', path: string): void }>()
 async function selectPath() {
   const selectedPath = await window.electronAPI.selectFolder()
   if (!selectedPath) {
     console.error('No se seleccionó ninguna carpeta')
     return
   }
-  const url = `${import.meta.env.VITE_API_URL}/retrieveAllImages?folderPath=${encodeURIComponent(selectedPath)}`
-  return url
+  emit('folder-selected', selectedPath)
 }
-defineExpose({ selectPath })
 </script>
 <template>
   <button @click="selectPath">Seleccionar carpeta</button>
