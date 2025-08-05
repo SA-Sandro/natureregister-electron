@@ -7,18 +7,18 @@ export class Image {
   ) {}
 
   private getUrl(): string {
-    return this.url;
+    return this.url
   }
 
   private getSize(): number {
-    return this.size;
+    return this.size
   }
 
   private getExtension(): string {
-    return this.extension;
+    return this.extension
   }
 
   private getDate(): Date {
-    return this.date;
+    return this.date
   }
 }
