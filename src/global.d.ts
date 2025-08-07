@@ -1,9 +1,9 @@
-export {}
+export {};
 
 declare global {
   interface Window {
     electronAPI: {
-      selectFolder: () => Promise<string | null>
-    }
+      selectFolder: () => Promise<string | null>;
+    };
   }
 }
