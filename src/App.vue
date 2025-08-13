@@ -1,33 +1,20 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import SelectFolder from './components/SelectFolder.vue';
+import SelectFolder from '@/components/SelectFolder.vue';
+import { ImagesApiHandler } from '@/api/ImagesApiHandler';
 
-async function fetchImages(folderPath: string) {
-  try {
-    localStorage.setItem('selectedFolderPath', folderPath);
-
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/retrieveAllImages?folderPath=${encodeURIComponent(folderPath)}`,
-    );
-    if (!res.ok) {
-      throw new Error(`Failed to retrieve images: ${res.statusText}`);
-    }
-    const images = await res.json();
-    console.log('Imágenes:', images);
-  } catch (err) {
-    console.error('Error al obtener imágenes:', err);
-  }
-}
+const imagesApi = new ImagesApiHandler();
 
 onMounted(() => {
+  const imagesApi = new ImagesApiHandler();
   const storedPath = localStorage.getItem('selectedFolderPath');
   if (storedPath) {
-    fetchImages(storedPath);
+    imagesApi.fetchImages(storedPath);
   }
 });
 
 function handleFolderSelected(folderPath: string) {
-  fetchImages(folderPath);
+  imagesApi.fetchImages(folderPath);
 }
 </script>
 
