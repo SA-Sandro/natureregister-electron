@@ -3,7 +3,7 @@ import { axiosInstance } from '@/api/http/AxiosInstance';
 import type { ImageApi } from '@/interfaces/ImageApi';
 
 export class ImageApiImpl implements ImageApi {
-  private axiosInstance: AxiosInstance;
+  private readonly axiosInstance: AxiosInstance;
 
   constructor() {
     this.axiosInstance = axiosInstance;
@@ -13,7 +13,7 @@ export class ImageApiImpl implements ImageApi {
     const response = await this.axiosInstance.get<string[]>('retrieveAllImages', {
       params: { folderPath },
     });
-    console.log(response);
+    console.log(response.data);
 
     return response.data;
   }
