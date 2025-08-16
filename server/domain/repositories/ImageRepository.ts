@@ -1,4 +1,4 @@
-import { Image } from "@domain/entities/Image";
+import { Image } from '@domain/entities/Image';
 
 export interface ImageRepository {
   /**
@@ -7,5 +7,5 @@ export interface ImageRepository {
    * @returns A promise that resolves to an array of Image entities.
    */
 
-  getImagesFromFolder(folderPath: string): Promise<Image[]>
+  getImagesFromFolder(folderPath: string): Promise<Image[]>;
 }
