@@ -1,4 +1,3 @@
-
 export interface ImageApi {
-    retrieveAllImages(folderPath:string): Promise<string[]>;
+  retrieveAllImages(folderPath: string): Promise<string[]>;
 }
