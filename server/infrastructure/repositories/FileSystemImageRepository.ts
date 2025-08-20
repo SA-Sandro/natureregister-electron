@@ -6,15 +6,6 @@ import { ImageExtension } from '@domain/valueObjects/ImageExtension';
 import { InvalidImageExtension } from '@domain/exceptions/InvalidImageExtension';
 
 export class FileSystemImageRepository implements ImageRepository {
-  private async getFileStats(folderPath: string): Promise<Stats | null> {
-    try {
-      return await fs.stat(folderPath);
-    } catch (error) {
-      console.error('Error accessing path:', error);
-      return null;
-    }
-  }
-
   public async getImagesFromFolder(folderPath: string): Promise<Image[]> {
     const allImages: Image[] = [];
     let files: string[];
@@ -23,6 +14,10 @@ export class FileSystemImageRepository implements ImageRepository {
       files = await fs.readdir(folderPath);
     } catch (err) {
       console.error('Error reading folder:', err);
+      return allImages;
+    }
+
+    if (!files) {
       return allImages;
     }
 
@@ -52,5 +47,14 @@ export class FileSystemImageRepository implements ImageRepository {
     }
 
     return allImages;
+  }
+
+  private async getFileStats(folderPath: string): Promise<Stats | null> {
+    try {
+      return await fs.stat(folderPath);
+    } catch (error) {
+      console.error('Error accessing path:', error);
+      return null;
+    }
   }
 }
