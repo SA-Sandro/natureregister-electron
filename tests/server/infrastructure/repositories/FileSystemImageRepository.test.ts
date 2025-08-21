@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { promises as fs } from 'fs';
 import { FileSystemImageRepository } from '../../../../server/infrastructure/repositories/FileSystemImageRepository';
 
@@ -7,6 +7,10 @@ describe('Test FileSystemImage repository', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('Should return all valid images', async () => {
