@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { ImageExtension } from '../../../../server/Domain/valueObjects/ImageExtension';
-import { InvalidImageExtension } from '../../../../server/Domain/exceptions/InvalidImageExtension';
+import { ImageExtension } from '@domain/valueObjects/ImageExtension';
+import { InvalidImageExtension } from '@domain/exceptions/InvalidImageExtension';
 
 // TODO: this imports should be relative to the project root, but for now, this is the workaround
 describe('Test Value Object ImageExtension', () => {

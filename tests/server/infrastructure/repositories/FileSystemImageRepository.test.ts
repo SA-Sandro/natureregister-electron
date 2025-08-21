@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { promises as fs } from 'fs';
-import { FileSystemImageRepository } from '../../../../server/infrastructure/repositories/FileSystemImageRepository';
+import { FileSystemImageRepository } from '@infrastructure/repositories/FileSystemImageRepository';
 
 describe('Test FileSystemImage repository', () => {
   const repo = new FileSystemImageRepository();
