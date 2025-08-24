@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 import { ImagesApiHandler } from '@/api/ImagesApiHandler';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 import { popupNotifier } from '@/services/PopupNotifierManagement';
 import { ErrorMessages, InfoMessages } from '@/const/popup/PopupMessages';
 import { TitleMessages } from '@/const/popup/PopupTitle';
+import { onMounted } from 'vue';
+
 
 const localStorageService = new LocalStorageService();
 const imagesApi = new ImagesApiHandler(new ImageApiImpl());
