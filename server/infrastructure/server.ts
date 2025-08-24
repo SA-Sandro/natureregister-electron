@@ -1,11 +1,11 @@
-import express from 'express'
-import cors from 'cors'
-import { ImagesRoutes } from '@infrastructure/routes/ImagesRoutes'
-import { ImagesController } from '@infrastructure/controllers/ImagesController'
-import { ImagesManagementService } from '@application/ImagesManagementService'
-import { FileSystemImageRepository } from '@infrastructure/repositories/FileSystemImageRepository'
+import express from 'express';
+import cors from 'cors';
+import { ImagesRoutes } from '@infrastructure/routes/ImagesRoutes';
+import { ImagesController } from '@infrastructure/controllers/ImagesController';
+import { ImagesManagementService } from '@application/ImagesManagementService';
+import { FileSystemImageRepository } from '@infrastructure/repositories/FileSystemImageRepository';
 
-const app = express()
+const app = express();
 
 app.use(
   cors({
@@ -13,15 +13,15 @@ app.use(
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   }),
-)
+);
 
-const imageRepository = new FileSystemImageRepository()
-const imagesService = new ImagesManagementService(imageRepository)
-const imagesController = new ImagesController(imagesService)
-const imagesRoutes = new ImagesRoutes(imagesController)
+const imageRepository = new FileSystemImageRepository();
+const imagesService = new ImagesManagementService(imageRepository);
+const imagesController = new ImagesController(imagesService);
+const imagesRoutes = new ImagesRoutes(imagesController);
 
-app.use('/api/images', imagesRoutes.router)
+app.use('/api/images', imagesRoutes.router);
 
 app.listen(3000, () => {
-  console.log('Server is running on port 3000:  http://localhost:3000')
-})
+  console.log('Server is running on port 3000:  http://localhost:3000');
+});
