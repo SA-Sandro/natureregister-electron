@@ -1,24 +1,26 @@
+import { ImageExtension } from '@domain/valueObjects/ImageExtension';
+
 export class Image {
   constructor(
     private readonly url: string,
     private readonly size: number,
-    private readonly extension: string,
+    private readonly extension: ImageExtension,
     private readonly date: Date,
   ) {}
 
-  private getUrl(): string {
+  public getUrl(): string {
     return this.url;
   }
 
-  private getSize(): number {
+  public getSize(): number {
     return this.size;
   }
 
-  private getExtension(): string {
-    return this.extension;
+  public getExtension(): string {
+    return this.extension.getValue();
   }
 
-  private getDate(): Date {
+  public getDate(): Date {
     return this.date;
   }
 

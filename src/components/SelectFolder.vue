@@ -1,29 +1,51 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 import { ImagesApiHandler } from '@/api/ImagesApiHandler';
 import { LocalStorageService } from '@/services/LocalStorageService';
-import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
+import { popupNotifier } from '@/services/PopupNotifierManagement';
+import { ErrorMessages, InfoMessages } from '@/const/popup/PopupMessages';
+import { TitleMessages } from '@/const/popup/PopupTitle';
+import { onMounted } from 'vue';
 
-const imagesApi = new ImagesApiHandler(new ImageApiImpl(), new LocalStorageService());
 const localStorageService = new LocalStorageService();
+const imagesApi = new ImagesApiHandler(new ImageApiImpl());
 
-onMounted(() => {
+async function init() {
   const storedPath = localStorageService.getItem('selectedFolderPath');
-  if (storedPath) {
-    imagesApi.fetchImages(storedPath);
+  if (!storedPath) {
+    popupNotifier.createNotification(TitleMessages.INFO, InfoMessages.SELECT_FOLDER);
+    return;
   }
-});
+  await loadImages(storedPath);
+}
+
+onMounted(init);
 
 async function selectPath() {
   const selectedPath = await window.electronAPI.selectFolder();
-  if (!selectedPath) {
-    console.error('No se seleccionó ninguna carpeta');
-    return;
+  if (!selectedPath) return;
+
+  localStorageService.setItem('selectedFolderPath', selectedPath);
+
+  await loadImages(selectedPath);
+}
+
+async function loadImages(selectedPath: string) {
+  try {
+    const images = await imagesApi.fetchImages(selectedPath);
+    console.log(images);
+  } catch (error) {
+    popupNotifier.createNotification(
+      TitleMessages.ERROR,
+      ErrorMessages.RETRIEVE_IMAGES_ERROR,
+      'warn',
+    );
+    console.error('The images could not be loaded correctly:', error);
   }
-  imagesApi.fetchImages(selectedPath);
 }
 </script>
 <template>
+  <PopupNotifier style="margin: 10px" />
   <button @click="selectPath">Seleccionar carpeta</button>
 </template>
 <style scoped></style>
