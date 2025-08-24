@@ -15,7 +15,7 @@ async function fetchImages(folderPath: string) {
     const images = await res.json()
     console.log('Imágenes:', images)
   } catch (err) {
-    console.error('Error al obtener imágenes:', err)
+    console.error('An error has occurred while retrieving images:', err)
   }
 }
 
