@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 import { ImagesApiHandler } from '@/api/ImagesApiHandler';
 import { LocalStorageService } from '@/services/LocalStorageService';
-import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
+import { onMounted } from 'vue';
 
 const imagesApi = new ImagesApiHandler(new ImageApiImpl(), new LocalStorageService());
 const localStorageService = new LocalStorageService();

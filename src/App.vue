@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SelectFolder from './components/SelectFolder.vue';
+import SelectFolder from '@/components/SelectFolder.vue';
 </script>
 
 <template>
