@@ -1,9 +1,25 @@
-<script lang="ts"></script>
+<script setup lang="ts">
+import { useImageStore } from '@/stores/imageStores';
+import { computed } from 'vue';
+const imageStore = useImageStore();
+const images = computed(() =>
+  imageStore.getImages().map((img) => ({
+    ...img,
+    url: toFileSrc(img.url),
+  })),
+);
+
+function toFileSrc(absPath: string): string {
+  let path = absPath.replace(/\\/g, '/'); // barras Unix
+  if (!path.startsWith('file:///')) path = 'file:///' + path;
+  return path;
+}
+</script>
 <template>
   <div v-if="images.length > 0" class="image-library">
     <div v-for="(image, index) in images" :key="index" class="image-card">
-      <img :src="image.url" :alt="image.name" />
-      <p>{{ image.name }}</p>
+      <img :src="image.url" :alt="image.date" />
+      <p>{{ image.date }}</p>
     </div>
   </div>
   <div v-else>
@@ -19,5 +35,6 @@
 .image-card {
   border: 1px solid black;
   width: 100%;
+  height: auto;
 }
 </style>

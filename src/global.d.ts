@@ -13,6 +13,6 @@ declare global {
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Notifications: FunctionalComponent<Notifications>;
+    Notifications: FunctionalComponent<typeof Notifications>;
   }
 }

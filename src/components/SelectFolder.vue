@@ -6,9 +6,12 @@ import { popupNotifier } from '@/services/PopupNotifierManagement';
 import { ErrorMessages, InfoMessages } from '@/const/popup/PopupMessages';
 import { TitleMessages } from '@/const/popup/PopupTitle';
 import { onMounted } from 'vue';
+import { useImageStore } from '@/stores/imageStores';
 
 const localStorageService = new LocalStorageService();
 const imagesApi = new ImagesApiHandler(new ImageApiImpl());
+
+const imageStore = useImageStore();
 
 async function init() {
   const storedPath = localStorageService.getItem('selectedFolderPath');
@@ -33,7 +36,7 @@ async function selectPath() {
 async function loadImages(selectedPath: string) {
   try {
     const images = await imagesApi.fetchImages(selectedPath);
-    console.log(images);
+    imageStore.setImages(images);
   } catch (error) {
     popupNotifier.createNotification(
       TitleMessages.ERROR,
