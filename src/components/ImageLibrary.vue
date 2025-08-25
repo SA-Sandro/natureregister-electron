@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useImageStore } from '@/stores/imageStores';
 import { computed } from 'vue';
+import { toFileSrc } from '@/utils/UrlToFileSrc';
 const imageStore = useImageStore();
 const images = computed(() =>
   imageStore.getImages().map((img) => ({
@@ -8,12 +9,6 @@ const images = computed(() =>
     url: toFileSrc(img.url),
   })),
 );
-
-function toFileSrc(absPath: string): string {
-  let path = absPath.replace(/\\/g, '/'); // barras Unix
-  if (!path.startsWith('file:///')) path = 'file:///' + path;
-  return path;
-}
 </script>
 <template>
   <div v-if="images.length > 0" class="image-library">

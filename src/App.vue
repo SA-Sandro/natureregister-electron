@@ -7,7 +7,7 @@ import ImageLibrary from '@/components/ImageLibrary.vue';
   <div>
     <h1>Imágenes</h1>
     <p>Revisa la consola para ver las imágenes obtenidas.</p>
-    <select-folder />
+    <SelectFolder />
     <ImageLibrary />
   </div>
 </template>

@@ -23,13 +23,4 @@ export class Image {
   public getDate(): Date {
     return this.date;
   }
-
-  toPrimitive() {
-    return {
-      url: this.getUrl(),
-      size: this.getSize(),
-      extension: this.getExtension(),
-      date: this.getDate(),
-    }
-  }
 }
