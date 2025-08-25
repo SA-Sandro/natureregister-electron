@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 import { ImagesApiHandler } from '@/api/ImagesApiHandler';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
