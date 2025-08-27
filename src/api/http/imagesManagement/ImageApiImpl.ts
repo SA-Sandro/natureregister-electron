@@ -1,6 +1,7 @@
 import { type AxiosInstance } from 'axios';
 import { axiosInstance } from '@/api/http/AxiosInstance';
 import type { ImageApi } from '@/interfaces/ImageApi';
+import type { Image } from '@/types/ImagesType';
 
 export class ImageApiImpl implements ImageApi {
   private readonly axiosInstance: AxiosInstance;
@@ -9,9 +10,9 @@ export class ImageApiImpl implements ImageApi {
     this.axiosInstance = axiosInstance;
   }
 
-  async retrieveAllImages(folderPath: string): Promise<string[]> {
+  async retrieveAllImages(folderPath: string): Promise<Image[]> {
     try {
-      const response = await this.axiosInstance.get<string[]>('retrieveAllImages', {
+      const response = await this.axiosInstance.get<Image[]>('retrieveAllImages', {
         params: { folderPath },
       });
       return response.data;

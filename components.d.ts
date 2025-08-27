@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ImageLibrary: typeof import('./src/components/ImageLibrary.vue')['default']
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
     SelectFolder: typeof import('./src/components/SelectFolder.vue')['default']
   }
