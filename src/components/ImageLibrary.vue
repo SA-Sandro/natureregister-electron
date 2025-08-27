@@ -24,12 +24,33 @@ const images = computed(() =>
 <style scoped>
 .image-library {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 280px));
   gap: 1rem;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+  margin-inline: auto;
 }
 .image-card {
   border: 1px solid black;
   width: 100%;
-  height: auto;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+@media (min-screen-width: 1200px) {
+  .image-library {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 </style>
