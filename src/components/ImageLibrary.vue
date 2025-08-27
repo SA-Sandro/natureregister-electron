@@ -24,13 +24,15 @@ const images = computed(() =>
 <style scoped>
 .image-library {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 280px));
   gap: 1rem;
-  justify-content: center;
   width: 100%;
-  max-width: 1400px;
-  margin-inline: auto;
+  max-width: 1200px; /* opcional, limita el ancho máximo del grid */
+  margin: 0 auto;
+
+  /* Flujo automático de columnas */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
+
 .image-card {
   border: 1px solid black;
   width: 100%;
@@ -46,11 +48,5 @@ const images = computed(() =>
   height: 100%;
   object-fit: contain;
   display: block;
-}
-
-@media (min-screen-width: 1200px) {
-  .image-library {
-    grid-template-columns: repeat(4, 1fr);
-  }
 }
 </style>
