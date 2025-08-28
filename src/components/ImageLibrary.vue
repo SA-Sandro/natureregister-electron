@@ -2,6 +2,7 @@
 import { useImageStore } from '@/stores/imageStores';
 import { computed } from 'vue';
 import { toFileSrc } from '@/utils/UrlToFileSrc';
+
 const imageStore = useImageStore();
 const images = computed(() =>
   imageStore.getImages().map((img) => ({
@@ -10,21 +11,28 @@ const images = computed(() =>
   })),
 );
 </script>
+
 <template>
-  <div class="flex flex-col items-center p-4">
+  <div class="flex flex-col items-center p-4 bg-[#EEEEEE]">
     <div
       v-if="images.length"
-      class="grid gap-4 max-w-[1200px] mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 [@media(min-width:1100px)]:grid-cols-[repeat(auto-fit,minmax(180px,1fr))]"
+      class="grid gap-8 max-w-[75rem] mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 [@media(min-width:68.75rem)]:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]"
     >
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="flex flex-col w-full border border-black overflow-hidden aspect-[6/7]"
+        class="flex flex-col w-full border border-gray-200 overflow-hidden bg-white shadow"
       >
-        <div class="w-full aspect-[4/3] overflow-hidden">
-          <img :src="image.url" :alt="image.date" class="w-full h-full object-cover block" />
+        <div class="relative w-full h-64">
+          <img
+            :src="image.url"
+            :alt="image.date.toString()"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
-        <p class="mt-2 mb-2 !font-bold text-center">{{ image.date }}</p>
+        <div class="h-20 flex flex-col justify-end !m-3">
+          <p class="text-right text-xs !font-bold">{{ image.date }}</p>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -32,4 +40,5 @@ const images = computed(() =>
     </div>
   </div>
 </template>
+
 <style scoped></style>
