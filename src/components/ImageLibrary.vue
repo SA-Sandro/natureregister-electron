@@ -2,12 +2,14 @@
 import { useImageStore } from '@/stores/imageStores';
 import { computed } from 'vue';
 import { toFileSrc } from '@/utils/UrlToFileSrc';
+import { formatDate } from '@/utils/FormatDate';
 
 const imageStore = useImageStore();
 const images = computed(() =>
   imageStore.getImages().map((img) => ({
     ...img,
     url: toFileSrc(img.url),
+    date: formatDate(img.date),
   })),
 );
 </script>
@@ -26,7 +28,7 @@ const images = computed(() =>
         <div class="relative w-full h-64">
           <img
             :src="image.url"
-            :alt="image.date.toString()"
+            :alt="image.date"
             class="absolute inset-0 w-full h-full object-cover"
           />
         </div>
