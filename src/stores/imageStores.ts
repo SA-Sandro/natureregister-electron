@@ -9,7 +9,7 @@ export const useImageStore = defineStore('imageStore', {
     setImages(images: Array<Image>) {
       this.images = images;
     },
-    getImages() {
+    getImages(): Array<Image> {
       return this.images;
     },
   },
