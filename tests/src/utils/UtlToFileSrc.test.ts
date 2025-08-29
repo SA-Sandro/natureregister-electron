@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { toFileSrc } from '@/../src/utils/UrlToFileSrc';
+import { toFileSrc } from '@/utils/UrlToFileSrc';
 
 describe('Test toFileSrc function', () => {
   it('transform backslashes into normal slashes', () => {
