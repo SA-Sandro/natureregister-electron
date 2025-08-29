@@ -6,6 +6,7 @@ import { ErrorMessages, InfoMessages } from '@/const/popup/PopupMessages';
 import { TitleMessages } from '@/const/popup/PopupTitle';
 import { onMounted } from 'vue';
 import { useImageStore } from '@/stores/imageStores';
+import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 
 const localStorageService = new LocalStorageService();
 const imagesApi = new ImagesApiHandler(new ImageApiImpl());
