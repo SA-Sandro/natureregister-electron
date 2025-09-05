@@ -1,4 +1,4 @@
-import { Image } from '../../domain/entities/Image';
+import { Image } from '@domain/entities/Image';
 export class ImageDTO {
   constructor(
     public readonly url: string,

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ImagesManagementService } from '@application/ImagesManagementService';
-import { ImageDTO } from '@infrastructure/dtos/ImageDTO';
+import { ImageDTO } from '@infrastructure/DTOs/ImageDTO';
 
 export class ImagesController {
   constructor(private readonly imageService: ImagesManagementService) {}
