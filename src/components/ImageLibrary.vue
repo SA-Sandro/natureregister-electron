@@ -15,31 +15,29 @@ const images = computed(() =>
 </script>
 
 <template>
-  <div class="flex flex-col items-center p-4 bg-[#EEEEEE]">
+  <div class="flex flex-col items-center p-6 bg-[#f5f5f5] min-h-screen">
     <div
       v-if="images.length"
-      class="grid gap-8 max-w-[75rem] mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 [@media(min-width:68.75rem)]:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]"
+      class="grid gap-6 w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]"
     >
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="flex flex-col w-full border border-gray-200 overflow-hidden bg-white shadow"
+        class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg"
       >
-        <div class="relative w-full h-64">
+        <div class="relative w-full aspect-[4/3]">
           <img
             :src="image.url"
             :alt="image.date"
             class="absolute inset-0 w-full h-full object-cover"
           />
         </div>
-        <div class="h-20 flex flex-col justify-end !m-3">
-          <p class="text-right text-xs !font-bold">{{ image.date }}</p>
+        <div class="p-3 flex justify-end">
+          <p class="text-sm font-semibold text-gray-600">{{ image.date }}</p>
         </div>
       </div>
     </div>
-    <div v-else>
-      <p>No images available.</p>
-    </div>
+    <div v-else class="text-gray-500 mt-12 text-lg font-medium">No images available.</div>
   </div>
 </template>
 
