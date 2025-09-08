@@ -9,5 +9,5 @@ import MainHeader from '@/components/MainHeader.vue';
   <main>
     <slot></slot>
   </main>
-  <footer>2024 &copy; Nature Register</footer>
+  <footer class="bg-gray-100 text-center p-4">2024 &copy; Nature Register</footer>
 </template>
