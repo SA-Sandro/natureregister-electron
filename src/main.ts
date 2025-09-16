@@ -1,6 +1,14 @@
-import './assets/main.css'
+import './assets/main.css';
+import { createApp } from 'vue';
+import App from '@/App.vue';
+import { createPinia } from 'pinia';
+import Notifications from '@kyvg/vue3-notification';
 
-import { createApp } from 'vue'
-import App from './App.vue'
+const app = createApp(App);
+const pinia = createPinia();
 
-createApp(App).mount('#app')
+app.use(pinia);
+
+app.use(Notifications, { componentName: 'PopupNotifier' });
+
+app.mount('#app');
