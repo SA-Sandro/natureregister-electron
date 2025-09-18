@@ -5,7 +5,7 @@ import { popupNotifier } from '@/services/PopupNotifierManagement';
 import { ErrorMessages, InfoMessages } from '@/const/popup/PopupMessages';
 import { TitleMessages } from '@/const/popup/PopupTitle';
 import { onMounted } from 'vue';
-import { useImageStore } from '@/stores/imageStores';
+import { useImageStore } from '@/stores/imageStore';
 import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 
 const localStorageService = new LocalStorageService();

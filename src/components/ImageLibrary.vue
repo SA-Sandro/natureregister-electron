@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { useImageStore } from '@/stores/imageStores';
+import { useImageStore } from '@/stores/imageStore';
 import { computed } from 'vue';
 import { toFileSrc } from '@/utils/UrlToFileSrc';
 import { formatDate } from '@/utils/FormatDate';
+import { useDialogStore } from '@/stores/dialogStore';
 
+const dialog = useDialogStore();
 const imageStore = useImageStore();
 const images = computed(() =>
   imageStore.getImages().map((img) => ({
@@ -23,7 +25,7 @@ const images = computed(() =>
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg"
+        class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden transition-transform"
       >
         <div class="relative w-full aspect-[4/3]">
           <img
@@ -32,7 +34,8 @@ const images = computed(() =>
             class="absolute inset-0 w-full h-full object-cover"
           />
         </div>
-        <div class="p-3 flex justify-end">
+        <div class="p-3 flex justify-around items-center">
+          <button @click="dialog.toggle" class="cursor-pointer text-black">Más detalles</button>
           <p class="text-sm font-semibold text-gray-600">{{ image.date }}</p>
         </div>
       </div>
