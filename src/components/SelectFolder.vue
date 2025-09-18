@@ -7,6 +7,8 @@ import { TitleMessages } from '@/const/popup/PopupTitle';
 import { onMounted } from 'vue';
 import { useImageStore } from '@/stores/imageStores';
 import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
+import FolderIcon from '@/components/Icons/FolderIcon.vue';
+import getFolderNameFromPath from '@/utils/GetFolderNameFromPath';
 
 const localStorageService = new LocalStorageService();
 const imagesApi = new ImagesApiHandler(new ImageApiImpl());
@@ -29,7 +31,7 @@ async function selectPath() {
   if (!selectedPath) return;
 
   localStorageService.setItem('selectedFolderPath', selectedPath);
-
+  getFolderNameFromPath();
   await loadImages(selectedPath);
 }
 
@@ -49,6 +51,6 @@ async function loadImages(selectedPath: string) {
 </script>
 <template>
   <PopupNotifier style="margin: 10px" />
-  <button @click="selectPath">Seleccionar carpeta</button>
+  <button @click="selectPath"><FolderIcon /></button>
 </template>
 <style scoped></style>

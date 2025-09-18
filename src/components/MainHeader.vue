@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SelectFolder from './SelectFolder.vue';
+import ButtonSetting from '@/components/ButtonSetting.vue';
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import SelectFolder from './SelectFolder.vue';
       </div>
     </div>
     <div>
-      <SelectFolder />
+      <ButtonSetting />
     </div>
   </div>
 </template>
