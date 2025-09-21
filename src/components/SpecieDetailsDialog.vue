@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import useDialog from '@/composables/useDialog';
+import useDialog from '@/composables/useDialog'
+import { useSpecimenInfoStore } from '@/stores/specimenInfoStore'
+import { storeToRefs } from 'pinia'
 
-const { closeDialogByEsc, closeOnBackdrop, dialog } = useDialog();
+const { closeDialogByEsc, closeOnBackdrop, dialog } = useDialog()
+const specimenInfoStore = useSpecimenInfoStore()
+const { specimenInfo } = storeToRefs(specimenInfoStore)
 </script>
-<!-- TODO: Think a way to sent species data to here -->
+
 <template>
   <transition name="bounce">
     <div
@@ -16,31 +20,20 @@ const { closeDialogByEsc, closeOnBackdrop, dialog } = useDialog();
     >
       <dialog
         role="dialog"
-        arial-modal="true"
+        aria-modal="true"
         class="static w-[70%] h-[95%] backdrop-blur-sm flex justify-center items-center rounded-lg shadow-lg"
       >
         <h2 class="text-xl">Hola a todos</h2>
+
+        <template v-if="specimenInfo">
+          <img
+            :src="specimenInfo.imagePath"
+            alt="specimenInfo.scientificName || 'recorded image'"
+            class="max-h-full max-w-full object-contain"
+          />
+          <h4>Date => {{ specimenInfo.recordDate }}</h4>
+        </template>
       </dialog>
     </div>
   </transition>
 </template>
-
-<style scoped>
-.bounce-enter-active {
-  animation: bounce-in 0.5s;
-}
-.bounce-leave-active {
-  animation: bounce-in 0.3s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-</style>

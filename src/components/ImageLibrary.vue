@@ -4,9 +4,12 @@ import { computed } from 'vue';
 import { toFileSrc } from '@/utils/UrlToFileSrc';
 import { formatDate } from '@/utils/FormatDate';
 import { useDialogStore } from '@/stores/dialogStore';
+import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 
 const dialog = useDialogStore();
 const imageStore = useImageStore();
+const specimentInfo = useSpecimenInfoStore();
+
 const images = computed(() =>
   imageStore.getImages().map((img) => ({
     ...img,
@@ -14,6 +17,11 @@ const images = computed(() =>
     date: formatDate(img.date),
   })),
 );
+
+const openDialogWithSpecificInfo = (url: string, date: string) => {
+  specimentInfo.setSpecimenInfo({ imagePath: url, recordDate: date });
+  dialog.toggle();
+};
 </script>
 
 <template>
@@ -35,7 +43,12 @@ const images = computed(() =>
           />
         </div>
         <div class="p-3 flex justify-around items-center">
-          <button @click="dialog.toggle" class="cursor-pointer text-black">Más detalles</button>
+          <button
+            @click="openDialogWithSpecificInfo(image.url, image.date)"
+            class="cursor-pointer text-black"
+          >
+            Más detalles
+          </button>
           <p class="text-sm font-semibold text-gray-600">{{ image.date }}</p>
         </div>
       </div>
