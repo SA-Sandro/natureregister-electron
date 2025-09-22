@@ -12,5 +12,6 @@ declare module 'vue' {
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
     SelectFolder: typeof import('./src/components/SelectFolder.vue')['default']
+    SpecieDetailsDialog: typeof import('./src/components/SpecieDetailsDialog.vue')['default']
   }
 }
