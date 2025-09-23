@@ -3,7 +3,7 @@ import { ObservationDate } from '@domain/valueObjects/ObservationDate';
 import { SpecimenInfo } from '@domain/valueObjects/SpecimenInfo';
 import { UUID } from 'crypto';
 
-export class SpecimentObservation {
+export class SpecimenObservation {
   constructor(
     private readonly uuid: UUID,
     private readonly specieInfo: SpecimenInfo,
