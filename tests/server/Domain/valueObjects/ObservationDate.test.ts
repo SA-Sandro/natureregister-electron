@@ -6,6 +6,6 @@ describe('Test Value Object ObservationDate', () => {
   it('should throws a DomainException when date is future', () => {
     const futureDate = new Date();
     futureDate.setFullYear(futureDate.getFullYear() + 1);
-    expect(() => new ObservationDate(futureDate)).toThrow(DomainException);
+    expect(() => new ObservationDate(futureDate.toLocaleDateString('es-ES'))).toThrow(DomainException);
   });
 });

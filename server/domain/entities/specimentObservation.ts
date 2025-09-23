@@ -1,6 +1,6 @@
 import { GeospatialData } from '@domain/valueObjects/GeospatialData';
 import { ObservationDate } from '@domain/valueObjects/ObservationDate';
-import { SpecimenInfo } from '@domain/valueObjects/SpecimentInfo';
+import { SpecimenInfo } from '@domain/valueObjects/SpecimenInfo';
 import { UUID } from 'crypto';
 
 export class SpecimentObservation {
