@@ -1,11 +1,11 @@
-import { InvalidImageExtension } from '@domain/exceptions/InvalidImageExtension';
+import { DomainException } from '@domain/exceptions/DomainException';
 
 export class ImageExtension {
   private static readonly VALID_EXT: string[] = ['.jpg', '.jpeg', '.png', '.webp'];
 
   constructor(private readonly extension: string) {
     if (!ImageExtension.VALID_EXT.includes(extension.toLowerCase())) {
-      throw new InvalidImageExtension(extension);
+      throw new DomainException('Image', `Invalid image extension: ${extension}`);
     }
   }
 
