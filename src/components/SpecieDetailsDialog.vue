@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import useDialog from '@/composables/useDialog'
-import { useSpecimenInfoStore } from '@/stores/specimenInfoStore'
-import { storeToRefs } from 'pinia'
+import useDialog from '@/composables/useDialog';
+import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
+import { storeToRefs } from 'pinia';
 
-const { closeDialogByEsc, closeOnBackdrop, dialog } = useDialog()
-const specimenInfoStore = useSpecimenInfoStore()
-const { specimenInfo } = storeToRefs(specimenInfoStore)
+const { closeDialogByEsc, closeOnBackdrop, dialog } = useDialog();
+const specimenInfoStore = useSpecimenInfoStore();
+const { specimenInfo } = storeToRefs(specimenInfoStore);
 </script>
 
 <template>
@@ -37,3 +37,34 @@ const { specimenInfo } = storeToRefs(specimenInfoStore)
     </div>
   </transition>
 </template>
+<style>
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-out 0.2s;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.07);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes bounce-out {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+} 
+</style>
