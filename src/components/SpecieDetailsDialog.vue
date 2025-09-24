@@ -63,8 +63,10 @@ const specimentInfo = ref({
                 </div>
                 <div class="flex-1">
                   <div class="relative h-full">
-                    <img src="/public/map_fake.png" alt="mapa" class="h-full"/>
-                    <div class="text-gray-700 flex font-medium text-md gap-x-2 absolute bottom-0 bg-white border-2 border-solid p-1">
+                    <img src="/public/map_fake.png" alt="mapa" class="h-full" />
+                    <div
+                      class="text-gray-700 flex font-medium text-md gap-x-2 absolute bottom-0 bg-white border-2 border-solid p-1"
+                    >
                       <p>{{ specimentInfo.location.locality }}</p>
                       <p>{{ specimentInfo.location.municipality }}</p>
                       <p>{{ specimentInfo.location.province }}</p>
