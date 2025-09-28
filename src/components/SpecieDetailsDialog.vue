@@ -58,7 +58,7 @@ const specimentInfo = ref({
                   <img
                     :src="specimenInfo.imagePath"
                     :alt="specimentInfo.scientificName"
-                    class="max-h-full max-w-full"
+                    class="max-h-full max-w-full aspect-[4/3] object-contain"
                   />
                 </div>
                 <div class="flex-1">

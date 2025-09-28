@@ -1,22 +1,15 @@
 <script setup lang="ts">
 import { useImageStore } from '@/stores/imageStore';
 import { computed } from 'vue';
-import { toFileSrc } from '@/utils/UrlToFileSrc';
-import { formatDate } from '@/utils/FormatDate';
 import { useDialogStore } from '@/stores/dialogStore';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
+import formatDate from '@/utils/FormatDate';
 
 const dialog = useDialogStore();
 const imageStore = useImageStore();
 const specimentInfo = useSpecimenInfoStore();
 
-const images = computed(() =>
-  imageStore.getImages().map((img) => ({
-    ...img,
-    url: toFileSrc(img.url),
-    date: formatDate(img.date),
-  })),
-);
+const images = computed(() => imageStore.formattedImages);
 
 const openDialogWithSpecificInfo = (url: string, date: string) => {
   specimentInfo.setSpecimenInfo({ imagePath: url, recordDate: date });
@@ -33,27 +26,28 @@ const openDialogWithSpecificInfo = (url: string, date: string) => {
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden transition-transform"
+        class="bg-white rounded-sm shadow-md overflow-hidden transition-transform"
       >
-        <div class="relative w-full aspect-[4/3]">
+        <div class="relative w-fullc= aspect-[4/3]">
           <img
+            loading="lazy"
             :src="image.url"
-            :alt="image.date"
-            class="absolute inset-0 w-full h-full object-cover"
+            :alt="formatDate(image.date)"
+            class="absolute inset-0 w-full h-full"
           />
         </div>
         <div class="p-3 flex justify-around items-center">
           <button
-            @click="openDialogWithSpecificInfo(image.url, image.date)"
+            @click="openDialogWithSpecificInfo(image.url, formatDate(image.date))"
             class="cursor-pointer text-black"
           >
             Más detalles
           </button>
-          <p class="text-sm font-semibold text-gray-600">{{ image.date }}</p>
+          <p class="text-sm font-semibold text-gray-600">{{ formatDate(image.date) }}</p>
         </div>
       </div>
     </div>
-    <div v-else class="text-gray-500 mt-12 text-lg font-medium">No images available.</div>
+    <div v-else class="text-gray-500 mt-12 text-lg font-medium">No hay imágenes disponibles</div>
   </div>
 </template>
 

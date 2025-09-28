@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ImageLibrary: typeof import('./src/components/ImageLibrary.vue')['default']
+    ImageLibrarySkeleton: typeof import('./src/components/skeletons/ImageLibrarySkeleton.vue')['default']
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
     SelectFolder: typeof import('./src/components/SelectFolder.vue')['default']
