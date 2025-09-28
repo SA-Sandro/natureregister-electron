@@ -1,28 +1,9 @@
 <script setup lang="ts">
-import { ImagesApiHandler } from '@/api/ImagesApiHandler';
 import { LocalStorageService } from '@/services/LocalStorageService';
-import { popupNotifier } from '@/services/PopupNotifierManagement';
-import { ErrorMessages, InfoMessages } from '@/const/popup/PopupMessages';
-import { TitleMessages } from '@/const/popup/PopupTitle';
-import { onMounted } from 'vue';
 import { useImageStore } from '@/stores/imageStore';
-import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 
 const localStorageService = new LocalStorageService();
-const imagesApi = new ImagesApiHandler(new ImageApiImpl());
-
 const imageStore = useImageStore();
-
-async function init() {
-  const storedPath = localStorageService.getItem('selectedFolderPath');
-  if (!storedPath) {
-    popupNotifier.createNotification(TitleMessages.INFO, InfoMessages.SELECT_FOLDER);
-    return;
-  }
-  await loadImages(storedPath);
-}
-
-onMounted(init);
 
 async function selectPath() {
   const selectedPath = await window.electronAPI.selectFolder();
@@ -30,21 +11,7 @@ async function selectPath() {
 
   localStorageService.setItem('selectedFolderPath', selectedPath);
 
-  await loadImages(selectedPath);
-}
-
-async function loadImages(selectedPath: string) {
-  try {
-    const images = await imagesApi.fetchImages(selectedPath);
-    imageStore.setImages(images);
-  } catch (error) {
-    popupNotifier.createNotification(
-      TitleMessages.ERROR,
-      ErrorMessages.RETRIEVE_IMAGES_ERROR,
-      'warn',
-    );
-    console.error('The images could not be loaded correctly:', error);
-  }
+  await imageStore.loadImages(selectedPath);
 }
 </script>
 <template>
