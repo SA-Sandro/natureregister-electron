@@ -1,19 +1,29 @@
 <script setup lang="ts">
 import { useImageStore } from '@/stores/imageStore';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useDialogStore } from '@/stores/dialogStore';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import formatDate from '@/utils/FormatDate';
+import ZoomedInSelectedImageDialog from './ZoomedInSelectedImageDialog.vue';
+import { DialogType } from '@/const/DialogType';
+
 
 const dialog = useDialogStore();
 const imageStore = useImageStore();
 const specimentInfo = useSpecimenInfoStore();
+const selectedImageUrl = ref<string | null>(null);
+const {DETAILS, ZOOM} = DialogType;
 
 const images = computed(() => imageStore.formattedImages);
 
 const openDialogWithSpecificInfo = (url: string, date: string) => {
   specimentInfo.setSpecimenInfo({ imagePath: url, recordDate: date });
-  dialog.toggle();
+  dialog.toggle(DETAILS);
+};
+
+const manageZoomInSelectedImage = (url: string) => {
+  selectedImageUrl.value = url;
+  dialog.toggle(ZOOM);
 };
 </script>
 
@@ -28,8 +38,9 @@ const openDialogWithSpecificInfo = (url: string, date: string) => {
         :key="index"
         class="bg-white rounded-sm shadow-md overflow-hidden transition-transform"
       >
-        <div class="relative w-fullc= aspect-[4/3]">
+        <div class="relative w-fullc= aspect-[4/3] cursor-zoom-in">
           <img
+            @click="manageZoomInSelectedImage(image.url)"
             loading="lazy"
             :src="image.url"
             :alt="formatDate(image.date)"
@@ -49,6 +60,7 @@ const openDialogWithSpecificInfo = (url: string, date: string) => {
     </div>
     <div v-else class="text-gray-500 mt-12 text-lg font-medium">No hay imágenes disponibles</div>
   </div>
+  <ZoomedInSelectedImageDialog :imageUrl="selectedImageUrl" />
 </template>
 
 <style scoped></style>

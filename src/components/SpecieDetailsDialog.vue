@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import useDialog from '@/composables/useDialog';
+import { DialogType } from '@/const/DialogType';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
-const { closeDialogByEsc, closeOnBackdrop, dialog } = useDialog();
+const { closeDialogByEsc, closeOnBackdrop, isOpen } = useDialog(DialogType.DETAILS);
 const specimenInfoStore = useSpecimenInfoStore();
 const { specimenInfo } = storeToRefs(specimenInfoStore);
 
@@ -32,8 +33,8 @@ const specimentInfo = ref({
 <template>
   <transition name="bounce">
     <div
-      v-if="dialog.isOpen"
-      id="dialog-overlay"
+      v-if="isOpen"
+      id="dialog-overlay-details"
       class="fixed inset-0 bg-black/40 flex items-center justify-center"
       @click="closeOnBackdrop"
       @keydown="closeDialogByEsc"
@@ -96,35 +97,6 @@ const specimentInfo = ref({
     </div>
   </transition>
 </template>
-
-<style>
-.bounce-enter-active {
-  animation: bounce-in 0.5s;
-}
-.bounce-leave-active {
-  animation: bounce-out 0.2s;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.07);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes bounce-out {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-}
+<style scoped>
+@import '@/assets/bounceAnimation.css';
 </style>

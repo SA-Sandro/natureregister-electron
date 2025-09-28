@@ -1,27 +1,31 @@
 import { useDialogStore } from '@/stores/dialogStore';
-import { watch, nextTick } from 'vue';
+import { watch, nextTick, computed } from 'vue';
 
-export default function useDialog() {
+export default function useDialog(type: string) {
   const dialog = useDialogStore();
 
+  const isOpen = computed(() => dialog.isOpen(type));
+
   watch(
-    () => dialog.isOpen,
-    async (isOpen) => {
-      document.body.classList.toggle('overflow-hidden', isOpen);
-      if (isOpen) {
+    () => dialog.isOpen(type),
+    async (open) => {
+      document.body.classList.toggle('overflow-hidden', open);
+      if (open) {
         await nextTick();
-        document.getElementById('dialog-overlay')?.focus();
+        document.getElementById(`dialog-overlay-${type}`)?.focus();
       }
     },
   );
 
   const closeDialogByEsc = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') dialog.toggle();
+    if (event.key === 'Escape') dialog.toggle(type);
   };
 
   const closeOnBackdrop = (event: MouseEvent) => {
-    if ((event.target as HTMLElement).id === 'dialog-overlay') dialog.toggle();
+    if ((event.target as HTMLElement).id === `dialog-overlay-${type}`) {
+      dialog.toggle(type);
+    }
   };
 
-  return { dialog, closeDialogByEsc, closeOnBackdrop };
+  return { isOpen, closeDialogByEsc, closeOnBackdrop };
 }

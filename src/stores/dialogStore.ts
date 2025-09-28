@@ -2,14 +2,16 @@ import { defineStore } from 'pinia';
 
 export const useDialogStore = defineStore('dialogStore', {
   state: () => ({
-    isOpen: false,
+    dialogs: {} as Record<string, boolean>,
   }),
   actions: {
-    close() {
-      this.isOpen = false;
+    toggle(id: string) {
+      this.dialogs[id] = !this.dialogs[id];
     },
-    toggle() {
-      this.isOpen = !this.isOpen;
+  },
+  getters: {
+    isOpen: (state) => {
+      return (id: string) => !!state.dialogs[id];
     },
   },
 });
