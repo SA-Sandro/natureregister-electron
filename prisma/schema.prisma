@@ -6,3 +6,33 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model SpecimentObservation {
+  uuid String @id @default(uuid()) @db.Uuid
+
+  specimenInfoId Int  
+  specimenInfo SpecimenInfo @relation(fields: [SpecimenInfoId], references: [id])
+  
+  observedAt String
+  
+  geoSpatialDataId Int
+  geoSpatialData GeoSpatialData @relation(fields: [geoSpatialDataId], references: [id])
+  comments String?
+
+  @@id([uuid])
+}
+
+model SpecimenInfo {
+  id Int @id @default(autoincrement())
+  scientificName String
+  genus String
+  family String
+}
+
+model GeoSpatialData {
+  id Int @id @default(autoincrement())
+  coordenates String
+  municipality String
+  province String
+  locality String
+}

@@ -10,7 +10,6 @@
     "dev": "concurrently -k \"npm run dev:vite\" \"npm run dev:electron\"",
     "build": "npm run type-check -p && npm run build-only",
     "preview": "vite preview",
-    "test:unit": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
