@@ -65,7 +65,7 @@ describe('Test FileSystemImage repository', () => {
     await repo.getImagesFromFolder('testFolder');
     expect(consoleWarnMock).toHaveBeenCalledWith(
       'Ignored file: testFolder\\doc.pdf',
-      'Invalid image extension: .pdf',
+      '[Image] Invalid image extension: .pdf',
     );
   });
 });
