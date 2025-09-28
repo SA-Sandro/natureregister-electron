@@ -8,8 +8,7 @@ generator client {
 }
 
 model SpecimenObservation {
-  uuid String @id @default(uuid()) @db.Uuid
-
+  uuid String @id @default(uuid())
   specimenInfoId Int  
   specimenInfo SpecimenInfo @relation(fields: [specimenInfoId], references: [id])
   
@@ -27,6 +26,7 @@ model SpecimenInfo {
   scientificName String
   genus String
   family String
+   observations   SpecimenObservation[]
 }
 
 model GeoSpatialData {
@@ -35,4 +35,5 @@ model GeoSpatialData {
   municipality String
   province String
   locality String
+   observations   SpecimenObservation[]
 }
