@@ -14,5 +14,6 @@ declare module 'vue' {
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
     SelectFolder: typeof import('./src/components/SelectFolder.vue')['default']
     SpecieDetailsDialog: typeof import('./src/components/SpecieDetailsDialog.vue')['default']
+    ZoomedInSelectedImageDialog: typeof import('./src/components/ZoomedInSelectedImageDialog.vue')['default']
   }
 }
