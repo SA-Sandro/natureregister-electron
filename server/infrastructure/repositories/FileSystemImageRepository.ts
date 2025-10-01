@@ -3,8 +3,8 @@ import path from 'path';
 import { Image } from '@domain/entities/Image';
 import { ImageRepository } from '@domain/repositories/ImageRepository';
 import { ImageExtension } from '@domain/valueObjects/ImageExtension';
-import { InvalidImageExtension } from '@domain/exceptions/InvalidImageExtension';
-//TODO: refactor
+import { DomainException } from '@domain/exceptions/DomainException';
+
 export class FileSystemImageRepository implements ImageRepository {
   public async getImagesFromFolder(folderPath: string): Promise<Image[]> {
     let files: string[];
@@ -30,11 +30,11 @@ export class FileSystemImageRepository implements ImageRepository {
           return new Image(
             filePath,
             fileStat.size,
-            new ImageExtension(path.extname(file).toLowerCase()),
+            new ImageExtension(path.extname(file)),
             fileStat.birthtime,
           );
         } catch (err: unknown) {
-          if (err instanceof InvalidImageExtension) {
+          if (err instanceof DomainException) {
             console.warn(`Ignored file: ${filePath}`, err.message);
             return [];
           }
