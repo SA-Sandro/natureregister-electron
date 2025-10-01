@@ -1,4 +1,4 @@
-const getFolderNameFromPath = (folderPath: string): string => {
+const getFolderNameFromPath = (folderPath: string): string | undefined => {
   if (!folderPath) {
     return;
   }
