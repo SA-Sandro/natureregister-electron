@@ -1,14 +1,8 @@
-import { LocalStorageService } from '@/services/LocalStorageService';
-import { useFolderStore } from '@/stores/folderStore';
-
-const getFolderNameFromPath = (): void => {
-  const folderPath = new LocalStorageService().getItem('selectedFolderPath');
+const getFolderNameFromPath = (folderPath: string): string => {
   if (!folderPath) {
-    return; //evita error si no se selecciona carpeta
+    return;
   }
-  const folderName = folderPath.split(/[/\\]/).pop();
-  const folderStore = useFolderStore();
-  folderStore.setFolderName(folderName);
+  return (folderPath = folderPath.split(/[/\\]/).pop());
 };
 
 export default getFolderNameFromPath;

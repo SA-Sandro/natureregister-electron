@@ -9,11 +9,13 @@ import { useImageStore } from '@/stores/imageStores';
 import { ImageApiImpl } from '@/api/http/imagesManagement/ImageApiImpl';
 import FolderIcon from '@/components/Icons/FolderIcon.vue';
 import getFolderNameFromPath from '@/utils/GetFolderNameFromPath';
+import { useFolderStore } from '@/stores/folderStore';
 
 const localStorageService = new LocalStorageService();
 const imagesApi = new ImagesApiHandler(new ImageApiImpl());
 
 const imageStore = useImageStore();
+const folderStore = useFolderStore();
 
 async function init() {
   const storedPath = localStorageService.getItem('selectedFolderPath');
@@ -31,7 +33,11 @@ async function selectPath() {
   if (!selectedPath) return;
 
   localStorageService.setItem('selectedFolderPath', selectedPath);
-  getFolderNameFromPath();
+  const folderName = getFolderNameFromPath(selectedPath);
+  if (folderName) {
+    folderStore.setFolderName(folderName);
+  }
+
   await loadImages(selectedPath);
 }
 

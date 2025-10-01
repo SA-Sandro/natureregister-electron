@@ -8,7 +8,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Adjustment: typeof import('./src/components/Icons/adjustment.vue')['default']
     ButtonSetting: typeof import('./src/components/ButtonSetting.vue')['default']
     FolderIcon: typeof import('./src/components/Icons/FolderIcon.vue')['default']
     ImageLibrary: typeof import('./src/components/ImageLibrary.vue')['default']

@@ -1,30 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import SettingsIcon from '@/components/Icons/SettingsIcon.vue';
 import SelectFolder from '@/components/SelectFolder.vue';
 import { useFolderStore } from '@/stores/folderStore';
 import { storeToRefs } from 'pinia';
 import getFolderNameFromPath from '@/utils/GetFolderNameFromPath';
+import { LocalStorageService } from '@/services/LocalStorageService';
 
-const isOpen = ref(false);
 const popupVisible = ref(false);
 
 const togglePopup = () => {
-  isOpen.value = !isOpen.value;
   popupVisible.value = !popupVisible.value;
 };
-//obtenemos el nombre actual de la carpeta e iniciamos getfoldernamefrompath para que cargue el nombre al iniciar la app
+
 const folderStore = useFolderStore();
 const { folderName } = storeToRefs(folderStore);
-getFolderNameFromPath();
+
+onMounted(() => {
+  const folderPath = new LocalStorageService().getItem('selectedFolderPath');
+  const initialFolderName = getFolderNameFromPath(folderPath);
+
+  if (initialFolderName) {
+    folderStore.setFolderName(initialFolderName);
+  }
+});
 </script>
 
 <template>
   <div>
     <button
       @click="togglePopup"
-      data-ripple-dark="true"
-      data-popover-target="popover-select-folder"
       class="align-middle select-none transition-all dissabled:opacity-50 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none hover:scale-110"
     >
       <SettingsIcon />
