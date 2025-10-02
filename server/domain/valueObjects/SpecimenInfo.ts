@@ -5,4 +5,8 @@ export class SpecimenInfo {
     private readonly genus: string,
     private readonly family: string,
   ) {}
+
+  getId(): number {
+    return this.id;
+  }
 }
