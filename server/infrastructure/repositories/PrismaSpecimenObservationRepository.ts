@@ -3,6 +3,7 @@ import { SpecimenObservationRepository } from '@domain/repositories/SpecimenObse
 
 import { UUID } from 'crypto';
 import { SpecimenObservation } from '@domain/entities/SpecimenObservation';
+import { PrismaDBMapper } from '@infrastructure/mappers/PrismaDBMapper';
 
 export class PrismaSpecimenObservationRepository implements SpecimenObservationRepository {
   constructor(private prisma: PrismaClient) {}
@@ -16,7 +17,7 @@ export class PrismaSpecimenObservationRepository implements SpecimenObservationR
 
     if (!record) return null;
 
-    return SpecimenObservation.fromPrisma(record);
+    return PrismaDBMapper.specimenObservationFromPrisma(record);
   }
 
   // Obtener todos los registros
@@ -24,7 +25,7 @@ export class PrismaSpecimenObservationRepository implements SpecimenObservationR
     const records = await this.prisma.specimenObservation.findMany({
       include: { specimenInfo: true, geoSpatialData: true },
     });
-    return records.map(SpecimenObservation.fromPrisma);
+    return records.map(PrismaDBMapper.specimenObservationFromPrisma);
   }
 
   // Guardar o actualizar un registro

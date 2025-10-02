@@ -26,7 +26,7 @@ model SpecimenInfo {
   scientificName String
   genus String
   family String
-   observations   SpecimenObservation[]
+  specimenObservationId   SpecimenObservation[]
 }
 
 model GeoSpatialData {
@@ -35,5 +35,5 @@ model GeoSpatialData {
   municipality String
   province String
   locality String
-   observations   SpecimenObservation[]
+  specimenObservationId   SpecimenObservation[]
 }
