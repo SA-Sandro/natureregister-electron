@@ -7,11 +7,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model SpecimentObservation {
-  uuid String @id @default(uuid()) @db.Uuid
-
+model SpecimenObservation {
+  uuid String @id @default(uuid())
   specimenInfoId Int  
-  specimenInfo SpecimenInfo @relation(fields: [SpecimenInfoId], references: [id])
+  specimenInfo SpecimenInfo @relation(fields: [specimenInfoId], references: [id])
   
   observedAt String
   
@@ -19,7 +18,7 @@ model SpecimentObservation {
   geoSpatialData GeoSpatialData @relation(fields: [geoSpatialDataId], references: [id])
   comments String?
 
-  @@id([uuid])
+  // @@id([uuid])
 }
 
 model SpecimenInfo {
@@ -27,12 +26,14 @@ model SpecimenInfo {
   scientificName String
   genus String
   family String
+  specimenObservationId   SpecimenObservation[]
 }
 
 model GeoSpatialData {
   id Int @id @default(autoincrement())
-  coordenates String
+  coordinates String
   municipality String
   province String
   locality String
+  specimenObservationId   SpecimenObservation[]
 }
