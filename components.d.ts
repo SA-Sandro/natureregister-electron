@@ -8,11 +8,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ButtonSetting: typeof import('./src/components/ButtonSetting.vue')['default']
+    FolderIcon: typeof import('./src/components/Icons/FolderIcon.vue')['default']
     ImageLibrary: typeof import('./src/components/ImageLibrary.vue')['default']
     ImageLibrarySkeleton: typeof import('./src/components/skeletons/ImageLibrarySkeleton.vue')['default']
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
     SelectFolder: typeof import('./src/components/SelectFolder.vue')['default']
+    SettingsIcon: typeof import('./src/components/Icons/SettingsIcon.vue')['default']
     SpecieDetailsDialog: typeof import('./src/components/SpecieDetailsDialog.vue')['default']
     ZoomedInSelectedImageDialog: typeof import('./src/components/ZoomedInSelectedImageDialog.vue')['default']
   }
