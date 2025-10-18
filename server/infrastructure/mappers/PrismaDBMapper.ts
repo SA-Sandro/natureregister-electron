@@ -30,13 +30,19 @@ export class PrismaDBMapper {
     return new GeospatialData(
       record.id,
       record.coordinates,
-      record.municipality,
-      record.province,
       record.locality,
+      record.province,
+      record.observationSite,
     );
   }
 
   static specimenInfoFromPrismaClient(record: PrismaSpecimenInfo): SpecimenInfo {
-    return new SpecimenInfo(record.id, record.scientificName, record.genus, record.family);
+    return new SpecimenInfo(
+      record.id,
+      record.scientificName,
+      record.genus,
+      record.family,
+      record.orden,
+    );
   }
 }
