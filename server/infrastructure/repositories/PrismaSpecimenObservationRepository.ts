@@ -8,11 +8,10 @@ import { PrismaDBMapper } from '@infrastructure/mappers/PrismaDBMapper';
 export class PrismaSpecimenObservationRepository implements SpecimenObservationRepository {
   constructor(private prisma: PrismaClient) {}
 
-  // Obtener un registro por UUID
   async findSpecimenObservationById(uuid: UUID): Promise<SpecimenObservation | null> {
     const record = await this.prisma.specimenObservation.findUnique({
       where: { uuid },
-      include: { specimenInfo: true, geoSpatialData: true }, // <-- include para objetos completos
+      include: { specimenInfo: true, geoSpatialData: true },
     });
 
     if (!record) return null;
@@ -20,7 +19,6 @@ export class PrismaSpecimenObservationRepository implements SpecimenObservationR
     return PrismaDBMapper.specimenObservationFromPrisma(record);
   }
 
-  // Obtener todos los registros
   async findAllSpecimenObservations(): Promise<SpecimenObservation[]> {
     const records = await this.prisma.specimenObservation.findMany({
       include: { specimenInfo: true, geoSpatialData: true },
@@ -28,7 +26,6 @@ export class PrismaSpecimenObservationRepository implements SpecimenObservationR
     return records.map(PrismaDBMapper.specimenObservationFromPrisma);
   }
 
-  // Guardar o actualizar un registro
   async save(observation: SpecimenObservation): Promise<void> {
     await this.prisma.specimenObservation.upsert({
       where: { uuid: observation.getUuid() },

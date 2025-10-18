@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "node": "vite-node server/infrastructure/server.ts",
+    "seed": "vite-node scripts/seed.ts",
+    "db": "npx prisma studio",
     "dev:vite": "vite",
     "dev:electron": "wait-on http://localhost:5173 && npx electron electron/electron-main.mjs",
     "dev": "concurrently -k \"npm run dev:vite\" \"npm run dev:electron\"",
@@ -21,6 +23,7 @@
     "@kyvg/vue3-notification": "^3.4.1",
     "@prisma/client": "^6.14.0",
     "axios": "^1.11.0",
+    "better-sqlite3": "^12.4.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "prisma": "^6.14.0",
@@ -30,6 +33,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.12",
     "@tsconfig/node22": "^22.0.2",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsdom": "^21.1.7",
