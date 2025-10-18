@@ -26,13 +26,14 @@ model SpecimenInfo {
   scientificName String
   genus String
   family String
+  orden String
   specimenObservationId   SpecimenObservation[]
 }
 
 model GeoSpatialData {
   id Int @id @default(autoincrement())
   coordinates String
-  municipality String
+  observationSite String
   province String
   locality String
   specimenObservationId   SpecimenObservation[]
