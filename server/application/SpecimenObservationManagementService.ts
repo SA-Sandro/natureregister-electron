@@ -1,5 +1,6 @@
 import { SpecimenObservation } from '@domain/entities/SpecimenObservation';
 import { SpecimenObservationRepository } from '@domain/repositories/SpecimenObservationRepository';
+import { UUID } from 'node:crypto';
 
 export class SpecimenObservationManagementService {
   constructor(private readonly specimenObservationRepository: SpecimenObservationRepository) {}
@@ -12,7 +13,7 @@ export class SpecimenObservationManagementService {
     return this.specimenObservationRepository.findAllSpecimenObservations();
   }
 
-  public async getSpecimenObservationById(id: number): Promise<SpecimenObservation | null> {
-    return this.specimenObservationRepository.findSpecimenObservationById(id);
+  public async getSpecimenObservationById(uuid: UUID): Promise<SpecimenObservation | null> {
+    return this.specimenObservationRepository.findSpecimenObservationById(uuid);
   }
 }
