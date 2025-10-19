@@ -12,7 +12,7 @@ export class SpecimenObservationManagementService {
     return this.specimenObservationRepository.findAllSpecimenObservations();
   }
 
-  public async getSpecimenObservationById(id: number): Promise<SpecimenObservation | null> {
-    return this.specimenObservationRepository.findSpecimenObservationById(id);
+  public async getSpecimenObservationById(uuid: string): Promise<SpecimenObservation | null> {
+    return this.specimenObservationRepository.findSpecimenObservationById(uuid);
   }
 }

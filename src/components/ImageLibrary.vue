@@ -10,14 +10,14 @@ import { DialogType } from '@/const/DialogType';
 
 const dialog = useDialogStore();
 const imageStore = useImageStore();
-const specimentInfo = useSpecimenInfoStore();
+const specimenInfo = useSpecimenInfoStore();
 const selectedImageUrl = ref<string | null>(null);
 const {DETAILS, ZOOM} = DialogType;
 
 const images = computed(() => imageStore.formattedImages);
 
 const openDialogWithSpecificInfo = (url: string, date: string) => {
-  specimentInfo.setSpecimenInfo({ imagePath: url, recordDate: date });
+  specimenInfo.setSpecimenInfo({ imagePath: url, recordDate: date });
   dialog.toggle(DETAILS);
 };
 
