@@ -2,7 +2,6 @@ import { SpecimenObservation } from '@domain/entities/SpecimenObservation';
 import { GeospatialData } from '@domain/valueObjects/GeospatialData';
 import { SpecimenInfo } from '@domain/valueObjects/SpecimenInfo';
 import { ObservationDate } from '@domain/valueObjects/ObservationDate';
-import { UUID } from 'crypto';
 
 import type {
   SpecimenObservation as PrismaSpecimenObservation,
@@ -18,7 +17,7 @@ export class PrismaDBMapper {
     },
   ): SpecimenObservation {
     return new SpecimenObservation(
-      record.uuid as unknown as UUID,
+      record.uuid as unknown as string,
       PrismaDBMapper.specimenInfoFromPrismaClient(record.specimenInfo),
       new ObservationDate(record.observedAt),
       PrismaDBMapper.geoSpatialDataFromPrisma(record.geoSpatialData),

@@ -5,7 +5,7 @@ export class ImageDTO {
     public readonly date: Date,
   ) {}
 
-  public static toDTO(images: Image[]) {
+  public static fromDomain(images: Image[]) {
     return images.map((image) => ({
       url: image.getUrl(),
       date: image.getDate(),

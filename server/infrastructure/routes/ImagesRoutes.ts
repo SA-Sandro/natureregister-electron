@@ -10,6 +10,9 @@ export class ImagesRoutes {
   }
 
   private configureRoutes(): void {
-    this.router.get('/retrieveAllImages', this.imagesController.getAllImages);
+    this.router.get(
+      '/retrieveAllImages',
+      this.imagesController.getAllImages.bind(this.imagesController),
+    );
   }
 }
