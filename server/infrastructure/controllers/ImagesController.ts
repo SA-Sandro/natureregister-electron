@@ -12,7 +12,7 @@ export class ImagesController {
     }
     try {
       const images = await this.imageService.getAllImagesFromSelectedFolder(folderPath);
-      const imageDTO = ImageDTO.toDTO(images);
+      const imageDTO = ImageDTO.fromDomain(images);
       res.json(imageDTO);
     } catch (error: unknown) {
       next(error);
