@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ImagesManagementService } from '@application/ImagesManagementService';
 import { ImageDTO } from '@infrastructure/DTOs/ImageDTO';
 
 export class ImagesController {
   constructor(private readonly imageService: ImagesManagementService) {}
 
-  public getAllImages = async (req: Request, res: Response) => {
+  public getAllImages = async (req: Request, res: Response, next: NextFunction) => {
     const folderPath = req.query.folderPath as string;
     if (!folderPath) {
       return res.status(400).json({ message: 'folderPath is required' });
@@ -15,8 +15,7 @@ export class ImagesController {
       const imageDTO = ImageDTO.toDTO(images);
       res.json(imageDTO);
     } catch (error: unknown) {
-      //TODO: handle error properly
-      res.status(500).json({ message: error });
+      next(error);
     }
   };
 }
