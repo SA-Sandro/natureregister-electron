@@ -35,7 +35,7 @@ export class FileSystemImageRepository implements ImageRepository {
           );
         } catch (err: unknown) {
           if (err instanceof DomainException) {
-            console.warn(`Ignored file: ${filePath}`, err.message);
+            console.warn(`Ignored file: ${filePath}`, `[Image] ${err.message}`);
             return [];
           }
           throw err;
