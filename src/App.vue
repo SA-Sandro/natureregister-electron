@@ -1,24 +1,29 @@
 <script setup lang="ts">
-import ImageLibrary from '@/components/ImageLibrary.vue';
 import PageLayout from '@/layouts/PageLayout.vue';
+import ImageLibrary from '@/components/ImageLibrary.vue';
 import SpecieDetailsDialog from '@/components/SpecieDetailsDialog.vue';
 import ImageLibrarySkeleton from '@/components/skeletons/ImageLibrarySkeleton.vue';
 import { useLoaderStore } from './stores/loaderStore';
 import { onMounted } from 'vue';
 import { useImageStore } from './stores/imageStore';
 
-onMounted(async () => {
-  await useImageStore().init();
-});
-
 const loaderStore = useLoaderStore();
+const imageStore = useImageStore();
+
+onMounted(async () => {
+  await imageStore.init();
+});
 </script>
 
 <template>
   <PageLayout>
-    <ImageLibrarySkeleton v-if="loaderStore.isLoading" />
-    <ImageLibrary v-else />
-    <SpecieDetailsDialog />
+    <template v-if="loaderStore.isLoading">
+      <ImageLibrarySkeleton />
+    </template>
+    <template v-else>
+      <ImageLibrary />
+      <SpecieDetailsDialog />
+    </template>
   </PageLayout>
 </template>
 
