@@ -4,8 +4,8 @@ import { useImageStore } from '@/stores/imageStore';
 import { useDialogStore } from '@/stores/dialogStore';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import { DialogType } from '@/const/DialogType';
-import formatDate from '@/utils/FormatDate';
 import ZoomedInSelectedImageDialog from './ZoomedInSelectedImageDialog.vue';
+import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 
 const imageStore = useImageStore();
 const dialog = useDialogStore();
@@ -14,8 +14,8 @@ const specimenInfo = useSpecimenInfoStore();
 const selectedImageUrl = ref<string>('');
 const { DETAILS, ZOOM } = DialogType;
 
-const openDetails = (url: string, date: string) => {
-  specimenInfo.setSpecimenInfo({ imagePath: url, recordDate: date });
+const openDetails = (observationInfo: ImageLinkedToObservationType) => {
+  specimenInfo.setSpecimenInfo(observationInfo);
   dialog.toggle(DETAILS);
 };
 
@@ -49,7 +49,7 @@ const zoomImage = (url: string) => {
         <div class="p-3">
           <p
             class="text-lg italic font-bold cursor-pointer hover:text-blue-600 transition-colors"
-            @click="openDetails(obs.imagePath, formatDate(obs.date))"
+            @click="openDetails(obs)"
           >
             {{ obs.observation?.specimenInfo?.scientificName || 'Sin nombre científico' }}
           </p>
