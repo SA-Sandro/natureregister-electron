@@ -8,4 +8,8 @@ export class ObservationDate {
       throw new DomainException('SpecimenObservation', `Observation cannot be future: ${date}`);
     }
   }
+
+  public getDate(): string {
+    return this.date;
+  }
 }
