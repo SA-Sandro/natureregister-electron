@@ -32,32 +32,42 @@ const zoomImage = (url: string) => {
       class="grid gap-6 w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]"
     >
       <div
-        v-for="(obs, index) in imageStore.imagesWithObservationsRaw"
-        :key="index"
+        v-for="linkedImgWithObs in imageStore.imagesWithObservationsRaw"
+        :key="linkedImgWithObs.imagePath"
         class="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform duration-200"
       >
         <div class="relative w-full aspect-[4/3] cursor-zoom-in">
           <img
-            @click="zoomImage(obs.imagePath)"
+            @click="zoomImage(linkedImgWithObs.imagePath)"
             loading="lazy"
-            :src="obs.imagePath"
-            :alt="obs.observation?.specimenInfo?.scientificName ?? 'Sin determinar'"
+            :src="linkedImgWithObs.imagePath"
+            :alt="linkedImgWithObs.observation?.specimenInfo?.scientificName ?? 'Sin determinar'"
             class="absolute inset-0 w-full h-full object-cover"
           />
         </div>
 
-        <div class="p-3">
+        <div class="p-3" v-if="linkedImgWithObs.observation != undefined">
           <p
             class="text-lg italic font-bold cursor-pointer hover:text-blue-600 transition-colors"
-            @click="openDetails(obs)"
+            @click="() => openDetails(linkedImgWithObs)"
           >
-            {{ obs.observation?.specimenInfo?.scientificName || 'Sin nombre científico' }}
+            {{
+              linkedImgWithObs.observation.specimenInfo.scientificName || 'Sin nombre científico'
+            }}
           </p>
           <p class="text-sm text-gray-600">
-            {{ obs.observation?.geospatialData?.observationSite || 'Sin sitio de observación' }}
+            {{
+              linkedImgWithObs.observation.geospatialData.observationSite ||
+              'Sin sitio de observación'
+            }}
           </p>
           <p class="text-right text-sm font-semibold text-gray-500 mt-2">
-            {{ obs.observation?.observedAt || 'Sin fecha especificada'}}</p>
+            {{ linkedImgWithObs.observation.observedAt || 'Sin fecha especificada' }}
+          </p>
+        </div>
+        <div v-else class="flex flex-col justify-center items-center py-2">
+          <p class="text-lg w-full text-left p-2">Sin procesar</p>
+          <button class="cursor-pointer bg-green-100 p-1 ronuded-lg">Añadir observación</button>
         </div>
       </div>
     </div>
