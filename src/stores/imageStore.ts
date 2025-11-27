@@ -54,7 +54,7 @@ export const useImageStore = defineStore('imageStore', {
 
       const enriched = this.images.map((image: Image) => {
         const filename = getUuidFromUrl(image.url);
-        const observation = obsMap.get(filename) || null;
+        const observation = obsMap.get(filename);
         return {
           imagePath: image.url,
           date: image.date,
