@@ -1,16 +1,16 @@
 import { defineStore } from 'pinia';
-import type { SpecimenInfo } from '@/types/SpecimenInfo';
+import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 
 export const useSpecimenInfoStore = defineStore('specimenInfoStore', {
   state: () => ({
-    specimenInfo: null as SpecimenInfo | null,
+    observationInfo: null as ImageLinkedToObservationType | null,
   }),
   actions: {
-    setSpecimenInfo(info: SpecimenInfo) {
-      this.specimenInfo = info;
+    setSpecimenInfo(observationInfo: ImageLinkedToObservationType) {
+      this.observationInfo = observationInfo;
     },
     clearSpecimenInfo() {
-      this.specimenInfo = null;
+      this.observationInfo = null;
     },
   },
 });
