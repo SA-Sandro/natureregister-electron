@@ -13,6 +13,7 @@ declare module 'vue' {
     ImageLibrary: typeof import('./src/components/ImageLibrary.vue')['default']
     ImageLibrarySkeleton: typeof import('./src/components/skeletons/ImageLibrarySkeleton.vue')['default']
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
+    ObservationFilter: typeof import('./src/components/ObservationFilter.vue')['default']
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
     SelectFolder: typeof import('./src/components/SelectFolder.vue')['default']
     SettingsIcon: typeof import('./src/components/Icons/SettingsIcon.vue')['default']

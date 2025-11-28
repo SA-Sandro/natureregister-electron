@@ -7,7 +7,8 @@ import MainHeader from '@/components/MainHeader.vue';
     <MainHeader />
   </header>
   <main relative>
-    <slot></slot>
+    <slot name="observationFilter"></slot>
+    <slot name="observationLibrary"></slot>
   </main>
   <footer class="bg-gray-100 text-center p-4">2024 &copy; Nature Register</footer>
 </template>
