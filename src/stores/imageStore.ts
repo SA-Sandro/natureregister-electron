@@ -9,62 +9,92 @@ import { LocalStorageService } from '@/services/LocalStorageService';
 import { SpecimenObservationImpl } from '@/api/SPObservation/SpecimenObservationImpl';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 import { getUuidFromUrl } from '@/utils/GetUuidFromUrl';
-import { toRaw } from 'vue';
 import { useLoaderStore } from './loaderStore';
+import { ObservationStatus } from '@/const/ObservationStatus';
 
 export const useImageStore = defineStore('imageStore', {
   state: () => ({
-    images: [] as Array<Image>,
+    allImagesWithObservations: [] as Array<ImageLinkedToObservationType>,
+
     imagesWithObservations: [] as Array<ImageLinkedToObservationType>,
+
+    images: [] as Array<Image>,
   }),
+
   actions: {
     setImages(images: Array<Image>) {
       this.images = images;
     },
+
+    setImagesWithObservations(images: Array<ImageLinkedToObservationType>) {
+      this.imagesWithObservations = images;
+    },
+
     async loadImages(selectedPath: string) {
+      const loader = useLoaderStore();
       try {
-        useLoaderStore().setIsLoading(true);
+        loader.setIsLoading(true);
         const images = await new ImageApiImpl().getAll(selectedPath);
         this.setImages(images);
         await this.loadImagesLinkedToObservations();
-        useLoaderStore().setIsLoading(false);
       } catch (error) {
         popupNotifier.createNotification(
           TitleMessages.ERROR,
           ErrorMessages.RETRIEVE_IMAGES_ERROR,
           'warn',
         );
-        console.error('The images could not be loaded correctly:', error);
+        console.error('Error loading images:', error);
       } finally {
-        useLoaderStore().setIsLoading(false);
+        loader.setIsLoading(false);
       }
     },
+
     async init() {
       const localStorageService = new LocalStorageService();
       const storedPath = localStorageService.getItem('selectedFolderPath');
+
       if (!storedPath) {
         popupNotifier.createNotification(TitleMessages.INFO, InfoMessages.SELECT_FOLDER);
         return;
       }
+
       await this.loadImages(storedPath);
     },
+
     async loadImagesLinkedToObservations() {
-      const specimenObservations = await new SpecimenObservationImpl().getAll();
-      const obsMap = new Map(specimenObservations.map((obs) => [obs.uuid, obs]));
+      const observations = await new SpecimenObservationImpl().getAll();
+      const obsMap = new Map(observations.map((obs) => [obs.uuid, obs]));
 
       const enriched = this.images.map((image: Image) => {
-        const filename = getUuidFromUrl(image.url);
-        const observation = obsMap.get(filename);
+        const uuid = getUuidFromUrl(image.url);
         return {
           imagePath: image.url,
           date: image.date,
-          observation,
+          observation: obsMap.get(uuid),
         } as ImageLinkedToObservationType;
       });
+
+      this.allImagesWithObservations = enriched;
+
       this.imagesWithObservations = enriched;
-      return enriched;
+    },
+
+    filterByStatus(status: string) {
+      const base = this.allImagesWithObservations;
+      switch (status) {
+        case ObservationStatus.ALL:
+          this.imagesWithObservations = [...base];
+          break;
+        case ObservationStatus.PROCESSED:
+          this.imagesWithObservations = base.filter((img) => img.observation);
+          break;
+        case ObservationStatus.UNPROCESSED:
+          this.imagesWithObservations = base.filter((img) => !img.observation);
+          break;
+      }
     },
   },
+
   getters: {
     formattedImages: (state): Array<Image> => {
       return state.images.map((img: Image) => ({
@@ -73,6 +103,6 @@ export const useImageStore = defineStore('imageStore', {
         date: img.date,
       }));
     },
-    imagesWithObservationsRaw: (state) => state.imagesWithObservations.map((img) => toRaw(img)),
+
   },
 });
