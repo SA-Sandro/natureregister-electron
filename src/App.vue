@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import PageLayout from '@/layouts/PageLayout.vue';
-import ImageLibrary from '@/components/ImageLibrary.vue';
-import SpecieDetailsDialog from '@/components/SpecieDetailsDialog.vue';
 import ImageLibrarySkeleton from '@/components/skeletons/ImageLibrarySkeleton.vue';
+import ImageLibrary from '@/components/ImageLibrary.vue';
+import ObservationFilter from '@/components/ObservationFilter.vue';
+import PageLayout from '@/layouts/PageLayout.vue';
+import SpecieDetailsDialog from '@/components/SpecieDetailsDialog.vue';
 import { useLoaderStore } from './stores/loaderStore';
 import { onMounted } from 'vue';
 import { useImageStore } from './stores/imageStore';
@@ -17,12 +18,17 @@ onMounted(async () => {
 
 <template>
   <PageLayout>
-    <template v-if="loaderStore.isLoading">
-      <ImageLibrarySkeleton />
+    <template #observationFilter>
+      <ObservationFilter />
     </template>
-    <template v-else>
-      <ImageLibrary />
-      <SpecieDetailsDialog />
+    <template #observationLibrary>
+      <template v-if="loaderStore.isLoading">
+        <ImageLibrarySkeleton />
+      </template>
+      <template v-else>
+        <ImageLibrary />
+        <SpecieDetailsDialog />
+      </template>
     </template>
   </PageLayout>
 </template>
