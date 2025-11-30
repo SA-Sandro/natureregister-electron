@@ -28,11 +28,11 @@ const zoomImage = (url: string) => {
 <template>
   <div class="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
     <div
-      v-if="imageStore.imagesWithObservationsRaw.length > 0"
+      v-if="imageStore.imagesWithObservations.length > 0"
       class="grid gap-6 w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]"
     >
       <div
-        v-for="linkedImgWithObs in imageStore.imagesWithObservationsRaw"
+        v-for="linkedImgWithObs in imageStore.imagesWithObservations"
         :key="linkedImgWithObs.imagePath"
         class="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform duration-200"
       >
