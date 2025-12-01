@@ -8,13 +8,20 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BasicFilters: typeof import('./src/components/filters/BasicFilters.vue')['default']
     ButtonSetting: typeof import('./src/components/ButtonSetting.vue')['default']
+    CameraIcon: typeof import('./src/components/Icons/CameraIcon.vue')['default']
     FolderIcon: typeof import('./src/components/Icons/FolderIcon.vue')['default']
     ImageLibrary: typeof import('./src/components/ImageLibrary.vue')['default']
     ImageLibrarySkeleton: typeof import('./src/components/skeletons/ImageLibrarySkeleton.vue')['default']
+    LocalityFilter: typeof import('./src/components/filters/LocalityFilter.vue')['default']
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
     ObservationFilter: typeof import('./src/components/ObservationFilter.vue')['default']
+    ObservationsFilter: typeof import('./src/components/ObservationsFilter.vue')['default']
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
+    ProccesedObservationsFilter: typeof import('./src/components/filters/ProccesedObservationsFilter.vue')['default']
+    ProcessedObservationsFilter: typeof import('./src/components/filters/ProcessedObservationsFilter.vue')['default']
+    ScientificNameFilter: typeof import('./src/components/filters/ScientificNameFilter.vue')['default']
     SelectFolder: typeof import('./src/components/SelectFolder.vue')['default']
     SettingsIcon: typeof import('./src/components/Icons/SettingsIcon.vue')['default']
     SpecieDetailsDialog: typeof import('./src/components/SpecieDetailsDialog.vue')['default']
