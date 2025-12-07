@@ -26,9 +26,11 @@
     "better-sqlite3": "^12.4.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "leaflet": "^1.9.4",
     "prisma": "^6.14.0",
     "unplugin-vue-components": "^29.0.0",
-    "vue": "^3.5.17"
+    "vue": "^3.5.17",
+    "vue-leaflet": "^0.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.12",
