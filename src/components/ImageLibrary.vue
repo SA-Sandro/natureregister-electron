@@ -4,7 +4,7 @@ import { useImageStore } from '@/stores/imageStore';
 import { useDialogStore } from '@/stores/dialogStore';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import { DialogType } from '@/const/DialogType';
-import ZoomedInSelectedImageDialog from './ZoomedInSelectedImageDialog.vue';
+import ZoomedInSelectedImageDialog from '@/components/ZoomedInSelectedImageDialog.vue';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 
 const imageStore = useImageStore();

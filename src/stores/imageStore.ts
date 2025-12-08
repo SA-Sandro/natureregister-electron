@@ -41,7 +41,7 @@ export const useImageStore = defineStore('imageStore', {
         popupNotifier.createNotification(
           TitleMessages.ERROR,
           ErrorMessages.RETRIEVE_IMAGES_ERROR,
-          'warn',
+          'error',
         );
         console.error('Error loading images:', error);
       } finally {
