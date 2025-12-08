@@ -23,7 +23,6 @@ async function selectPath() {
 }
 </script>
 <template>
-  <PopupNotifier style="margin: 10px" />
   <button @click="selectPath"><FolderIcon /></button>
 </template>
 <style scoped></style>

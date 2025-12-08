@@ -11,4 +11,5 @@ import MainHeader from '@/components/MainHeader.vue';
     <slot name="observationLibrary"></slot>
   </main>
   <footer class="bg-gray-100 text-center p-4">2024 &copy; Nature Register</footer>
+  <PopupNotifier position="top center" style="margin: 10px;" />
 </template>
