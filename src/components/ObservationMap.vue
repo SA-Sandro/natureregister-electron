@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount, defineProps } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
 import { SpecimenObservation } from '@/types/SpecimenObservationType';
 import { getCoordinates } from '@/utils/GetCoordinates';
 import { popupNotifier } from '@/services/PopupNotifierManagement';
@@ -8,7 +8,8 @@ import { ErrorMessages } from '@/const/popup/PopupMessages';
 import L, { Map } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const OPENSTREET_LAYER_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const PNOA_ORTOPHOTO_URL = 'https://www.ign.es/wms-inspire/pnoa-ma';
+const IGN_BASE_URL = 'https://www.ign.es/wms-inspire/ign-base';
 
 const props = defineProps<{
   observationInfo: SpecimenObservation;
@@ -28,11 +29,26 @@ if (!cords) {
 onMounted(() => {
   map = L.map('map', {
     zoomControl: true,
-  }).setView(position, 13);
-  console.log(props.observationInfo.geospatialData.coordinates);
-  L.tileLayer(OPENSTREET_LAYER_URL, {
-    maxZoom: 50,
-  }).addTo(map);
+  }).setView(position, 19);
+
+  const pnoa = L.tileLayer.wms(PNOA_ORTOPHOTO_URL, {
+    layers: 'OI.OrthoimageCoverage',
+    format: 'image/png',
+    maxZoom: 19,
+    transparent: false,
+  });
+
+  pnoa.addTo(map);
+
+  const labels = L.tileLayer.wms(IGN_BASE_URL, {
+    layers: 'IGNBaseTodo',
+    format: 'image/png',
+    maxZoom: 16,
+    transparent: true,
+    opacity: 0.6,
+  });
+
+  labels.addTo(map);
 
   L.marker(position)
     .addTo(map)
