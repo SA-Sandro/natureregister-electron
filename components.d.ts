@@ -16,7 +16,6 @@ declare module 'vue' {
     ImageLibrarySkeleton: typeof import('./src/components/skeletons/ImageLibrarySkeleton.vue')['default']
     LocalityFilter: typeof import('./src/components/filters/LocalityFilter.vue')['default']
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
-    ObservationFilter: typeof import('./src/components/ObservationFilter.vue')['default']
     ObservationsFilter: typeof import('./src/components/ObservationsFilter.vue')['default']
     ObservationMap: typeof import('./src/components/ObservationMap.vue')['default']
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
