@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import SettingsIcon from '@/components/Icons/SettingsIcon.vue';
 import SelectFolder from '@/components/SelectFolder.vue';
 import { useFolderStore } from '@/stores/folderStore';
 import { storeToRefs } from 'pinia';
 import getFolderNameFromPath from '@/utils/GetFolderNameFromPath';
 import { LocalStorageService } from '@/services/LocalStorageService';
+import useDialog from '@/composables/useDialog';
+import { DialogType } from '@/const/DialogType';
+import { useDialogStore } from '@/stores/dialogStore';
 
-const popupVisible = ref(false);
-
-const togglePopup = () => {
-  popupVisible.value = !popupVisible.value;
-};
-
+const { isOpen, closeDialogByEsc, closeOnBackdrop } = useDialog(DialogType.SETTING_BUTTON);
 const folderStore = useFolderStore();
+const dialog = useDialogStore();
 const { folderName } = storeToRefs(folderStore);
 
 onMounted(() => {
@@ -24,26 +23,37 @@ onMounted(() => {
     folderStore.setFolderName(initialFolderName);
   }
 });
+
+const showSettingsDialog = () => {
+  dialog.toggle(DialogType.SETTING_BUTTON);
+};
 </script>
 
 <template>
-  <div>
-    <button
-      @click="togglePopup"
-      class="align-middle select-none transition-all dissabled:opacity-50 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none hover:scale-110"
-    >
-      <SettingsIcon />
-    </button>
+  <button
+    @click="showSettingsDialog"
+    class="align-middle select-none transition-transform duration-200 disabled:opacity-50 hover:scale-110 hover:shadow-lg focus:opacity-85 focus:shadow-none active:scale-95"
+  >
+    <SettingsIcon />
+  </button>
+
+  <div
+    v-show="isOpen"
+    id="dialog-overlay-setting-button"
+    tabindex="0"
+    @click="closeOnBackdrop"
+    @keydown="closeDialogByEsc"
+    class="absolute inset-0 z-50"
+  >
     <div
-      v-show="popupVisible"
-      class="h-25 w-45 flex justify-center items-center flex-col gap-3 rounded-2xl absolute z-50 right-0 bg-white"
+      class="absolute top-4 right-4 w-60 bg-white rounded-2xl shadow-xl p-5 flex flex-col gap-4 transition-transform duration-200 ease-out transform scale-95"
     >
-      <h3 class="uppercase text-green-700 font-black font-sans tracking-tigh">Carpeta actual</h3>
-      <div class="flex gap-2 justify-center !items-center">
+      <h3 class="text-green-700 font-extrabold uppercase text-sm tracking-wide">Carpeta actual</h3>
+      <div class="flex gap-2">
         <button type="button" class="hover:scale-110 transsition-all cursor-pointer">
           <SelectFolder />
         </button>
-        <p class="text-black font-black">{{ folderName }}</p>
+        <p class="text-gray-800 font-semibold truncate">{{ folderName }}</p>
       </div>
     </div>
   </div>
