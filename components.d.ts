@@ -18,6 +18,7 @@ declare module 'vue' {
     MainHeader: typeof import('./src/components/MainHeader.vue')['default']
     ObservationFilter: typeof import('./src/components/ObservationFilter.vue')['default']
     ObservationsFilter: typeof import('./src/components/ObservationsFilter.vue')['default']
+    ObservationMap: typeof import('./src/components/ObservationMap.vue')['default']
     PopupNotifier: typeof import('@kyvg/vue3-notification')['Notifications']
     ProccesedObservationsFilter: typeof import('./src/components/filters/ProccesedObservationsFilter.vue')['default']
     ProcessedObservationsFilter: typeof import('./src/components/filters/ProcessedObservationsFilter.vue')['default']
