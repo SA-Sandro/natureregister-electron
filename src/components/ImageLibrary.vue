@@ -4,7 +4,7 @@ import { useImageStore } from '@/stores/imageStore';
 import { useDialogStore } from '@/stores/dialogStore';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import { DialogType } from '@/const/DialogType';
-import ZoomedInSelectedImageDialog from './ZoomedInSelectedImageDialog.vue';
+import ZoomedInSelectedImageDialog from '@/components/ZoomedInSelectedImageDialog.vue';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 
 const imageStore = useImageStore();
@@ -29,7 +29,7 @@ const zoomImage = (url: string) => {
   <div class="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
     <div
       v-if="imageStore.imagesWithObservations.length > 0"
-      class="grid gap-6 w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]"
+      class="grid gap-6 w-full max-w-6xl grid-cols-[repeat(auto-fill,minmax(16rem,max-content))]"
     >
       <div
         v-for="linkedImgWithObs in imageStore.imagesWithObservations"

@@ -4,6 +4,7 @@ import { DialogType } from '@/const/DialogType';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import formatDate from '@/utils/FormatDate';
 import { storeToRefs } from 'pinia';
+import ObservationMap from '@/components/ObservationMap.vue';
 
 const { closeDialogByEsc, closeOnBackdrop, isOpen } = useDialog(DialogType.DETAILS);
 const specimenInfoStore = useSpecimenInfoStore();
@@ -46,16 +47,8 @@ const { observationInfo } = storeToRefs(specimenInfoStore);
                   />
                 </div>
                 <div class="flex-1">
-                  <div class="relative h-full">
-                    <img src="/public/map_fake.png" alt="mapa" class="h-full" />
-                    <div
-                      class="text-gray-700 flex font-medium text-md gap-x-2 absolute bottom-0 bg-white border-2 border-solid p-1"
-                    >
-                      <p>{{ observationInfo.observation.geospatialData.observationSite }},</p>
-                      <p>{{ observationInfo.observation.geospatialData.locality || 'Almogía' }},</p>
-                      <p>{{ observationInfo.observation.geospatialData.province }},</p>
-                      <p>{{ observationInfo.observation.geospatialData.coordinates }},</p>
-                    </div>
+                  <div class="relative w-full h-full">
+                    <ObservationMap :observation-info="observationInfo.observation"/>
                   </div>
                 </div>
               </div>
