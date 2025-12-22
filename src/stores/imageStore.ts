@@ -79,7 +79,7 @@ export const useImageStore = defineStore('imageStore', {
       this.imagesWithObservations = enriched;
     },
 
-    filterByStatus(status: string) {
+    filterByStatus(status: string): Array<ImageLinkedToObservationType> {
       const base = this.allImagesWithObservations;
       switch (status) {
         case ObservationStatus.ALL:
@@ -92,6 +92,31 @@ export const useImageStore = defineStore('imageStore', {
           this.imagesWithObservations = base.filter((img) => !img.observation);
           break;
       }
+      return this.imagesWithObservations;
+    },
+
+    filterByScientificNameAndLocality(scientificName: string | null, locality: string | null) {
+      const processedObservations: Array<ImageLinkedToObservationType> = this.filterByStatus(
+        ObservationStatus.PROCESSED,
+      );
+
+      const sci = scientificName?.trim().toLowerCase() || null;
+      const loc = locality?.trim().toLowerCase() || null;
+
+      
+
+      this.imagesWithObservations = processedObservations.filter(
+        (imgWithObs: ImageLinkedToObservationType) => {
+          const obs = imgWithObs.observation;
+          const obsSci = obs?.specimenInfo?.scientificName?.toLowerCase() ?? '';
+          const obsLoc = obs?.geospatialData?.locality?.toLowerCase() ?? '';
+
+          if (sci && !obsSci.includes(sci)) return false;
+          if (loc && !obsLoc.includes(loc)) return false;
+
+          return true;
+        },
+      );
     },
   },
 
@@ -103,6 +128,5 @@ export const useImageStore = defineStore('imageStore', {
         date: img.date,
       }));
     },
-
   },
 });

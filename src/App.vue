@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ImageLibrarySkeleton from '@/components/skeletons/ImageLibrarySkeleton.vue';
 import ImageLibrary from '@/components/ImageLibrary.vue';
-import ObservationFilter from '@/components/ObservationFilter.vue';
+import ObservationsFilter from '@/components/ObservationsFilter.vue';
 import PageLayout from '@/layouts/PageLayout.vue';
 import SpecieDetailsDialog from '@/components/SpecieDetailsDialog.vue';
 import { useLoaderStore } from './stores/loaderStore';
@@ -19,7 +19,7 @@ onMounted(async () => {
 <template>
   <PageLayout>
     <template #observationFilter>
-      <ObservationFilter />
+      <ObservationsFilter />
     </template>
     <template #observationLibrary>
       <template v-if="loaderStore.isLoading">
