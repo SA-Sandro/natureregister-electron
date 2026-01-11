@@ -6,6 +6,7 @@ import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import { DialogType } from '@/const/DialogType';
 import ZoomedInSelectedImageDialog from '@/components/ZoomedInSelectedImageDialog.vue';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
+import ObservationRegisterForm from '@/components/ObservationRegisterForm.vue';
 
 const imageStore = useImageStore();
 const dialog = useDialogStore();
@@ -22,6 +23,11 @@ const openDetails = (observationInfo: ImageLinkedToObservationType) => {
 const zoomImage = (url: string) => {
   selectedImageUrl.value = url;
   dialog.toggle(ZOOM);
+};
+
+const showRegister = ref<boolean>(false);
+const openRegister = () => {
+  showRegister.value = true;
 };
 </script>
 
@@ -67,7 +73,10 @@ const zoomImage = (url: string) => {
         </div>
         <div v-else class="flex flex-col justify-center items-center py-2">
           <p class="text-lg w-full text-left p-2">Sin procesar</p>
-          <button class="cursor-pointer bg-green-100 p-1 ronuded-lg">Añadir observación</button>
+          <button @click="openRegister" class="cursor-pointer bg-green-100 p-1 ronuded-lg">
+            Añadir observación
+          </button>
+          <ObservationRegisterForm v-if="showRegister" @close="showRegister = false" />
         </div>
       </div>
     </div>

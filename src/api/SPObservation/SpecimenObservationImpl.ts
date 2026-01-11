@@ -10,10 +10,17 @@ export class SpecimenObservationImpl implements SpecimenObservationInterface {
     this.axiosInstance = axiosInstance;
   }
 
-   async getAll(): Promise<SpecimenObservation[]> {
+  async getAll(): Promise<SpecimenObservation[]> {
     const response = await this.axiosInstance.get<SpecimenObservation[]>(
       '/specimenObservations/getAllSpecimenObservations',
     );
     return response.data;
+  }
+
+  async create(specimenObservation: SpecimenObservation): Promise<void> {
+    await this.axiosInstance.post(
+      '/specimenObservations/createSpecimenObservation',
+      specimenObservation,
+    );
   }
 }

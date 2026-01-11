@@ -15,5 +15,11 @@ export class SpecimenObservationRoutes {
         this.specimenObservationController,
       ),
     );
+    this.router.post(
+      '/createSpecimenObservation',
+      this.specimenObservationController.createSpecimenObservation.bind(
+        this.specimenObservationController,
+      ),
+    );
   }
 }
