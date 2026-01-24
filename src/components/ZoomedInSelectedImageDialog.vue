@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useDialog from '@/composables/useDialog';
 import { DialogType } from '@/const/DialogType';
-const { isOpen, closeDialogByEsc, closeOnBackdrop } = useDialog(DialogType.FORM);
+const { isOpen, closeDialogByEsc, closeOnBackdrop } = useDialog(DialogType.ZOOM);
 const props = defineProps<{
   imageUrl: string;
 }>();
