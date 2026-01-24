@@ -13,7 +13,7 @@ const dialog = useDialogStore();
 const specimenInfo = useSpecimenInfoStore();
 
 const selectedImageUrl = ref<string>('');
-const { DETAILS, ZOOM } = DialogType;
+const { DETAILS, ZOOM, FORM } = DialogType;
 
 const openDetails = (observationInfo: ImageLinkedToObservationType) => {
   specimenInfo.setSpecimenInfo(observationInfo);
@@ -25,9 +25,8 @@ const zoomImage = (url: string) => {
   dialog.toggle(ZOOM);
 };
 
-const showRegister = ref<boolean>(false);
-const openRegister = () => {
-  showRegister.value = true;
+const openRegisterForm = () => {
+  dialog.toggle(FORM);
 };
 </script>
 
@@ -73,10 +72,9 @@ const openRegister = () => {
         </div>
         <div v-else class="flex flex-col justify-center items-center py-2">
           <p class="text-lg w-full text-left p-2">Sin procesar</p>
-          <button @click="openRegister" class="cursor-pointer bg-green-100 p-1 ronuded-lg">
+          <button @click="openRegisterForm()" class="cursor-pointer bg-green-100 p-1 ronuded-lg">
             Añadir observación
           </button>
-          <ObservationRegisterForm v-if="showRegister" @close="showRegister = false" />
         </div>
       </div>
     </div>
@@ -84,5 +82,7 @@ const openRegister = () => {
     <p v-else class="text-gray-500 mt-12 text-lg font-medium">No hay imágenes disponibles</p>
 
     <ZoomedInSelectedImageDialog :imageUrl="selectedImageUrl || ''" />
+    <ObservationRegisterForm />
+
   </div>
 </template>

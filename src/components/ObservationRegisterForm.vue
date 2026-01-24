@@ -5,12 +5,15 @@ import { ref } from 'vue';
 import { onMounted } from 'vue';
 import useDialog from '@/composables/useDialog';
 import { DialogType } from '@/const/DialogType';
+
 const SpecimenObservationImplInstance = new SpecimenObservationImpl();
+const observations = ref<SpecimenObservation[]>([]);
+const { isOpen, closeDialogByEsc, closeOnBackdrop } = useDialog(DialogType.FORM);
+
 onMounted(async () => {
   observations.value = await SpecimenObservationImplInstance.getAll();
 });
-const observations = ref<SpecimenObservation[]>([]);
-const { closeDialogByEsc, closeOnBackdrop } = useDialog(DialogType.FORM);
+
 const uuid = ref('');
 const selectedSpecimenInfoid = ref<string | null>(null);
 const selectedgeospatialDataId = ref<string | null>(null);
@@ -34,6 +37,7 @@ function saveNewSpecimenObservation() {
     alert('Debes indicar la fecha de observación');
     return;
   }
+
   SpecimenObservationImplInstance.create({
     uuid: uuid.value,
     specimenInfo: onSpecimenInfoChange()!,
@@ -43,6 +47,7 @@ function saveNewSpecimenObservation() {
   }).then(() => {
     closeOnBackdrop(void 0);
   });
+
   function onSpecimenInfoChange() {
     const specimenInfoId = selectedSpecimenInfoid.value;
     if (observations.value) {
@@ -54,6 +59,7 @@ function saveNewSpecimenObservation() {
     }
     return null;
   }
+
   function onGeospatialDataChange() {
     const geospatialDataId = selectedgeospatialDataId.value;
     if (observations.value) {
@@ -66,11 +72,12 @@ function saveNewSpecimenObservation() {
     return null;
   }
 }
+
 </script>
 <template>
   <transition name="bounce">
     <div
-      v-if="true"
+      v-if="isOpen"
       id="dialog-overlay-form"
       class="fixed inset-0 bg-black/40 flex items-center justify-center"
       @click="closeOnBackdrop"
@@ -92,7 +99,7 @@ function saveNewSpecimenObservation() {
                 type="text"
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 cursor-pointer"
                 v-model="uuid"
-                required="true"
+                required
                 name="uuidInput"
               />
               <label for="specimenInfoInput" class="block">Specimen info:</label>
@@ -117,7 +124,7 @@ function saveNewSpecimenObservation() {
               <input
                 type="date"
                 v-model="observedAt"
-                required="true"
+                required
                 name="observedAtInput"
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 cursor-pointer"
               />
