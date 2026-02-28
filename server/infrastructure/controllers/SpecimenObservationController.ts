@@ -29,6 +29,7 @@ export class SpecimenObservationController {
 
   public createSpecimenObservation = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      
       if (!req.body || !req.body.uuid) {
         throw new Error('Missing required property: uuid');
       }

@@ -40,7 +40,7 @@ export class PrismaSpecimenObservationRepository implements SpecimenObservationR
             orden: specimenInfo.getOrden(),
           },
         },
-        observedAt: observation.getObservedAt().toString(),
+        observedAt: observation.getObservedAt().getDate(),
         geoSpatialData: {
           create: {
             coordinates: geoSpatialData.getCoordinates(),

@@ -17,6 +17,7 @@ const selectedImageUrl = ref<string>('');
 const uuid = ref<string>('');
 
 const openDetails = (observationInfo: ImageLinkedToObservationType) => {
+  console.log('Opening details for observation:', observationInfo.observation.geospatialData);
   specimenInfo.setSpecimenInfo(observationInfo);
   dialog.toggle(DETAILS);
 };
@@ -60,17 +61,17 @@ const openRegisterForm = (uuidValue: string, imageUrl: string) => {
             @click="() => openDetails(linkedImgWithObs)"
           >
             {{
-              linkedImgWithObs.observation.specimenInfo.scientificName || 'Sin nombre científico'
+              linkedImgWithObs.observation.specimenInfo.scientificName || 'Indeterminado'
             }}
           </p>
           <p class="text-sm text-gray-600">
             {{
               linkedImgWithObs.observation.geospatialData.observationSite ||
-              'Sin sitio de observación'
+              'Indeterminado'
             }}
           </p>
           <p class="text-right text-sm font-semibold text-gray-500 mt-2">
-            {{ linkedImgWithObs.observation.observedAt || 'Sin fecha especificada' }}
+            {{ linkedImgWithObs.observation.observedAt || 'Indeterminado' }}
           </p>
         </div>
         <div v-else class="flex flex-col justify-center items-center py-2">

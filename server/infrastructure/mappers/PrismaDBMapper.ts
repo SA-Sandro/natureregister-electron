@@ -27,7 +27,6 @@ export class PrismaDBMapper {
 
   static geoSpatialDataFromPrisma(record: PrismaGeoSpatialData): GeospatialData {
     return new GeospatialData(
-      record.id,
       record.coordinates,
       record.locality,
       record.province,
@@ -37,7 +36,6 @@ export class PrismaDBMapper {
 
   static specimenInfoFromPrismaClient(record: PrismaSpecimenInfo): SpecimenInfo {
     return new SpecimenInfo(
-      record.id,
       record.scientificName,
       record.genus,
       record.family,
