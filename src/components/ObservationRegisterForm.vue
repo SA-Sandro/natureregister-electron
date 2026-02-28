@@ -34,6 +34,7 @@ const observedAt = field('observedAt');
 const observationPlace = field('observationPlace');
 const province = field('province');
 const locality = field('locality');
+const comments = field('comments');
 const coordinates = field('coordinates');
 const imagePath = computed(() => props.imageUrl);
 
@@ -177,7 +178,17 @@ const registerObservation = async (e: Event) => {
                   </div>
                 </div>
               </div>
-              <div class="mt-6 flex gap-2 justify-end">
+              <div>
+                <label for="comments" class="block text-sm font-medium mb-2"> Comentarios </label>
+                <textarea
+                  id="comments"
+                  v-model="comments"
+                  placeholder="Observaciones adicionales..."
+                  rows="3"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                ></textarea>
+              </div>
+              <div class="mt-6 flex gap-2justify-end">
                 <button
                   id="dialog-overlay-cancel-button"
                   type="button"

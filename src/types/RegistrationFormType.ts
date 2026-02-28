@@ -7,4 +7,5 @@ export type FormState = {
   province: string;
   locality: string;
   coordinates: string;
+  comments: string; // free‑text provided by user
 };

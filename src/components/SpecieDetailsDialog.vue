@@ -48,7 +48,7 @@ const { observationInfo } = storeToRefs(specimenInfoStore);
                 </div>
                 <div class="flex-1">
                   <div class="relative w-full h-full">
-                    <ObservationMap :observation-info="observationInfo.observation"/>
+                    <ObservationMap :observation-info="observationInfo.observation" />
                   </div>
                 </div>
               </div>
@@ -63,11 +63,10 @@ const { observationInfo } = storeToRefs(specimenInfoStore);
             </div>
             <div class="bg-gray-100 rounded-lg shadow-sm px-5">
               <h3 class="font-semibold mb-2">Observaciones</h3>
-              <ul class="list-disc pl-5">
-                <li v-for="(obs, index) in observationInfo.observation.comments" :key="index">
-                  {{ obs }}
-                </li>
-              </ul>
+              <p v-if="observationInfo.observation.comments">
+                {{ observationInfo.observation.comments }}
+              </p>
+              <p v-else class="text-gray-500">No hay comentarios</p>
             </div>
           </div>
         </div>
