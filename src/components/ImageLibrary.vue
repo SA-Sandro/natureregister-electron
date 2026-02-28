@@ -8,12 +8,13 @@ import ZoomedInSelectedImageDialog from '@/components/ZoomedInSelectedImageDialo
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 import ObservationRegisterForm from '@/components/ObservationRegisterForm.vue';
 
+const { DETAILS, ZOOM, FORM } = DialogType;
 const imageStore = useImageStore();
 const dialog = useDialogStore();
 const specimenInfo = useSpecimenInfoStore();
 
 const selectedImageUrl = ref<string>('');
-const { DETAILS, ZOOM, FORM } = DialogType;
+const uuid = ref<string>('');
 
 const openDetails = (observationInfo: ImageLinkedToObservationType) => {
   specimenInfo.setSpecimenInfo(observationInfo);
@@ -25,8 +26,10 @@ const zoomImage = (url: string) => {
   dialog.toggle(ZOOM);
 };
 
-const openRegisterForm = () => {
-  dialog.toggle(FORM);
+const openRegisterForm = (uuidValue: string, imageUrl: string) => {
+  uuid.value = uuidValue;
+  selectedImageUrl.value = imageUrl;
+  dialog.toggle(`${FORM}_${uuidValue}`);
 };
 </script>
 
@@ -38,7 +41,7 @@ const openRegisterForm = () => {
     >
       <div
         v-for="linkedImgWithObs in imageStore.imagesWithObservations"
-        :key="linkedImgWithObs.imagePath"
+        :key="linkedImgWithObs.uuid"
         class="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform duration-200"
       >
         <div class="relative w-full aspect-[4/3] cursor-zoom-in">
@@ -72,7 +75,10 @@ const openRegisterForm = () => {
         </div>
         <div v-else class="flex flex-col justify-center items-center py-2">
           <p class="text-lg w-full text-left p-2">Sin procesar</p>
-          <button @click="openRegisterForm()" class="cursor-pointer bg-green-100 p-1 ronuded-lg">
+          <button
+            @click="openRegisterForm(linkedImgWithObs.uuid, linkedImgWithObs.imagePath)"
+            class="cursor-pointer bg-green-100 p-1 rounded-lg"
+          >
             Añadir observación
           </button>
         </div>
@@ -82,7 +88,6 @@ const openRegisterForm = () => {
     <p v-else class="text-gray-500 mt-12 text-lg font-medium">No hay imágenes disponibles</p>
 
     <ZoomedInSelectedImageDialog :imageUrl="selectedImageUrl || ''" />
-    <ObservationRegisterForm />
-
+    <ObservationRegisterForm :uuid="uuid" :imageUrl="selectedImageUrl" />
   </div>
 </template>

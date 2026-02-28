@@ -6,7 +6,7 @@ import formatDate from '@/utils/FormatDate';
 import { storeToRefs } from 'pinia';
 import ObservationMap from '@/components/ObservationMap.vue';
 
-const { closeDialogByEsc, closeOnBackdrop, isOpen } = useDialog(DialogType.DETAILS);
+const { closeDialogHandler, isOpen } = useDialog(DialogType.DETAILS);
 const specimenInfoStore = useSpecimenInfoStore();
 const { observationInfo } = storeToRefs(specimenInfoStore);
 </script>
@@ -17,8 +17,8 @@ const { observationInfo } = storeToRefs(specimenInfoStore);
       v-if="isOpen"
       id="dialog-overlay-details"
       class="fixed inset-0 bg-black/40 flex items-center justify-center"
-      @click="closeOnBackdrop"
-      @keydown="closeDialogByEsc"
+      @click="closeDialogHandler"
+      @keydown="closeDialogHandler"
       tabindex="0"
     >
       <dialog

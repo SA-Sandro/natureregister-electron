@@ -1,15 +1,10 @@
 export class SpecimenInfo {
   constructor(
-    private readonly id: number,
     private readonly scientificName: string,
     private readonly genus: string,
     private readonly family: string,
     private readonly orden: string,
   ) {}
-
-  getId(): number {
-    return this.id;
-  }
 
   getScientificName(): string {
     return this.scientificName;

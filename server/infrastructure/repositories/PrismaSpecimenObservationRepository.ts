@@ -26,19 +26,33 @@ export class PrismaSpecimenObservationRepository implements SpecimenObservationR
   }
 
   async save(observation: SpecimenObservation): Promise<void> {
+    const specimenInfo = observation.getSpecimenInfo();
+    const geoSpatialData = observation.getGeospatialData();
     await this.prisma.specimenObservation.upsert({
       where: { uuid: observation.getUuid() },
       create: {
         uuid: observation.getUuid(),
-        specimenInfoId: observation.getSpecimenInfo().getId(),
+        specimenInfo: {
+          create: {
+            scientificName: specimenInfo.getScientificName(),
+            genus: specimenInfo.getGenus(),
+            family: specimenInfo.getFamily(),
+            orden: specimenInfo.getOrden(),
+          },
+        },
         observedAt: observation.getObservedAt().toString(),
-        geoSpatialDataId: observation.getGeospatialData().getId(),
+        geoSpatialData: {
+          create: {
+            coordinates: geoSpatialData.getCoordinates(),
+            locality: geoSpatialData.getLocality(),
+            province: geoSpatialData.getProvince(),
+            observationSite: geoSpatialData.getObservationSite(),
+          },
+        },
         comments: observation.getComments(),
       },
       update: {
-        specimenInfoId: observation.getSpecimenInfo().getId(),
         observedAt: observation.getObservedAt().toString(),
-        geoSpatialDataId: observation.getGeospatialData().getId(),
         comments: observation.getComments(),
       },
     });
