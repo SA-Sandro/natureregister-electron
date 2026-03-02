@@ -46,7 +46,7 @@ const handleSelectCoordinates = (selectedCoords: string) => {
   coordinates.value = selectedCoords;
 };
 
-const registerObservation = async (e: Event) => {
+const registerObservation = async () => {
   const mappedObservation = mapToSpecimenObservation();
   mappedObservation.imagePath = imagePath.value;
 
@@ -57,8 +57,17 @@ const registerObservation = async (e: Event) => {
     'success',
   );
 
-  closeDialogHandler(e as MouseEvent);
-  useImageStore().filterByStatus(ObservationStatus.UNPROCESSED);
+  const store = useImageStore();
+  const localService = new (await import('@/services/LocalStorageService')).LocalStorageService();
+  const selectedPath = localService.getItem('selectedFolderPath');
+  if (selectedPath) {
+    await store.loadImages(selectedPath);
+  }
+
+  await store.loadImagesLinkedToObservations();
+
+  dialogStore.toggle(dialogType.value);
+  store.filterByStatus(ObservationStatus.UNPROCESSED);
 };
 </script>
 <template>
@@ -79,7 +88,7 @@ const registerObservation = async (e: Event) => {
         <div class="w-full flex flex-col">
           <h2 class="text-2xl font-bold pb-4">Registrar nueva observación</h2>
           <div>
-            <form @submit.prevent="registerObservation($event)" class="flex flex-col gap-4">
+            <form @submit.prevent="registerObservation" class="flex flex-col gap-4">
               <div>
                 <label for="scientificName" class="text-sm"> Nombre científico </label>
                 <input

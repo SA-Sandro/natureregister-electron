@@ -61,9 +61,11 @@ export class SpecimenObservationController {
         ),
       );
 
-      this.renameLocalImage(req.body.imagePath, specimenObservationDTO.uuid).catch((error) => {
-        console.error('Error renombrando la imagen:', error);
-      });
+      try {
+        await this.renameLocalImage(req.body.imagePath, specimenObservationDTO.uuid);
+      } catch (error) {
+        console.error('Error renombrando la imagen:', error); 
+      }
 
       res.status(201).json({
         message: `Specimen observation ${specimenObservationDTO.uuid} created successfully`,

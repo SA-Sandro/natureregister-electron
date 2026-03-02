@@ -18,7 +18,7 @@ export function useObservationForm(id: string | Ref<string>) {
       province: '',
       locality: '',
       coordinates: '',
-      comments: '', // new field
+      comments: '',
     };
   }
 
@@ -39,7 +39,7 @@ export function useObservationForm(id: string | Ref<string>) {
         province: form.province,
         observationSite: form.observationPlace,
       },
-      comments: form.comments, // propagate user comments
+      comments: form.comments,
       imagePath,
     };
   }
