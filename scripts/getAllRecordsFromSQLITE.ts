@@ -1,12 +1,8 @@
 import Database from 'better-sqlite3';
 import { randomUUID } from 'node:crypto';
 import { SpecimenObservation } from '../server/domain/entities/SpecimenObservation';
+import { getGenusByScientificName } from '../utils/GetGenusByScientificName';
 import { env } from 'node:process';
-
-const getGenus = (scientificName: string) => {
-  if (scientificName.trim().toLowerCase() === 'sin determinar') return 'Sin determinar';
-  return scientificName.trim().split(' ')[0];
-};
 
 type ObservationData = {
   observation: SpecimenObservation[];
@@ -23,7 +19,7 @@ export const getRecordsFromSQLITE = (): ObservationData[] => {
     rows.forEach((row: any) => {
       const uuid = randomUUID();
       const scientificName = row.nombreCientifico || 'Unknown';
-      const genus = getGenus(scientificName);
+      const genus = getGenusByScientificName(scientificName);
       const family = row.familia || 'Unknown';
       const orden = row.orden || 'Unknown';
       const date = row.fecha || 'Unknown';

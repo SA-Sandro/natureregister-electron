@@ -50,14 +50,12 @@ async function main() {
         },
       });
       const specimenInfoWithId = new SpecimenInfo(
-        specimenInfoRow.id,
         specimenInfoVO.scientificName,
         specimenInfoVO.genus,
         specimenInfoVO.family,
         specimenInfoVO.orden,
       );
       const geoWithId = new GeospatialData(
-        geoRow.id,
         geoVO.coordinates,
         geoVO.municipality,
         geoVO.province,

@@ -10,7 +10,7 @@ import useDialog from '@/composables/useDialog';
 import { DialogType } from '@/const/DialogType';
 import { useDialogStore } from '@/stores/dialogStore';
 
-const { isOpen, closeDialogByEsc, closeOnBackdrop } = useDialog(DialogType.SETTING_BUTTON);
+const { isOpen, closeDialogHandler } = useDialog(DialogType.SETTING_BUTTON);
 const folderStore = useFolderStore();
 const dialog = useDialogStore();
 const { folderName } = storeToRefs(folderStore);
@@ -41,8 +41,8 @@ const showSettingsDialog = () => {
     v-show="isOpen"
     id="dialog-overlay-setting-button"
     tabindex="0"
-    @click="closeOnBackdrop"
-    @keydown="closeDialogByEsc"
+    @click="closeDialogHandler"
+    @keydown="closeDialogHandler"
     class="absolute inset-0 z-50"
   >
     <div

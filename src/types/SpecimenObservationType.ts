@@ -7,7 +7,6 @@ export type SpecimenObservation = {
 };
 
 type SpecimenInfo = {
-  id: number;
   scientificName: string;
   genus: string;
   family: string;
@@ -15,7 +14,6 @@ type SpecimenInfo = {
 };
 
 type GeospatialData = {
-  id: number;
   coordinates: string;
   locality: string;
   province: string;
@@ -23,7 +21,12 @@ type GeospatialData = {
 };
 
 export type ImageLinkedToObservationType = {
+  uuid: string;
   date: Date;
   imagePath: string;
   observation: SpecimenObservation | undefined;
+};
+
+export type SpecimenObservationWithImage = SpecimenObservation & {
+  imagePath: string;
 };
