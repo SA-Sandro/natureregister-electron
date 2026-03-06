@@ -17,7 +17,6 @@ const selectedImageUrl = ref<string>('');
 const uuid = ref<string>('');
 
 const openDetails = (observationInfo: ImageLinkedToObservationType) => {
-  console.log('Opening details for observation:', observationInfo.observation.geospatialData);
   specimenInfo.setSpecimenInfo(observationInfo);
   dialog.toggle(DETAILS);
 };
