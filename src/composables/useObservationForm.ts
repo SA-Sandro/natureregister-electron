@@ -6,8 +6,6 @@ import { getGenusByScientificName } from '@/utils/GetGenusByScientificName';
 export function useObservationForm(id: string | Ref<string>) {
   const idRef = isRef(id) ? id : computed(() => id as string);
 
-  const forms = reactive<Record<string, FormState>>({});
-
   function getDefaultForm(): FormState {
     return {
       scientificName: '',
@@ -22,42 +20,37 @@ export function useObservationForm(id: string | Ref<string>) {
     };
   }
 
+  const form = reactive(getDefaultForm());
+
   function mapToSpecimenObservation(imagePath?: string): SpecimenObservationWithImage {
-    const form = currentForm.value;
+    const defaultIfEmpty = (value: string) => (value?.trim() ? value : 'Sin determinar');
+
     return {
       uuid: idRef.value,
       specimenInfo: {
-        scientificName: form.scientificName,
-        genus: getGenusByScientificName(form.scientificName),
-        family: form.family,
-        orden: form.order,
+        scientificName: defaultIfEmpty(form.scientificName),
+        genus: getGenusByScientificName(defaultIfEmpty(form.scientificName)),
+        family: defaultIfEmpty(form.family),
+        orden: defaultIfEmpty(form.order),
       },
       observedAt: form.observedAt,
-        geospatialData: {
+      geospatialData: {
         coordinates: form.coordinates,
-        locality: form.locality,
-        province: form.province,
-        observationSite: form.observationPlace,
+        locality: defaultIfEmpty(form.locality),
+        province: defaultIfEmpty(form.province),
+        observationSite: defaultIfEmpty(form.observationPlace),
       },
       comments: form.comments,
       imagePath,
     };
   }
 
-  function ensureForm(formId: string) {
-    if (!formId) return getDefaultForm();
-    if (!forms[formId]) forms[formId] = getDefaultForm();
-    return forms[formId];
-  }
-
-  const currentForm = computed(() => ensureForm(idRef.value || ''));
-
   function field<K extends keyof FormState>(name: K) {
     return computed<FormState[K]>({
-      get: () => currentForm.value[name] as FormState[K],
-      set: (v: FormState[K]) => (currentForm.value[name] = v as any),
+      get: () => form[name] as FormState[K],
+      set: (v: FormState[K]) => (form[name] = v as any),
     });
   }
 
-  return { currentForm, field, mapToSpecimenObservation } as const;
+  return { form, field, mapToSpecimenObservation } as const;
 }
