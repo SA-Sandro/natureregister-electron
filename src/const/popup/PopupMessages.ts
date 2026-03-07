@@ -8,3 +8,7 @@ export const ErrorMessages = {
 export const InfoMessages = {
   SELECT_FOLDER: 'Selecciona una carpeta para visualizar sus imágenes',
 };
+
+export const SuccessMessages = {
+  SUCCESSFUL_OBSERVATION_REGISTRATION: 'La observación se ha registrado correctamente.',
+};

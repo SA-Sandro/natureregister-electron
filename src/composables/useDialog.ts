@@ -1,31 +1,46 @@
+import { DialogType } from '@/const/DialogType';
 import { useDialogStore } from '@/stores/dialogStore';
-import { watch, nextTick, computed } from 'vue';
+import { watch, nextTick, computed, unref, type Ref } from 'vue';
 
-export default function useDialog(type: string) {
+const DIALOG_OVERLAY_ID_PREFIX = 'dialog-overlay-';
+
+export default function useDialog(type: string | Ref<string>) {
   const dialog = useDialogStore();
 
-  const isOpen = computed(() => dialog.isOpen(type));
+  const resolveType = () => unref(type);
+
+  const isOpen = computed(() => dialog.isOpen(resolveType()));
 
   watch(
-    () => dialog.isOpen(type),
+    () => dialog.isOpen(resolveType()),
     async (open) => {
       document.body.classList.toggle('overflow-hidden', open);
       if (open) {
         await nextTick();
-        document.getElementById(`dialog-overlay-${type}`)?.focus();
+        document.getElementById(`${DIALOG_OVERLAY_ID_PREFIX}${resolveType()}`)?.focus();
       }
     },
   );
 
-  const closeDialogByEsc = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') dialog.toggle(type);
-  };
+  const closeDialogHandler = (event: KeyboardEvent | MouseEvent) => {
+    const currentType = resolveType();
+    if (event instanceof KeyboardEvent && event.key === 'Escape') dialog.toggle(currentType);
 
-  const closeOnBackdrop = (event: MouseEvent) => {
-    if ((event.target as HTMLElement).id === `dialog-overlay-${type}`) {
-      dialog.toggle(type);
+    if (!(event instanceof MouseEvent)) return;
+
+    if (
+      (event.target as HTMLElement).id ===
+        `${DIALOG_OVERLAY_ID_PREFIX}${DialogType.CANCEL_BUTTON}` ||
+      (event.target as HTMLElement).id === `${DIALOG_OVERLAY_ID_PREFIX}${DialogType.CONFIRM_BUTTON}`
+    ) {
+      event.stopPropagation();
+      dialog.toggle(currentType);
+    }
+
+    if ((event.target as HTMLElement).id === `${DIALOG_OVERLAY_ID_PREFIX}${currentType}`) {
+      dialog.toggle(currentType);
     }
   };
 
-  return { isOpen, closeDialogByEsc, closeOnBackdrop };
+  return { isOpen, closeDialogHandler };
 }

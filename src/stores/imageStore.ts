@@ -1,4 +1,5 @@
 import type { Image } from '@/types/ImagesType';
+import { v4 as uuidv4 } from 'uuid';
 import { toFileSrc } from '@/utils/UrlToFileSrc';
 import { defineStore } from 'pinia';
 import { popupNotifier } from '@/services/PopupNotifierManagement';
@@ -68,6 +69,7 @@ export const useImageStore = defineStore('imageStore', {
       const enriched = this.images.map((image: Image) => {
         const uuid = getUuidFromUrl(image.url);
         return {
+          uuid: uuidv4(),
           imagePath: image.url,
           date: image.date,
           observation: obsMap.get(uuid),

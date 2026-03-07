@@ -6,13 +6,15 @@ import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import { DialogType } from '@/const/DialogType';
 import ZoomedInSelectedImageDialog from '@/components/ZoomedInSelectedImageDialog.vue';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
+import ObservationRegisterForm from '@/components/ObservationRegisterForm.vue';
 
+const { DETAILS, ZOOM, FORM } = DialogType;
 const imageStore = useImageStore();
 const dialog = useDialogStore();
 const specimenInfo = useSpecimenInfoStore();
 
 const selectedImageUrl = ref<string>('');
-const { DETAILS, ZOOM } = DialogType;
+const uuid = ref<string>('');
 
 const openDetails = (observationInfo: ImageLinkedToObservationType) => {
   specimenInfo.setSpecimenInfo(observationInfo);
@@ -22,6 +24,12 @@ const openDetails = (observationInfo: ImageLinkedToObservationType) => {
 const zoomImage = (url: string) => {
   selectedImageUrl.value = url;
   dialog.toggle(ZOOM);
+};
+
+const openRegisterForm = (uuidValue: string, imageUrl: string) => {
+  uuid.value = uuidValue;
+  selectedImageUrl.value = imageUrl;
+  dialog.toggle(`${FORM}_${uuidValue}`);
 };
 </script>
 
@@ -33,7 +41,7 @@ const zoomImage = (url: string) => {
     >
       <div
         v-for="linkedImgWithObs in imageStore.imagesWithObservations"
-        :key="linkedImgWithObs.imagePath"
+        :key="linkedImgWithObs.uuid"
         class="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform duration-200"
       >
         <div class="relative w-full aspect-[4/3] cursor-zoom-in">
@@ -52,22 +60,27 @@ const zoomImage = (url: string) => {
             @click="() => openDetails(linkedImgWithObs)"
           >
             {{
-              linkedImgWithObs.observation.specimenInfo.scientificName || 'Sin nombre científico'
+              linkedImgWithObs.observation.specimenInfo.scientificName || 'Indeterminado'
             }}
           </p>
           <p class="text-sm text-gray-600">
             {{
               linkedImgWithObs.observation.geospatialData.observationSite ||
-              'Sin sitio de observación'
+              'Indeterminado'
             }}
           </p>
           <p class="text-right text-sm font-semibold text-gray-500 mt-2">
-            {{ linkedImgWithObs.observation.observedAt || 'Sin fecha especificada' }}
+            {{ linkedImgWithObs.observation.observedAt || 'Indeterminado' }}
           </p>
         </div>
         <div v-else class="flex flex-col justify-center items-center py-2">
           <p class="text-lg w-full text-left p-2">Sin procesar</p>
-          <button class="cursor-pointer bg-green-100 p-1 ronuded-lg">Añadir observación</button>
+          <button
+            @click="openRegisterForm(linkedImgWithObs.uuid, linkedImgWithObs.imagePath)"
+            class="cursor-pointer bg-green-100 p-1 rounded-lg"
+          >
+            Añadir observación
+          </button>
         </div>
       </div>
     </div>
@@ -75,5 +88,6 @@ const zoomImage = (url: string) => {
     <p v-else class="text-gray-500 mt-12 text-lg font-medium">No hay imágenes disponibles</p>
 
     <ZoomedInSelectedImageDialog :imageUrl="selectedImageUrl || ''" />
+    <ObservationRegisterForm :uuid="uuid" :imageUrl="selectedImageUrl" />
   </div>
 </template>

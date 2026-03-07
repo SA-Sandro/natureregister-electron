@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useDialog from '@/composables/useDialog';
 import { DialogType } from '@/const/DialogType';
-const { isOpen, closeDialogByEsc, closeOnBackdrop } = useDialog(DialogType.ZOOM);
+const { isOpen,closeDialogHandler } = useDialog(DialogType.ZOOM);
 const props = defineProps<{
   imageUrl: string;
 }>();
@@ -13,8 +13,8 @@ const props = defineProps<{
       v-if="isOpen"
       id="dialog-overlay-zoom"
       class="fixed inset-0 bg-black/40 flex items-center justify-center"
-      @click="closeOnBackdrop"
-      @keydown="closeDialogByEsc"
+      @click="closeDialogHandler"
+      @keydown="closeDialogHandler"
       tabindex="0"
     >
       <div class="relative bg-white rounded-lg p-4 shadow-lg">
