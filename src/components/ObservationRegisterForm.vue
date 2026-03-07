@@ -38,6 +38,9 @@ const comments = field('comments');
 const coordinates = field('coordinates');
 const imagePath = computed(() => props.imageUrl);
 
+const today = computed(() => new Date().toISOString().slice(0, 10));
+const observedAtError = computed(() => observedAt.value && observedAt.value > today.value);
+
 const openMapPicker = () => {
   dialogStore.toggle(DialogType.MAP_PICKER);
 };
@@ -47,6 +50,8 @@ const handleSelectCoordinates = (selectedCoords: string) => {
 };
 
 const registerObservation = async () => {
+  if (observedAtError.value) return;
+
   const mappedObservation = mapToSpecimenObservation();
   mappedObservation.imagePath = imagePath.value;
 
@@ -131,6 +136,9 @@ const registerObservation = async () => {
                   v-model="observedAt"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
                 />
+                <p v-if="observedAtError" class="text-red-600 text-sm mt-1">
+                  La fecha seleccionada no puede ser en el futuro
+                </p>
               </div>
               <div>
                 <label for="observationPlace" class="block text-sm font-medium mb-2">
@@ -197,7 +205,7 @@ const registerObservation = async () => {
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
                 ></textarea>
               </div>
-              <div class="mt-6 flex gap-2justify-end">
+              <div class="mt-6 flex gap-2 justify-end">
                 <button
                   id="dialog-overlay-cancel-button"
                   type="button"
@@ -208,7 +216,8 @@ const registerObservation = async () => {
                 </button>
                 <button
                   type="submit"
-                  class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                  :disabled="observedAtError"
+                  class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Registrar observación
                 </button>
