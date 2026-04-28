@@ -19,6 +19,14 @@ const renameLocalImage = async (currentPath: string, uuid: string): Promise<void
     console.log(`⚠️ La imagen ya tiene el nombre correcto: ${currentPath}`);
     return;
   }
+
+  try {
+    await fs.access(currentPath);
+  } catch (err) {
+    console.warn(`⚠️ No se encontró el archivo de imagen para renombrar: ${currentPath}`);
+    throw err;
+  }
+
   await fs.rename(currentPath, newPath);
   console.log(`✅ Imagen renombrada a ${newPath}`);
 };
@@ -29,11 +37,11 @@ async function main() {
 
   const observations = getRecordsFromSQLITE();
 
-  observations.forEach(async (data) => {
+  for (const data of observations) {
     for (const obs of data.observation) {
       const specimenInfoVO = obs.getSpecimenInfo();
       const geoVO = obs.getGeospatialData();
-      const specimenInfoRow = await prisma.specimenInfo.create({
+      await prisma.specimenInfo.create({
         data: {
           scientificName: specimenInfoVO.scientificName,
           genus: specimenInfoVO.genus,
@@ -41,7 +49,7 @@ async function main() {
           orden: specimenInfoVO.orden,
         },
       });
-      const geoRow = await prisma.geoSpatialData.create({
+      await prisma.geoSpatialData.create({
         data: {
           coordinates: geoVO.coordinates,
           locality: geoVO.locality,
@@ -50,16 +58,16 @@ async function main() {
         },
       });
       const specimenInfoWithId = new SpecimenInfo(
-        specimenInfoVO.scientificName,
-        specimenInfoVO.genus,
-        specimenInfoVO.family,
-        specimenInfoVO.orden,
+        specimenInfoVO.getScientificName?.() ?? specimenInfoVO.scientificName,
+        specimenInfoVO.getGenus?.() ?? specimenInfoVO.genus,
+        specimenInfoVO.getFamily?.() ?? specimenInfoVO.family,
+        specimenInfoVO.getOrden?.() ?? specimenInfoVO.orden,
       );
       const geoWithId = new GeospatialData(
         geoVO.coordinates,
-        geoVO.municipality,
-        geoVO.province,
         geoVO.locality,
+        geoVO.province,
+        geoVO.observationSite,
       );
       const observationWithIds = new SpecimenObservation(
         obs.getUuid(),
@@ -76,7 +84,7 @@ async function main() {
         console.error(`❌ Error guardando la observación ${observationWithIds.getUuid()}:`, error);
       }
     }
-  });
+  }
 }
 
 main().catch((err) => {

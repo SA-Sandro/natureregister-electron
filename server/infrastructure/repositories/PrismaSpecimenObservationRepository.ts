@@ -52,7 +52,7 @@ export class PrismaSpecimenObservationRepository implements SpecimenObservationR
         comments: observation.getComments(),
       },
       update: {
-        observedAt: observation.getObservedAt().toString(),
+        observedAt: observation.getObservedAt().getDate(),
         comments: observation.getComments(),
       },
     });
