@@ -34,42 +34,42 @@ const openRegisterForm = (uuidValue: string, imageUrl: string) => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+  <div class="flex flex-col items-center bg-gray-100 min-h-screen">
     <div
       v-if="imageStore.imagesWithObservations.length > 0"
-      class="grid gap-6 w-full max-w-6xl grid-cols-[repeat(auto-fill,minmax(16rem,max-content))]"
+      class="grid gap-6 w-full p-4 sm:px-6 lg:px-8 max-w-[90rem] mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 auto-rows-fr"
     >
       <div
         v-for="linkedImgWithObs in imageStore.imagesWithObservations"
         :key="linkedImgWithObs.uuid"
-        class="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform duration-200"
+        class="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform duration-200 flex flex-col h-full"
       >
-        <div class="relative w-full aspect-[4/3] cursor-zoom-in">
+        <div class="relative w-full aspect-[4/3] cursor-zoom-in overflow-hidden">
           <img
             @click="zoomImage(linkedImgWithObs.imagePath)"
             loading="lazy"
             :src="linkedImgWithObs.imagePath"
             :alt="linkedImgWithObs.observation?.specimenInfo?.scientificName ?? 'Sin determinar'"
-            class="absolute inset-0 w-full h-full object-cover"
+            class="w-full h-full"
           />
         </div>
 
-        <div class="p-3" v-if="linkedImgWithObs.observation != undefined">
-          <p
-            class="text-lg italic font-bold cursor-pointer hover:text-blue-600 transition-colors"
-            @click="() => openDetails(linkedImgWithObs)"
-          >
-            {{
-              linkedImgWithObs.observation.specimenInfo.scientificName || 'Indeterminado'
-            }}
-          </p>
-          <p class="text-sm text-gray-600">
-            {{
-              linkedImgWithObs.observation.geospatialData.observationSite ||
-              'Indeterminado'
-            }}
-          </p>
-          <p class="text-right text-sm font-semibold text-gray-500 mt-2">
+        <div
+          v-if="linkedImgWithObs.observation != undefined"
+          class="p-3 flex flex-col justify-between h-28"
+        >
+          <div>
+            <p
+              class="text-lg italic font-bold cursor-pointer hover:text-blue-600 transition-colors line-clamp-2"
+              @click="() => openDetails(linkedImgWithObs)"
+            >
+              {{ linkedImgWithObs.observation.specimenInfo.scientificName || 'Indeterminado' }}
+            </p>
+            <p class="text-sm text-gray-600 line-clamp-2">
+              {{ linkedImgWithObs.observation.geospatialData.observationSite || 'Indeterminado' }}
+            </p>
+          </div>
+          <p class="text-right text-sm font-semibold text-gray-500">
             {{ linkedImgWithObs.observation.observedAt || 'Indeterminado' }}
           </p>
         </div>
