@@ -3,6 +3,7 @@ import CameraIcon from '@/components/Icons/CameraIcon.vue';
 
 defineProps<{
   deleteInputValue: (event: Event) => void;
+  onChangeFilter: (event: Event) => void;
 }>();
 
 </script>
@@ -13,9 +14,10 @@ defineProps<{
     <div class="relative w-64">
       <input
         type="text"
-        id="sicientific-name-filter"
+        id="scientific-name-filter"
         placeholder="Filtra por nombre científico..."
         class="w-full px-4 py-2 pr-10 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm"
+        @input="onChangeFilter"
       />
       <button
         @click="deleteInputValue"

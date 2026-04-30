@@ -2,6 +2,7 @@
 
 defineProps<{
   deleteInputValue: (event: Event) => void;
+  onChangeFilter: (event: Event) => void;
 }>();
 
 </script>
@@ -13,6 +14,7 @@ defineProps<{
       id="locality-filter"
       placeholder="Filtra por municipio..."
       class="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm"
+      @input="onChangeFilter"
     />
     <button
         @click="deleteInputValue"
