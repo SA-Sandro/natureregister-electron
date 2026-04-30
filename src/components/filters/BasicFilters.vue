@@ -1,34 +1,49 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import LocalityFilter from '@/components/filters/LocalityFilter.vue';
 import ScientificNameFilter from '@/components/filters/ScientificNameFilter.vue';
 import { useImageStore } from '@/stores/imageStore';
 
-const filterByCriteria = () => {
-  const imageStore = useImageStore();
-  const selectedFilters = {
-    scientificNameValue: document.getElementById('sicientific-name-filter') as HTMLInputElement,
-    localityValue: document.getElementById('locality-filter') as HTMLInputElement,
-  };
+const scientificNameValue = ref('');
+const localityValue = ref('');
+const imageStore = useImageStore();
 
-  imageStore.filterByScientificNameAndLocality(
-    selectedFilters.scientificNameValue.value,
-    selectedFilters.localityValue.value,
-  );
+const SCIENTIFIC_NAME_FILTER_ID = 'scientific-name-filter';
+const LOCALITY_FILTER_ID = 'locality-filter';
+
+const filterRefs = {
+  [SCIENTIFIC_NAME_FILTER_ID]: scientificNameValue,
+  [LOCALITY_FILTER_ID]: localityValue,
 };
+
+const deleteInputValue = (event: Event) => {
+  const target = event.target as HTMLElement;
+  const input = target.closest('div')?.querySelector('input') as HTMLInputElement;
+  const targetRef = filterRefs[input.id as keyof typeof filterRefs];
+
+  if (targetRef) {
+    targetRef.value = '';
+    input.value = '';
+    imageStore.filterByScientificNameAndLocality(scientificNameValue.value, localityValue.value);
+  }
+};
+
+const onChangeFilter = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const targetRef = filterRefs[input.id as keyof typeof filterRefs];
+
+  if (targetRef) {
+    targetRef.value = input.value;
+  }
+
+  imageStore.filterByScientificNameAndLocality(scientificNameValue.value, localityValue.value);
+};
+
 </script>
 
 <template>
-  <div class="flex justify-center items-center gap-6">
-    <div class="flex justify-center items-center gap-4">
-      <ScientificNameFilter />
-      <LocalityFilter />
-    </div>
-
-    <button
-      @click="filterByCriteria"
-      class="bg-green-500 cursor-pointer text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition-all"
-    >
-      Buscar
-    </button>
+  <div class="flex justify-center items-center gap-4">
+    <ScientificNameFilter :deleteInputValue="deleteInputValue" :onChangeFilter="onChangeFilter" />
+    <LocalityFilter :deleteInputValue="deleteInputValue" :onChangeFilter="onChangeFilter" />
   </div>
 </template>
