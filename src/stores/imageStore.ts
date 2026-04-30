@@ -97,6 +97,29 @@ export const useImageStore = defineStore('imageStore', {
       return this.imagesWithObservations;
     },
 
+    orderBySortingType(sortDirection: string) {
+      if (sortDirection === ObservationStatus.ASCENDENT_SORT) {
+        this.imagesWithObservations.sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateA - dateB;
+        });
+      }
+
+      if (sortDirection === ObservationStatus.DESCENDENT_SORT) {
+        this.imagesWithObservations.sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateB - dateA;
+        });
+      }
+    },
+
+    filterBySpecifiedFilters(selectedObservationStatus: string, sortDirection: string) {
+      this.filterByStatus(selectedObservationStatus);
+      this.orderBySortingType(sortDirection);
+    },
+
     filterByScientificNameAndLocality(scientificName: string | null, locality: string | null) {
       const processedObservations: Array<ImageLinkedToObservationType> = this.filterByStatus(
         ObservationStatus.PROCESSED,
@@ -104,8 +127,6 @@ export const useImageStore = defineStore('imageStore', {
 
       const sci = scientificName?.trim().toLowerCase() || null;
       const loc = locality?.trim().toLowerCase() || null;
-
-      
 
       this.imagesWithObservations = processedObservations.filter(
         (imgWithObs: ImageLinkedToObservationType) => {

@@ -6,4 +6,5 @@ export const DialogType = {
   MAP_PICKER: 'map-picker',
   CANCEL_BUTTON: 'cancel-button',
   CONFIRM_BUTTON: 'confirm-button',
+  FILTERS: 'filters-button'
 };
