@@ -23,6 +23,7 @@ const selectedSortDirection = ref<ObservationStatus>(ObservationStatus.ANY_SORT)
 
 const onStatusFilterChange = () => {
   imageStore.filterBySpecifiedFilters(selectedStatus.value, selectedSortDirection.value);
+  dialog.toggle(DialogType.FILTERS);
 };
 </script>
 
