@@ -22,7 +22,6 @@ const selectedStatus = ref<ObservationStatus>(ObservationStatus.ALL);
 const selectedSortDirection = ref<ObservationStatus>(ObservationStatus.ANY_SORT);
 
 const onStatusFilterChange = () => {
-  console.log('Dirección de ordenamiento seleccionada:', selectedSortDirection.value);
   imageStore.filterBySpecifiedFilters(selectedStatus.value, selectedSortDirection.value);
 };
 </script>
@@ -36,7 +35,6 @@ const onStatusFilterChange = () => {
     <span>Filters</span>
   </button>
 
-  <!-- Pop-up Modal Overlay -->
   <transition name="bounce">
     <div
       v-if="isOpen"
@@ -61,8 +59,9 @@ const onStatusFilterChange = () => {
             </p>
           </div>
           <button
+            id="dialog-overlay-cancel-button"
+            type="button"
             @click="closeDialogHandler"
-            data-dialog-close="true"
             class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
             aria-label="Cerrar diálogo"
           >
