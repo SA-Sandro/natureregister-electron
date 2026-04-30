@@ -15,13 +15,22 @@ const filterByCriteria = () => {
     selectedFilters.localityValue.value,
   );
 };
+
+const deleteInputValue = (event: Event) => {
+  const target = event.target as HTMLElement;
+  const input = target.closest('div')?.querySelector('input') as HTMLInputElement;
+  if (input) {
+    input.value = '';
+  }
+};
+
 </script>
 
 <template>
   <div class="flex justify-center items-center gap-6">
     <div class="flex justify-center items-center gap-4">
-      <ScientificNameFilter />
-      <LocalityFilter />
+      <ScientificNameFilter :deleteInputValue="deleteInputValue" />
+      <LocalityFilter :deleteInputValue="deleteInputValue" />
     </div>
 
     <button
