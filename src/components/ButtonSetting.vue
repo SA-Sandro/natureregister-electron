@@ -32,7 +32,8 @@ const showSettingsDialog = () => {
 <template>
   <button
     @click="showSettingsDialog"
-    class="align-middle select-none transition-transform duration-200 disabled:opacity-50 hover:scale-110 hover:shadow-lg focus:opacity-85 focus:shadow-none active:scale-95"
+    class="cursor-pointer inline-flex size-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-300 active:scale-95"
+    aria-label="Abrir ajustes"
   >
     <SettingsIcon />
   </button>
@@ -43,19 +44,25 @@ const showSettingsDialog = () => {
     tabindex="0"
     @click="closeDialogHandler"
     @keydown="closeDialogHandler"
-    class="absolute inset-0 z-50"
+    class="fixed inset-0 z-50 bg-slate-950/10 backdrop-blur-sm"
   >
     <div
-      class="absolute top-4 right-4 w-60 bg-white rounded-2xl shadow-xl p-5 flex flex-col gap-4 transition-transform duration-200 ease-out transform scale-95"
+      class="absolute top-4 right-4 w-72 rounded-[28px] border border-slate-200 bg-white/95 p-5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-md"
     >
-      <h3 class="text-green-700 font-extrabold uppercase text-sm tracking-wide">Carpeta actual</h3>
-      <div class="flex gap-2">
-        <button type="button" class="hover:scale-110 transsition-all cursor-pointer">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.3em] text-emerald-700 font-bold mb-2">
+            Carpeta actual
+          </p>
+          <p class="text-slate-900 font-semibold leading-5 truncate">
+            {{ folderName || 'No hay ninguna carpeta seleccionada' }}
+          </p>
+        </div>
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 shadow-sm"
+        >
           <SelectFolder />
-        </button>
-        <p class="text-gray-800 font-semibold truncate">
-          {{ folderName || 'No hay ninguna carpeta seleccionada' }}
-        </p>
+        </div>
       </div>
     </div>
   </div>

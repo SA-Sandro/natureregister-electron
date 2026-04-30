@@ -4,6 +4,10 @@ import { useImageStore } from '@/stores/imageStore';
 import FolderIcon from '@/components/Icons/FolderIcon.vue';
 import getFolderNameFromPath from '@/utils/GetFolderNameFromPath';
 import { useFolderStore } from '@/stores/folderStore';
+import { DialogType } from '@/const/DialogType';
+import { useDialogStore } from '@/stores/dialogStore';
+
+const dialog = useDialogStore();
 
 const localStorageService = new LocalStorageService();
 const imageStore = useImageStore();
@@ -20,6 +24,7 @@ async function selectPath() {
   }
 
   await imageStore.loadImages(selectedPath);
+  dialog.toggle(DialogType.SETTING_BUTTON);
 }
 </script>
 <template>
