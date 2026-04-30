@@ -24,7 +24,10 @@ export default function useDialog(type: string | Ref<string>) {
 
   const closeDialogHandler = (event: KeyboardEvent | MouseEvent) => {
     const currentType = resolveType();
-    if (event instanceof KeyboardEvent && event.key === 'Escape') dialog.toggle(currentType);
+    if (event instanceof KeyboardEvent && event.key === 'Escape') {
+      dialog.toggle(currentType);
+      return;
+    }
 
     if (!(event instanceof MouseEvent)) return;
 
@@ -35,6 +38,7 @@ export default function useDialog(type: string | Ref<string>) {
     ) {
       event.stopPropagation();
       dialog.toggle(currentType);
+      return;
     }
 
     if ((event.target as HTMLElement).id === `${DIALOG_OVERLAY_ID_PREFIX}${currentType}`) {

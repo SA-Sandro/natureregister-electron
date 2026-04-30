@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import BasicFilters from '@/components/filters/BasicFilters.vue';
-import ProcessedObservationsFilter from '@/components/filters/ProcessedObservationsFilter.vue';
+import AdditionalFilters from '@/components/filters/AdditionalFilters.vue';
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import ProcessedObservationsFilter from '@/components/filters/ProcessedObservati
       <div class="text-2xl">Mis Observaciones</div>
       <div class="flex items-center gap-10">
         <BasicFilters />
-        <ProcessedObservationsFilter />
+        <AdditionalFilters />
       </div>
     </div>
   </div>
