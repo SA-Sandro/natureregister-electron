@@ -7,6 +7,7 @@ import { DialogType } from '@/const/DialogType';
 import ZoomedInSelectedImageDialog from '@/components/ZoomedInSelectedImageDialog.vue';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 import ObservationRegisterForm from '@/components/ObservationRegisterForm.vue';
+import { formatDate } from '@/utils/FormatDate';
 
 const { DETAILS, ZOOM, FORM } = DialogType;
 const imageStore = useImageStore();
@@ -56,31 +57,55 @@ const openRegisterForm = (uuidValue: string, imageUrl: string) => {
 
         <div
           v-if="linkedImgWithObs.observation != undefined"
-          class="p-3 flex flex-col justify-between h-28"
+          class="p-2 flex flex-col justify-between h-28 bg-white border-t border-slate-100"
         >
-          <div>
+          <div class="flex flex-col">
             <p
-              class="text-lg italic font-bold cursor-pointer hover:text-blue-600 transition-colors line-clamp-2"
+              class="text-base font-semibold text-slate-900 cursor-pointer hover:text-emerald-600 transition-colors line-clamp-2"
               @click="() => openDetails(linkedImgWithObs)"
             >
               {{ linkedImgWithObs.observation.specimenInfo.scientificName || 'Indeterminado' }}
             </p>
-            <p class="text-sm text-gray-600 line-clamp-2">
-              {{ linkedImgWithObs.observation.geospatialData.observationSite || 'Indeterminado' }}
+            <div class="flex items-center">
+              <span class="text-xs text-slate-400">📍</span>
+              <p class="text-xs text-slate-600 pl-1">
+                {{
+                  linkedImgWithObs.observation.geospatialData.observationSite ||
+                  'Ubicación no registrada'
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+            <span
+              class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200"
+            >
+              Procesada
+            </span>
+            <p class="text-xs font-semibold text-slate-700">
+              {{ linkedImgWithObs.observation.observedAt || '—' }}
             </p>
           </div>
-          <p class="text-right text-sm font-semibold text-gray-500">
-            {{ linkedImgWithObs.observation.observedAt || 'Indeterminado' }}
-          </p>
         </div>
-        <div v-else class="flex flex-col justify-center items-center py-2">
-          <p class="text-lg w-full text-left p-2">Sin procesar</p>
-          <button
-            @click="openRegisterForm(linkedImgWithObs.uuid, linkedImgWithObs.imagePath)"
-            class="cursor-pointer bg-green-100 p-1 rounded-lg"
-          >
-            Añadir observación
-          </button>
+        <div
+          v-else
+          class="p-2 flex flex-col justify-between h-28 bg-emerald-50 border-t border-emerald-200"
+        >
+          <div class="flex flex-col">
+            <p class="text-base font-semibold text-slate-900">Sin procesar</p>
+            <p class="text-xs text-slate-600 pt-1">Añade información para completar</p>
+          </div>
+          <div class="flex items-center justify-between p-0.5 border-t border-emerald-200">
+            <button
+              @click="openRegisterForm(linkedImgWithObs.uuid, linkedImgWithObs.imagePath)"
+              class="cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold py-1 px-3 rounded-md transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
+            >
+              Procesar
+            </button>
+            <p class="text-xs text-slate-500 mt-5">
+              {{ formatDate(linkedImgWithObs.date) }}
+            </p>
+          </div>
         </div>
       </div>
     </div>

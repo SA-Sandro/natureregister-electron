@@ -210,7 +210,7 @@ const registerObservation = async () => {
                   id="dialog-overlay-cancel-button"
                   type="button"
                   @click="closeDialogHandler"
-                  class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+                  class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer"
                 >
                   Cancelar
                 </button>

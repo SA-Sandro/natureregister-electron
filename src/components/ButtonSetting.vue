@@ -53,7 +53,9 @@ const showSettingsDialog = () => {
         <button type="button" class="hover:scale-110 transsition-all cursor-pointer">
           <SelectFolder />
         </button>
-        <p class="text-gray-800 font-semibold truncate">{{ folderName }}</p>
+        <p class="text-gray-800 font-semibold truncate">
+          {{ folderName || 'No hay ninguna carpeta seleccionada' }}
+        </p>
       </div>
     </div>
   </div>
