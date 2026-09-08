@@ -8,37 +8,99 @@ import { SpecimenObservationRoutes } from '@infrastructure/routes/SpecimenObserv
 import { SpecimenObservationController } from '@infrastructure/controllers/SpecimenObservationController';
 import { SpecimenObservationManagementService } from '@application/SpecimenObservationManagementService';
 import { PrismaSpecimenObservationRepository } from '@infrastructure/repositories/PrismaSpecimenObservationRepository';
-import { PrismaClient } from '@prisma/client';
+import { createRequire } from 'node:module';
+import type { PrismaClient as PrismaClientType } from '@prisma/client';
 import { errorHandlingMiddleware } from '@infrastructure/middleware';
+import type { Server } from 'node:http';
 
-const app = express();
+const require = createRequire(import.meta.url);
+const { PrismaClient } = (() => {
+  try {
+    return require('@prisma/client');
+  } catch {
+    return require('./generated/prisma');
+  }
+})() as typeof import('@prisma/client');
 
-app.use(express.json());
-app.use(
-  cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  }),
-);
+export interface ServerOptions {
+  host?: string;
+  port?: number;
+  databaseUrl?: string;
+  prisma?: PrismaClientType;
+}
 
-const imageRepository = new FileSystemImageRepository();
-const imagesService = new ImagesManagementService(imageRepository);
-const imagesController = new ImagesController(imagesService);
-const imagesRoutes = new ImagesRoutes(imagesController);
+export interface StartedServer {
+  app: express.Express;
+  server: Server;
+  prisma: PrismaClientType;
+  close: () => Promise<void>;
+}
 
-const specimenObservationRepository = new PrismaSpecimenObservationRepository(new PrismaClient());
-const specimenObservationManagementService = new SpecimenObservationManagementService(
-  specimenObservationRepository,
-);
-const specimenObservationController = new SpecimenObservationController(
-  specimenObservationManagementService,
-);
-const specimenObservationRoutes = new SpecimenObservationRoutes(specimenObservationController);
+export function createApp(prisma: PrismaClientType): express.Express {
+  const app = express();
 
-app.use('/api/images', imagesRoutes.router);
-app.use('/api/specimenObservations', specimenObservationRoutes.router);
-app.listen(3000, () => {
-  console.log('Server is running on port 3000:  http://localhost:3000');
-});
-app.use(errorHandlingMiddleware);
+  app.use(express.json());
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        const allowed = !origin || origin === 'http://localhost:5173' || origin === 'null';
+        callback(null, allowed);
+      },
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      credentials: true,
+    }),
+  );
+
+  const imageRepository = new FileSystemImageRepository();
+  const imagesService = new ImagesManagementService(imageRepository);
+  const imagesController = new ImagesController(imagesService);
+  const imagesRoutes = new ImagesRoutes(imagesController);
+
+  const specimenObservationRepository = new PrismaSpecimenObservationRepository(prisma);
+  const specimenObservationManagementService = new SpecimenObservationManagementService(
+    specimenObservationRepository,
+  );
+  const specimenObservationController = new SpecimenObservationController(
+    specimenObservationManagementService,
+  );
+  const specimenObservationRoutes = new SpecimenObservationRoutes(specimenObservationController);
+
+  app.use('/api/images', imagesRoutes.router);
+  app.use('/api/specimenObservations', specimenObservationRoutes.router);
+  app.use(errorHandlingMiddleware);
+
+  return app;
+}
+
+export function startServer({
+  host = '127.0.0.1',
+  port = 3000,
+  databaseUrl,
+  prisma,
+}: ServerOptions = {}): Promise<StartedServer> {
+  const prismaClient =
+    prisma ??
+    (databaseUrl
+      ? new PrismaClient({ datasources: { db: { url: databaseUrl } } })
+      : new PrismaClient());
+  const app = createApp(prismaClient);
+
+  return new Promise((resolve, reject) => {
+    const server = app.listen(port, host, () => {
+      console.log(`Server is running on port ${port}:  http://${host}:${port}`);
+      resolve({
+        app,
+        server,
+        prisma: prismaClient,
+        close: async () => {
+          await new Promise<void>((closeResolve, closeReject) => {
+            server.close((error) => (error ? closeReject(error) : closeResolve()));
+          });
+          await prismaClient.$disconnect();
+        },
+      });
+    });
+
+    server.on('error', reject);
+  });
+}
