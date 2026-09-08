@@ -1,14 +1,21 @@
 {
   "name": "vue-project",
+  "productName": "Nature Register",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "node": "vite-node server/infrastructure/server.ts",
+    "node": "vite-node server/infrastructure/server-entry.ts",
     "seed": "vite-node scripts/seed.ts",
     "db": "npx prisma studio",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy --schema prisma/schema.prisma",
+    "build:server": "vite build --config vite.server.config.ts",
+    "prepare:server": "npm run prisma:generate && npm run build:server && node scripts/prepareServerBundle.mjs",
+    "release:dir": "npm run build-only && npm run prepare:server && electron-builder --win dir",
+    "release:setup": "npm run build-only && npm run prepare:server && electron-builder --win nsis",
     "dev:vite": "vite",
-    "dev:electron": "wait-on http://localhost:5173 && npx electron electron/electron-main.mjs",
+    "dev:electron": "wait-on http://localhost:5173 && set NODE_ENV=development&& npx electron electron/electron-main.mjs",
     "dev": "concurrently -k \"npm run dev:vite\" \"npm run dev:electron\"",
     "build": "npm run type-check -p && npm run build-only",
     "preview": "vite preview",
@@ -39,6 +46,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsdom": "^21.1.7",
+    "@types/leaflet": "^1.9.22",
     "@types/node": "^22.15.32",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vitest/eslint-plugin": "^1.2.7",
@@ -49,6 +57,7 @@
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.0",
     "electron": "^37.2.3",
+    "electron-builder": "^26.15.3",
     "eslint": "^9.29.0",
     "eslint-plugin-vue": "~10.2.0",
     "jiti": "^2.4.2",
@@ -71,7 +80,59 @@
     "wait-on": "^8.0.4"
   },
   "description": "This template should help get you started developing with Vue 3 in Vite.",
-  "main": "electron-main.mjs",
+  "main": "electron/electron-main.mjs",
+  "build": {
+    "appId": "com.natureregister.app",
+    "productName": "Nature Register",
+    "directories": {
+      "output": "../Nature Register Installer"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/.prisma/**/*",
+      "node_modules/@prisma/engines/**/*"
+    ],
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "server-dist/**/*",
+      "server-dist/migrations/**/*",
+      "server-dist/generated/**/*",
+      "server-dist/runtime/**/*",
+      "server-dist/schema.prisma",
+      "node_modules/.prisma/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "server-dist",
+        "to": "server-dist"
+      },
+      {
+        "from": "node_modules/prisma",
+        "to": "node_modules/prisma"
+      },
+      {
+        "from": "node_modules/@prisma",
+        "to": "node_modules/@prisma"
+      }
+    ],
+    "win": {
+      "target": [
+        "dir",
+        "nsis"
+      ],
+      "icon": "public/logo_nt.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Nature Register",
+      "artifactName": "Nature Register Installer ${version}.${ext}"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"

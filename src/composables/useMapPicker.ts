@@ -1,14 +1,15 @@
 import { ref, onBeforeUnmount } from 'vue';
-import L, { Map, Marker } from 'leaflet';
+import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import '@/utils/ConfigureLeafletIcons';
 
 const PNOA_ORTOPHOTO_URL = 'https://www.ign.es/wms-inspire/pnoa-ma';
 const IGN_BASE_URL = 'https://www.ign.es/wms-inspire/ign-base';
 const DEFAULT_POSITION: [number, number] = [36.7372, -4.4436]; // Centro de Málaga
 
 export function useMapPicker(initialCoordinates?: string) {
-  let map: Map | null = null;
-  let marker: Marker | null = null;
+  let map: L.Map | null = null;
+  let marker: L.Marker | null = null;
   const selectedCoordinates = ref<[number, number] | null>(null);
 
   if (initialCoordinates) {
@@ -19,12 +20,14 @@ export function useMapPicker(initialCoordinates?: string) {
   }
 
   const initializeMap = (containerId?: string) => {
+    if (!containerId) return;
+
     if (map) {
       cleanup();
     }
 
     const position = selectedCoordinates.value || DEFAULT_POSITION;
-    
+
     map = L.map(containerId, {
       zoomControl: true,
     }).setView(position, 12);
