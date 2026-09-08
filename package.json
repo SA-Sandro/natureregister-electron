@@ -13,6 +13,7 @@
     "build:server": "vite build --config vite.server.config.ts",
     "prepare:server": "npm run prisma:generate && npm run build:server && node scripts/prepareServerBundle.mjs",
     "release:dir": "npm run build-only && npm run prepare:server && electron-builder --win dir",
+    "release:setup": "npm run build-only && npm run prepare:server && electron-builder --win nsis",
     "dev:vite": "vite",
     "dev:electron": "wait-on http://localhost:5173 && set NODE_ENV=development&& npx electron electron/electron-main.mjs",
     "dev": "concurrently -k \"npm run dev:vite\" \"npm run dev:electron\"",
@@ -45,6 +46,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsdom": "^21.1.7",
+    "@types/leaflet": "^1.9.22",
     "@types/node": "^22.15.32",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vitest/eslint-plugin": "^1.2.7",
@@ -83,7 +85,7 @@
     "appId": "com.natureregister.app",
     "productName": "Nature Register",
     "directories": {
-      "output": "../Nature Register release"
+      "output": "../Nature Register Installer"
     },
     "asar": true,
     "asarUnpack": [
@@ -116,8 +118,19 @@
       }
     ],
     "win": {
-      "target": "dir",
+      "target": [
+        "dir",
+        "nsis"
+      ],
       "icon": "public/logo_nt.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Nature Register",
+      "artifactName": "Nature Register Installer ${version}.${ext}"
     }
   },
   "keywords": [],
