@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AdditionalFilters: typeof import('./src/components/filters/AdditionalFilters.vue')['default']
+    AutocompleteInput: typeof import('./src/components/AutocompleteInput.vue')['default']
     BasicFilters: typeof import('./src/components/filters/BasicFilters.vue')['default']
     ButtonSetting: typeof import('./src/components/ButtonSetting.vue')['default']
     CameraIcon: typeof import('./src/components/Icons/CameraIcon.vue')['default']
