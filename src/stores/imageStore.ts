@@ -10,7 +10,7 @@ import { LocalStorageService } from '@/services/LocalStorageService';
 import { SpecimenObservationImpl } from '@/api/SPObservation/SpecimenObservationImpl';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 import { getUuidFromUrl } from '@/utils/GetUuidFromUrl';
-import { useLoaderStore } from './loaderStore';
+import { useLoaderStore } from '@/stores/loaderStore';
 import { ObservationStatus } from '@/const/ObservationStatus';
 
 export const useImageStore = defineStore('imageStore', {

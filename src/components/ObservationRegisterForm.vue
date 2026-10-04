@@ -5,12 +5,14 @@ import { useDialogStore } from '@/stores/dialogStore';
 import { DialogType } from '@/const/DialogType';
 import MapIcon from './Icons/MapIcon.vue';
 import MapPickerDialog from './MapPickerDialog.vue';
+import { useLoaderStore } from '@/stores/loaderStore';
+import { storeToRefs } from 'pinia';
+import { SpecimenObservationImpl } from '@/api/SPObservation/SpecimenObservationImpl';
+import { useImageStore } from '@/stores/imageStore';
 import { popupNotifier } from '@/services/PopupNotifierManagement';
 import { TitleMessages } from '@/const/popup/PopupTitle';
 import { SuccessMessages } from '@/const/popup/PopupMessages';
-import { useImageStore } from '@/stores/imageStore';
 import { ObservationStatus } from '@/const/ObservationStatus';
-import { SpecimenObservationImpl } from '@/api/SPObservation/SpecimenObservationImpl';
 
 const props = defineProps<{
   uuid: string;
@@ -20,12 +22,14 @@ const props = defineProps<{
 const dialogType = computed(() => `${DialogType.FORM}_${props.uuid}`);
 const { isOpen, closeDialogHandler } = useDialog(dialogType);
 const dialogStore = useDialogStore();
+const loaderStore = useLoaderStore();
+const { isRegistering } = storeToRefs(loaderStore);
 
 const currentId = computed(() => props.uuid);
 
 import { useObservationForm } from '@/composables/useObservationForm';
 
-const { field, mapToSpecimenObservation } = useObservationForm(currentId);
+const { field, mapToSpecimenObservation, areRequiredFieldsFilled } = useObservationForm(currentId);
 
 const scientificName = field('scientificName');
 const family = field('family');
@@ -40,6 +44,7 @@ const imagePath = computed(() => props.imageUrl);
 
 const today = computed(() => new Date().toISOString().slice(0, 10));
 const observedAtError = computed(() => observedAt.value && observedAt.value > today.value);
+const canRegisterObservation = computed(() => areRequiredFieldsFilled());
 
 const openMapPicker = () => {
   dialogStore.toggle(DialogType.MAP_PICKER);
@@ -50,29 +55,32 @@ const handleSelectCoordinates = (selectedCoords: string) => {
 };
 
 const registerObservation = async () => {
-  if (observedAtError.value) return;
+  loaderStore.setIsRegistering(true);
+  try {
+    const mappedObservation = mapToSpecimenObservation(imagePath.value);
 
-  const mappedObservation = mapToSpecimenObservation();
-  mappedObservation.imagePath = imagePath.value;
+    await new SpecimenObservationImpl().create(mappedObservation);
 
-  await new SpecimenObservationImpl().create(mappedObservation);
-  popupNotifier.createNotification(
-    TitleMessages.SUCCESS,
-    SuccessMessages.SUCCESSFUL_OBSERVATION_REGISTRATION,
-    'success',
-  );
+    popupNotifier.createNotification(
+      TitleMessages.SUCCESS,
+      SuccessMessages.SUCCESSFUL_OBSERVATION_REGISTRATION,
+      'success',
+    );
 
-  const store = useImageStore();
-  const localService = new (await import('@/services/LocalStorageService')).LocalStorageService();
-  const selectedPath = localService.getItem('selectedFolderPath');
-  if (selectedPath) {
-    await store.loadImages(selectedPath);
+    const imageStore = useImageStore();
+    await imageStore.loadImagesLinkedToObservations();
+    imageStore.filterByStatus(ObservationStatus.UNPROCESSED);
+    dialogStore.toggle(dialogType.value);
+  } catch (error) {
+    console.error('Error registering observation:', error);
+    popupNotifier.createNotification(
+      TitleMessages.ERROR,
+      'No se pudo registrar la observación. Inténtalo de nuevo.',
+      'error',
+    );
+  } finally {
+    loaderStore.setIsRegistering(false);
   }
-
-  await store.loadImagesLinkedToObservations();
-
-  dialogStore.toggle(dialogType.value);
-  store.filterByStatus(ObservationStatus.UNPROCESSED);
 };
 </script>
 <template>
@@ -88,9 +96,22 @@ const registerObservation = async () => {
       <dialog
         role="dialog"
         aria-modal="true"
+        :aria-busy="isRegistering"
         class="static w-[35%] h-auto max-h-[90vh] backdrop-blur-sm flex justify-center rounded-lg shadow-lg p-6"
       >
-        <div class="w-full flex flex-col">
+        <div class="relative w-full flex flex-col">
+          <div
+            v-if="isRegistering"
+            class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-md bg-white/85"
+            role="status"
+            aria-live="polite"
+          >
+            <span
+              class="h-10 w-10 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"
+              aria-hidden="true"
+            ></span>
+            <p class="text-sm font-medium text-slate-700">Registrando observación…</p>
+          </div>
           <h2 class="text-2xl font-bold pb-4">Registrar nueva observación</h2>
           <div>
             <form @submit.prevent="registerObservation" class="flex flex-col gap-4">
@@ -216,8 +237,8 @@ const registerObservation = async () => {
                 </button>
                 <button
                   type="submit"
-                  :disabled="observedAtError"
-                  class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
+                  :disabled="!canRegisterObservation"
+                  class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                 >
                   Registrar observación
                 </button>
