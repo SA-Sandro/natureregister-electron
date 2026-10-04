@@ -22,7 +22,22 @@ export function useObservationForm(id: string | Ref<string>) {
 
   const form = reactive(getDefaultForm());
 
-  function mapToSpecimenObservation(imagePath?: string): SpecimenObservationWithImage {
+  function areRequiredFieldsFilled(): boolean {
+    const requiredFields: (keyof Omit<FormState, 'comments'>)[] = [
+      'scientificName',
+      'family',
+      'order',
+      'observedAt',
+      'observationPlace',
+      'province',
+      'locality',
+      'coordinates',
+    ];
+
+    return requiredFields.every((name) => form[name].trim().length > 0);
+  }
+
+  function mapToSpecimenObservation(imagePath: string): SpecimenObservationWithImage {
     const defaultIfEmpty = (value: string) => (value?.trim() ? value : 'Sin determinar');
 
     return {
@@ -52,5 +67,5 @@ export function useObservationForm(id: string | Ref<string>) {
     });
   }
 
-  return { form, field, mapToSpecimenObservation } as const;
+  return { form, field, mapToSpecimenObservation, areRequiredFieldsFilled } as const;
 }

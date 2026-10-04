@@ -69,7 +69,7 @@ const handleSelectCoordinates = (e: MouseEvent | KeyboardEvent) => {
             id="dialog-overlay-cancel-button"
             type="button"
             @click="closeDialogHandler"
-            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer"
           >
             Cancelar
           </button>
@@ -77,7 +77,7 @@ const handleSelectCoordinates = (e: MouseEvent | KeyboardEvent) => {
             id="dialog-overlay-confirm-button"
             type="button"
             @click="handleSelectCoordinates($event)"
-            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer"
           >
             Confirmar ubicación
           </button>

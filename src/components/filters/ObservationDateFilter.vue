@@ -38,7 +38,7 @@ const setObservationDateDirection = (direction: ObservationStatus) => {
       <button
         @click="toggleOrderByObservationDate"
         type="button"
-        class="flex items-center justify-between w-full rounded-2xl border px-4 py-3 text-left transition hover:border-slate-300 hover:bg-slate-50"
+        class="flex items-center justify-between w-full rounded-2xl border px-4 py-3 text-left transition hover:border-slate-300 hover:bg-slate-50 cursor-pointer"
       >
         <div>
           <p class="text-sm font-semibold text-slate-900">Ordenar por fecha</p>
@@ -47,9 +47,9 @@ const setObservationDateDirection = (direction: ObservationStatus) => {
           </p>
         </div>
         <div
-          class="flex h-8 w-14 items-center rounded-full border px-1.5 transition"
+          class="flex h-8 w-16 items-center rounded-full border px-0.5 transition"
           :class="
-            orderByObservationDate ? 'border-blue-500 bg-blue-600' : 'border-slate-300 bg-white'
+            orderByObservationDate ? 'border-blue-500 bg-blue-600 px-2.5'  : 'border-gray-300 bg-gray-200'
           "
         >
           <span

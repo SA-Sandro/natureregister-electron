@@ -2,9 +2,6 @@
 import { onMounted, onBeforeUnmount } from 'vue';
 import { SpecimenObservation } from '@/types/SpecimenObservationType';
 import { getCoordinates } from '@/utils/GetCoordinates';
-import { popupNotifier } from '@/services/PopupNotifierManagement';
-import { TitleMessages } from '@/const/popup/PopupTitle';
-import { ErrorMessages } from '@/const/popup/PopupMessages';
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '@/utils/ConfigureLeafletIcons';
@@ -18,19 +15,13 @@ const props = defineProps<{
 const cords = getCoordinates(props.observationInfo.geospatialData.coordinates);
 
 let map: L.Map | null = null;
-let position: [number, number] = [0, 0];
-
-if (!cords) {
-  popupNotifier.createNotification(TitleMessages.ERROR, ErrorMessages.INVALID_COORDINATES, 'error');
-} else {
-  const [x, y] = cords;
-  position = [x, y];
-}
 
 onMounted(() => {
+  if (!cords) return;
+
   map = L.map('map', {
     zoomControl: true,
-  }).setView(position, 19);
+  }).setView(cords, 19);
 
   const pnoa = L.tileLayer.wms(PNOA_ORTOPHOTO_URL, {
     layers: 'OI.OrthoimageCoverage',
@@ -51,7 +42,7 @@ onMounted(() => {
 
   labels.addTo(map);
 
-  L.marker(position)
+  L.marker(cords)
     .addTo(map)
     .bindPopup(
       props.observationInfo.geospatialData.observationSite +
@@ -69,7 +60,19 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div id="map"></div>
+  <div
+    v-if="cords"
+    id="map"
+    role="region"
+    aria-label="Mapa de ubicación de la observación"
+  ></div>
+  <div
+    v-else
+    class="flex h-full min-h-[220px] items-center justify-center px-4 text-center text-sm text-slate-500"
+    role="status"
+  >
+    Ubicación no disponible
+  </div>
 </template>
 
 <style scoped>
