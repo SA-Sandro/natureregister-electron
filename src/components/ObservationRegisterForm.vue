@@ -5,6 +5,7 @@ import { useDialogStore } from '@/stores/dialogStore';
 import { DialogType } from '@/const/DialogType';
 import MapIcon from './Icons/MapIcon.vue';
 import MapPickerDialog from './MapPickerDialog.vue';
+import AutocompleteInput from './AutocompleteInput.vue';
 import { useLoaderStore } from '@/stores/loaderStore';
 import { storeToRefs } from 'pinia';
 import { SpecimenObservationImpl } from '@/api/SPObservation/SpecimenObservationImpl';
@@ -117,33 +118,30 @@ const registerObservation = async () => {
             <form @submit.prevent="registerObservation" class="flex flex-col gap-4">
               <div>
                 <label for="scientificName" class="text-sm"> Nombre científico </label>
-                <input
-                  type="text"
+                <AutocompleteInput
                   id="scientificName"
                   v-model="scientificName"
-                  placeholder="Ej: Scarabus laticollis"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                  placeholder="Ej: Orictes nasicornis"
+                  field="scientificName"
                 />
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label for="family" class="block text-sm font-medium mb-2"> Familia </label>
-                  <input
-                    type="text"
+                  <AutocompleteInput
                     id="family"
                     v-model="family"
                     placeholder="Ej: Scarabaeidae"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                    field="family"
                   />
                 </div>
                 <div>
                   <label for="order" class="block text-sm font-medium mb-2"> Orden </label>
-                  <input
-                    type="text"
+                  <AutocompleteInput
                     id="order"
                     v-model="order"
                     placeholder="Ej: Coleoptera"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                    field="orden"
                   />
                 </div>
               </div>
