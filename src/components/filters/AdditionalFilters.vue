@@ -95,7 +95,7 @@ const onStatusFilterChange = () => {
             </button>
           </div>
           <p class="text-sm text-slate-500">
-            La configuración actual te ayudará a encontrar observaciones más relevantes.
+            Aplica los diferentes filtros para refinar tu búsqueda.
           </p>
         </footer>
       </div>

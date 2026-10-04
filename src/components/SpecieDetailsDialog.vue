@@ -14,61 +14,132 @@ const { observationInfo } = storeToRefs(specimenInfoStore);
 <template>
   <transition name="bounce">
     <div
-      v-if="isOpen"
+      v-if="isOpen && observationInfo"
       id="dialog-overlay-details"
-      class="fixed inset-0 bg-black/40 flex items-center justify-center"
-      @click="closeDialogHandler"
-      @keydown="closeDialogHandler"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-6"
+      @click.self="closeDialogHandler"
+      @keydown.esc="closeDialogHandler"
       tabindex="0"
     >
       <dialog
         role="dialog"
         aria-modal="true"
-        class="static w-[70%] h-[95%] backdrop-blur-sm flex justify-center rounded-lg shadow-lg p-4"
+        class="static flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-lg bg-white p-0 shadow-2xl"
       >
-        <div>
-          <div>
-            <div v-if="observationInfo">
-              <div>
-                <h1 class="text-2xl font-bold px-5 py-2">
-                  {{ observationInfo.observation.specimenInfo.scientificName }}
-                </h1>
-                <p class="px-5 text-gray-600">
-                  {{ observationInfo.observation.specimenInfo.genus }} |
-                  {{ observationInfo.observation.specimenInfo.family }}
+        <header
+          class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 sm:px-7"
+        >
+          <div class="min-w-0">
+            <p class="mb-1 text-xs font-semibold uppercase tracking-widest text-emerald-700">
+              Registro de especie
+            </p>
+            <h1 class="text-xl font-semibold text-slate-900 sm:text-2xl">
+              {{
+                observationInfo.observation?.specimenInfo.scientificName || 'Especie sin determinar'
+              }}
+            </h1>
+            <p class="mt-1 text-sm text-slate-600">
+              {{ observationInfo.observation?.specimenInfo.genus || 'Género no indicado' }}
+              <span aria-hidden="true">·</span>
+              {{ observationInfo.observation?.specimenInfo.family || 'Familia no indicada' }}
+            </p>
+          </div>
+          <button
+            type="button"
+            id="dialog-overlay-cancel-button"
+            @click="closeDialogHandler"
+            aria-label="Cerrar detalles"
+            class="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+          >
+            ×
+          </button>
+        </header>
+
+        <div class="min-h-0 overflow-y-auto">
+          <section class="grid gap-4 p-4 sm:p-6 lg:grid-cols-[1.2fr_0.8fr]">
+            <div
+              class="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-md bg-slate-100"
+            >
+              <img
+                :src="observationInfo.imagePath"
+                :alt="
+                  observationInfo.observation?.specimenInfo.scientificName || 'Imagen de la especie'
+                "
+                class="h-full w-full object-contain"
+              />
+            </div>
+            <div
+              class="flex min-h-[260px] flex-col overflow-hidden rounded-md border border-slate-200 bg-slate-50"
+            >
+              <div class="border-b border-slate-200 px-4 py-3">
+                <h2 class="text-sm font-semibold text-slate-800">Lugar de observación</h2>
+                <p class="mt-1 text-sm text-slate-600">
+                  {{
+                    observationInfo.observation?.geospatialData.observationSite ||
+                    'Lugar no indicado'
+                  }}
+                  <span v-if="observationInfo.observation?.geospatialData.locality">
+                    · {{ observationInfo.observation.geospatialData.locality }}
+                  </span>
+                  <span v-if="observationInfo.observation?.geospatialData.province">
+                    · {{ observationInfo.observation.geospatialData.province }}
+                  </span>
+                </p>
+                <p class="mt-1 text-xs text-slate-500">
+                  Coordenadas:
+                  {{ observationInfo.observation?.geospatialData.coordinates || 'No registradas' }}
                 </p>
               </div>
-              <div class="flex pt-4 px-5 gap-1.5">
-                <div class="flex-1 flex justify-center items-center">
-                  <img
-                    :src="observationInfo.imagePath"
-                    :alt="observationInfo.observation.specimenInfo.scientificName"
-                    class="max-h-full max-w-full aspect-[4/3] object-contain"
-                  />
-                </div>
-                <div class="flex-1">
-                  <div class="relative w-full h-full">
-                    <ObservationMap :observation-info="observationInfo.observation" />
-                  </div>
+              <div class="min-h-[220px] flex-1">
+                <ObservationMap
+                  v-if="observationInfo.observation"
+                  :observation-info="observationInfo.observation"
+                />
+                <div
+                  v-else
+                  class="flex h-full items-center justify-center px-4 text-center text-sm text-slate-500"
+                >
+                  No hay datos de ubicación para mostrar en el mapa.
                 </div>
               </div>
             </div>
-          </div>
-          <div class="flex py-5 gap-x-5 justify-center">
-            <div class="p-4 bg-gray-100 rounded-lg shadow-sm">
-              <h3 class="font-semibold mb-2">Datos de la especie</h3>
-              <p><strong>Fecha de registro:</strong> {{ formatDate(observationInfo.date) }}</p>
-              <p><strong>Género:</strong> {{ observationInfo.observation.specimenInfo.genus }}</p>
-              <p><strong>Familia:</strong> {{ observationInfo.observation.specimenInfo.family }}</p>
+          </section>
+
+          <section class="grid gap-6 border-t border-slate-200 bg-white p-4 sm:grid-cols-2 sm:p-6">
+            <div>
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-emerald-800">
+                Datos del registro
+              </h2>
+              <dl class="divide-y divide-slate-100 text-sm">
+                <div class="flex justify-between gap-4 py-2">
+                  <dt class="text-slate-500">Fecha</dt>
+                  <dd class="text-right font-medium text-slate-800">
+                    {{ formatDate(observationInfo.date) }}
+                  </dd>
+                </div>
+                <div class="flex justify-between gap-4 py-2">
+                  <dt class="text-slate-500">Género</dt>
+                  <dd class="text-right font-medium text-slate-800">
+                    {{ observationInfo.observation?.specimenInfo.genus || 'No indicado' }}
+                  </dd>
+                </div>
+                <div class="flex justify-between gap-4 py-2">
+                  <dt class="text-slate-500">Familia</dt>
+                  <dd class="text-right font-medium text-slate-800">
+                    {{ observationInfo.observation?.specimenInfo.family || 'No indicada' }}
+                  </dd>
+                </div>
+              </dl>
             </div>
-            <div class="bg-gray-100 rounded-lg shadow-sm px-5">
-              <h3 class="font-semibold mb-2">Observaciones</h3>
-              <p v-if="observationInfo.observation.comments">
-                {{ observationInfo.observation.comments }}
+            <div>
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-emerald-800">
+                Observaciones
+              </h2>
+              <p class="whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                {{ observationInfo.observation?.comments || 'No hay comentarios registrados.' }}
               </p>
-              <p v-else class="text-gray-500">No hay comentarios</p>
             </div>
-          </div>
+          </section>
         </div>
       </dialog>
     </div>
