@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue';
 import { SpecimenObservationImpl } from '@/api/SPObservation/SpecimenObservationImpl';
-import type { SpecimenInfoSuggestionField } from '@/interfaces/SpecimenObservationInterface';
+import type { ObservationSuggestionField } from '@/interfaces/SpecimenObservationInterface';
 
 const props = withDefaults(
   defineProps<{
     id: string;
     modelValue: string;
-    field: SpecimenInfoSuggestionField;
+    field: ObservationSuggestionField;
     placeholder?: string;
     minCharacters?: number;
     debounceMs?: number;

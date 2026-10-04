@@ -1,5 +1,8 @@
 import { SpecimenObservation } from '@domain/entities/SpecimenObservation';
-import { SpecimenInfoSuggestionField, SpecimenObservationRepository } from '@domain/repositories/SpecimenObservationRepository';
+import {
+  ObservationSuggestionField,
+  SpecimenObservationRepository,
+} from '@domain/repositories/SpecimenObservationRepository';
 
 export class SpecimenObservationManagementService {
   constructor(private readonly specimenObservationRepository: SpecimenObservationRepository) {}
@@ -16,7 +19,10 @@ export class SpecimenObservationManagementService {
     return this.specimenObservationRepository.findSpecimenObservationById(uuid);
   }
 
-  public async getSpecimenInfoSuggestions(input: string, field: SpecimenInfoSuggestionField): Promise<string[]> {
+  public async getSpecimenInfoSuggestions(
+    input: string,
+    field: ObservationSuggestionField,
+  ): Promise<string[]> {
     return this.specimenObservationRepository.findSpecimenInfoSuggestions(input, field);
   }
 }

@@ -6,14 +6,7 @@ import { ObservationDate } from '@domain/valueObjects/ObservationDate';
 import { SpecimenInfo } from '@domain/valueObjects/SpecimenInfo';
 import { GeospatialData } from '@domain/valueObjects/GeospatialData';
 import { FileSystemImageRepository } from '@infrastructure/repositories/FileSystemImageRepository';
-import {
-  SpecimenInfoSuggestionField,
-} from '@domain/repositories/SpecimenObservationRepository';
-
-const isSpecimenInfoSuggestionField = (
-  value: unknown,
-): value is SpecimenInfoSuggestionField =>
-  value === 'scientificName' || value === 'family' || value === 'orden';
+import { ObservationSuggestionField } from '@domain/repositories/SpecimenObservationRepository';
 
 export class SpecimenObservationController {
   constructor(
@@ -40,15 +33,10 @@ export class SpecimenObservationController {
     try {
       const { input, field } = req.query;
 
-      if (typeof input !== 'string' || !isSpecimenInfoSuggestionField(field)) {
-        res.status(400).json({ message: 'A valid input and specimen info field are required.' });
-        return;
-      }
-
       const suggestions =
         await this.specimenObservationManagementService.getSpecimenInfoSuggestions(
-          input.trim(),
-          field,
+          input as string,
+          field as ObservationSuggestionField,
         );
       res.status(200).json(suggestions);
     } catch (error: unknown) {

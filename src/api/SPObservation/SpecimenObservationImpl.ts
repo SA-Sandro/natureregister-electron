@@ -1,5 +1,5 @@
 import {
-  SpecimenInfoSuggestionField,
+  ObservationSuggestionField,
   SpecimenObservationInterface,
 } from '@/interfaces/SpecimenObservationInterface';
 import { SpecimenObservation, SpecimenObservationWithImage } from '@/types/SpecimenObservationType';
@@ -15,7 +15,7 @@ export class SpecimenObservationImpl implements SpecimenObservationInterface {
   
   async getSpecimenInfoSuggestions(
     input: string,
-    field: SpecimenInfoSuggestionField,
+    field: ObservationSuggestionField,
   ): Promise<string[]> {
     const response = await this.axiosInstance.get<string[]>(
       '/specimenObservations/getSpecimenInfoSuggestions',

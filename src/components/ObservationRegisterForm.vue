@@ -163,33 +163,30 @@ const registerObservation = async () => {
                 <label for="observationPlace" class="block text-sm font-medium mb-2">
                   Lugar de observación
                 </label>
-                <input
-                  type="text"
+                <AutocompleteInput
                   id="observationPlace"
                   v-model="observationPlace"
                   placeholder="Ej: La Albuquería"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                  field="observationSite"
                 />
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label for="province" class="block text-sm font-medium mb-2"> Provincia </label>
-                  <input
-                    type="text"
+                  <AutocompleteInput
                     id="province"
                     v-model="province"
                     placeholder="Ej: Málaga"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                    field="province"
                   />
                 </div>
                 <div>
                   <label for="locality" class="block text-sm font-medium mb-2"> Localidad </label>
-                  <input
-                    type="text"
+                  <AutocompleteInput
                     id="locality"
                     v-model="locality"
                     placeholder="Ej: Coín"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                    field="locality"
                   />
                 </div>
               </div>
