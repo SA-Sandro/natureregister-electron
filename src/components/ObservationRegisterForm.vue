@@ -13,7 +13,6 @@ import { useImageStore } from '@/stores/imageStore';
 import { popupNotifier } from '@/services/PopupNotifierManagement';
 import { TitleMessages } from '@/const/popup/PopupTitle';
 import { SuccessMessages } from '@/const/popup/PopupMessages';
-import { ObservationStatus } from '@/const/ObservationStatus';
 import { formatDateForObservedAtInput } from '@/utils/FormatDate';
 
 const props = defineProps<{
@@ -77,8 +76,7 @@ const registerObservation = async () => {
     );
 
     const imageStore = useImageStore();
-    await imageStore.loadImagesLinkedToObservations();
-    imageStore.filterByStatus(ObservationStatus.UNPROCESSED);
+    await imageStore.init();
     dialogStore.toggle(dialogType.value);
   } catch (error) {
     console.error('Error registering observation:', error);
