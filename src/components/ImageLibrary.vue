@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useImageStore } from '@/stores/imageStore';
 import { useDialogStore } from '@/stores/dialogStore';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
@@ -7,10 +7,25 @@ import { DialogType } from '@/const/DialogType';
 import ZoomedInSelectedImageDialog from '@/components/ZoomedInSelectedImageDialog.vue';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 import ObservationRegisterForm from '@/components/ObservationRegisterForm.vue';
+import ObservationPagination from '@/components/ObservationPagination.vue';
 import { formatDate } from '@/utils/FormatDate';
 
 const { DETAILS, ZOOM, FORM } = DialogType;
 const imageStore = useImageStore();
+const pageSize = 100;
+const currentPage = ref(1);
+const paginatedImages = computed(() => {
+  const startIndex = (currentPage.value - 1) * pageSize;
+  return imageStore.imagesWithObservations.slice(startIndex, startIndex + pageSize);
+});
+
+watch(
+  () => imageStore.imagesWithObservations,
+  () => {
+    currentPage.value = 1;
+  },
+);
+
 const dialog = useDialogStore();
 const specimenInfo = useSpecimenInfoStore();
 
@@ -43,7 +58,7 @@ const openRegisterForm = (image: ImageLinkedToObservationType) => {
       class="grid gap-6 w-full p-4 sm:px-6 lg:px-8 max-w-[90rem] mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 auto-rows-fr"
     >
       <div
-        v-for="linkedImgWithObs in imageStore.imagesWithObservations"
+        v-for="linkedImgWithObs in paginatedImages"
         :key="linkedImgWithObs.uuid"
         class="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform duration-200 flex flex-col h-full"
       >
@@ -113,6 +128,12 @@ const openRegisterForm = (image: ImageLinkedToObservationType) => {
     </div>
 
     <p v-else class="text-gray-500 mt-12 text-lg font-medium">No hay imágenes disponibles</p>
+
+    <ObservationPagination
+      v-model:current-page="currentPage"
+      :page-size="pageSize"
+      :total-items="imageStore.imagesWithObservations.length"
+    />
 
     <ZoomedInSelectedImageDialog :imageUrl="selectedImageUrl || ''" />
     <ObservationRegisterForm

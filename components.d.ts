@@ -23,6 +23,7 @@ declare module 'vue' {
     MapPickerDialog: typeof import('./src/components/MapPickerDialog.vue')['default']
     ObservationDateFilter: typeof import('./src/components/filters/ObservationDateFilter.vue')['default']
     ObservationMap: typeof import('./src/components/ObservationMap.vue')['default']
+    ObservationPagination: typeof import('./src/components/ObservationPagination.vue')['default']
     ObservationRegisterForm: typeof import('./src/components/ObservationRegisterForm.vue')['default']
     ObservationsFilter: typeof import('./src/components/ObservationsFilter.vue')['default']
     ObservationStateFilter: typeof import('./src/components/filters/ObservationStateFilter.vue')['default']

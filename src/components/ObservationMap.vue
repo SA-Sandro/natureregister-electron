@@ -5,8 +5,9 @@ import { getCoordinates } from '@/utils/GetCoordinates';
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '@/utils/ConfigureLeafletIcons';
+import { createEsriWorldImageryLayer } from '@/utils/EsriWorldImagery';
+import { MAP_TILE_UPDATE_OPTIONS } from '@/utils/MapTileOptions';
 
-const PNOA_ORTOPHOTO_URL = 'https://www.ign.es/wms-inspire/pnoa-ma';
 const IGN_BASE_URL = 'https://www.ign.es/wms-inspire/ign-base';
 
 const props = defineProps<{
@@ -23,14 +24,7 @@ onMounted(() => {
     zoomControl: true,
   }).setView(cords, 19);
 
-  const pnoa = L.tileLayer.wms(PNOA_ORTOPHOTO_URL, {
-    layers: 'OI.OrthoimageCoverage',
-    format: 'image/png',
-    maxZoom: 19,
-    transparent: false,
-  });
-
-  pnoa.addTo(map);
+  createEsriWorldImageryLayer().addTo(map);
 
   const labels = L.tileLayer.wms(IGN_BASE_URL, {
     layers: 'IGNBaseTodo',
@@ -38,6 +32,7 @@ onMounted(() => {
     maxZoom: 16,
     transparent: true,
     opacity: 0.6,
+    ...MAP_TILE_UPDATE_OPTIONS,
   });
 
   labels.addTo(map);
