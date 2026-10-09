@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import useDialog from '@/composables/useDialog';
 import { useDialogStore } from '@/stores/dialogStore';
 import { DialogType } from '@/const/DialogType';
@@ -14,10 +14,12 @@ import { popupNotifier } from '@/services/PopupNotifierManagement';
 import { TitleMessages } from '@/const/popup/PopupTitle';
 import { SuccessMessages } from '@/const/popup/PopupMessages';
 import { ObservationStatus } from '@/const/ObservationStatus';
+import { formatDateForObservedAtInput } from '@/utils/FormatDate';
 
 const props = defineProps<{
   uuid: string;
   imageUrl: string;
+  imageDate: string;
 }>();
 
 const dialogType = computed(() => `${DialogType.FORM}_${props.uuid}`);
@@ -46,6 +48,12 @@ const imagePath = computed(() => props.imageUrl);
 const today = computed(() => new Date().toISOString().slice(0, 10));
 const observedAtError = computed(() => observedAt.value && observedAt.value > today.value);
 const canRegisterObservation = computed(() => areRequiredFieldsFilled());
+
+watch(isOpen, (open) => {
+  if (open) {
+    observedAt.value = formatDateForObservedAtInput(props.imageDate);
+  }
+});
 
 const openMapPicker = () => {
   dialogStore.toggle(DialogType.MAP_PICKER);

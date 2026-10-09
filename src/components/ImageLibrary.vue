@@ -16,6 +16,7 @@ const specimenInfo = useSpecimenInfoStore();
 
 const selectedImageUrl = ref<string>('');
 const uuid = ref<string>('');
+const selectedImageDate = ref('');
 
 const openDetails = (observationInfo: ImageLinkedToObservationType) => {
   specimenInfo.setSpecimenInfo(observationInfo);
@@ -27,10 +28,11 @@ const zoomImage = (url: string) => {
   dialog.toggle(ZOOM);
 };
 
-const openRegisterForm = (uuidValue: string, imageUrl: string) => {
-  uuid.value = uuidValue;
-  selectedImageUrl.value = imageUrl;
-  dialog.toggle(`${FORM}_${uuidValue}`);
+const openRegisterForm = (image: ImageLinkedToObservationType) => {
+  uuid.value = image.uuid;
+  selectedImageUrl.value = image.imagePath;
+  selectedImageDate.value = image.date;
+  dialog.toggle(`${FORM}_${image.uuid}`);
 };
 </script>
 
@@ -97,7 +99,7 @@ const openRegisterForm = (uuidValue: string, imageUrl: string) => {
           </div>
           <div class="flex items-center justify-between p-0.5 border-t border-emerald-200">
             <button
-              @click="openRegisterForm(linkedImgWithObs.uuid, linkedImgWithObs.imagePath)"
+              @click="openRegisterForm(linkedImgWithObs)"
               class="cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold py-1 px-3 rounded-md transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
             >
               Procesar
@@ -113,6 +115,10 @@ const openRegisterForm = (uuidValue: string, imageUrl: string) => {
     <p v-else class="text-gray-500 mt-12 text-lg font-medium">No hay imágenes disponibles</p>
 
     <ZoomedInSelectedImageDialog :imageUrl="selectedImageUrl || ''" />
-    <ObservationRegisterForm :uuid="uuid" :imageUrl="selectedImageUrl" />
+    <ObservationRegisterForm
+      :uuid="uuid"
+      :image-url="selectedImageUrl"
+      :image-date="selectedImageDate"
+    />
   </div>
 </template>
