@@ -2,6 +2,7 @@ import { computed, reactive, isRef, Ref } from 'vue';
 import { FormState } from '@/types/RegistrationFormType';
 import { SpecimenObservationWithImage } from '@/types/SpecimenObservationType';
 import { getGenusByScientificName } from '@/utils/GetGenusByScientificName';
+import { formatDateForStorage } from '@/utils/FormatDate';
 
 export function useObservationForm(id: string | Ref<string>) {
   const idRef = isRef(id) ? id : computed(() => id as string);
@@ -48,7 +49,7 @@ export function useObservationForm(id: string | Ref<string>) {
         family: defaultIfEmpty(form.family),
         orden: defaultIfEmpty(form.order),
       },
-      observedAt: form.observedAt,
+      observedAt: formatDateForStorage(form.observedAt),
       geospatialData: {
         coordinates: form.coordinates,
         locality: defaultIfEmpty(form.locality),

@@ -21,5 +21,12 @@ export class SpecimenObservationRoutes {
         this.specimenObservationController,
       ),
     );
+
+    this.router.get(
+      '/getSpecimenInfoSuggestions',
+      this.specimenObservationController.getSpecimenInfoSuggestions.bind(
+        this.specimenObservationController,
+      ),
+    );
   }
 }

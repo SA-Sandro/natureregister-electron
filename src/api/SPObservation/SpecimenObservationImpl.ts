@@ -1,4 +1,7 @@
-import { SpecimenObservationInterface } from '@/interfaces/SpecimenObservationInterface';
+import {
+  ObservationSuggestionField,
+  SpecimenObservationInterface,
+} from '@/interfaces/SpecimenObservationInterface';
 import { SpecimenObservation, SpecimenObservationWithImage } from '@/types/SpecimenObservationType';
 import { AxiosInstance } from 'axios';
 import { axiosInstance } from '@/api/http/AxiosInstance';
@@ -8,6 +11,17 @@ export class SpecimenObservationImpl implements SpecimenObservationInterface {
 
   constructor() {
     this.axiosInstance = axiosInstance;
+  }
+  
+  async getSpecimenInfoSuggestions(
+    input: string,
+    field: ObservationSuggestionField,
+  ): Promise<string[]> {
+    const response = await this.axiosInstance.get<string[]>(
+      '/specimenObservations/getSpecimenInfoSuggestions',
+      { params: { input, field } },
+    );
+    return response.data;
   }
 
   async getAll(): Promise<SpecimenObservation[]> {

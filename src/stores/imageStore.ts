@@ -20,6 +20,9 @@ export const useImageStore = defineStore('imageStore', {
     imagesWithObservations: [] as Array<ImageLinkedToObservationType>,
 
     images: [] as Array<Image>,
+
+    selectedObservationStatus: ObservationStatus.ALL,
+    selectedSortDirection: ObservationStatus.ANY_SORT,
   }),
 
   actions: {
@@ -78,7 +81,7 @@ export const useImageStore = defineStore('imageStore', {
 
       this.allImagesWithObservations = enriched;
 
-      this.imagesWithObservations = enriched;
+      this.filterBySpecifiedFilters(this.selectedObservationStatus, this.selectedSortDirection);
     },
 
     filterByStatus(status: string): Array<ImageLinkedToObservationType> {
@@ -115,7 +118,12 @@ export const useImageStore = defineStore('imageStore', {
       }
     },
 
-    filterBySpecifiedFilters(selectedObservationStatus: string, sortDirection: string) {
+    filterBySpecifiedFilters(
+      selectedObservationStatus: ObservationStatus,
+      sortDirection: ObservationStatus,
+    ) {
+      this.selectedObservationStatus = selectedObservationStatus;
+      this.selectedSortDirection = sortDirection;
       this.filterByStatus(selectedObservationStatus);
       this.orderBySortingType(sortDirection);
     },

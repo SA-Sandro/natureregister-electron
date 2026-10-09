@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client';
-import { SpecimenObservationRepository } from '@domain/repositories/SpecimenObservationRepository';
+import {
+  ObservationSuggestionField,
+  SpecimenObservationRepository,
+} from '@domain/repositories/SpecimenObservationRepository';
 
 import { SpecimenObservation } from '@domain/entities/SpecimenObservation';
 import { PrismaDBMapper } from '@infrastructure/mappers/PrismaDBMapper';
@@ -23,6 +26,39 @@ export class PrismaSpecimenObservationRepository implements SpecimenObservationR
       include: { specimenInfo: true, geoSpatialData: true },
     });
     return records.map(PrismaDBMapper.specimenObservationFromPrisma);
+  }
+
+  async findSpecimenInfoSuggestions(
+    input: string,
+    field: ObservationSuggestionField,
+  ): Promise<string[]> {
+    if (field === 'scientificName' || field === 'family' || field === 'orden') {
+      const records = await this.prisma.specimenInfo.findMany({
+        where: { [field]: { startsWith: input } },
+        orderBy: { [field]: 'asc' },
+        distinct: [field],
+        take: 10,
+        select: {
+          scientificName: true,
+          family: true,
+          orden: true,
+        },
+      });
+      return records.map((record) => record[field]);
+    }
+
+    const records = await this.prisma.geoSpatialData.findMany({
+      where: { [field]: { startsWith: input } },
+      orderBy: { [field]: 'asc' },
+      distinct: [field],
+      take: 10,
+      select: {
+        province: true,
+        locality: true,
+        observationSite: true,
+      },
+    });
+    return records.map((record) => record[field]);
   }
 
   async save(observation: SpecimenObservation): Promise<void> {
