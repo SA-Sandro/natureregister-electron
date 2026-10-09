@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { promises as fs } from 'fs';
+import path from 'path';
 import { FileSystemImageRepository } from '@infrastructure/repositories/FileSystemImageRepository';
 
 describe('Test FileSystemImage repository', () => {
@@ -67,5 +68,15 @@ describe('Test FileSystemImage repository', () => {
       'Ignored file: testFolder\\doc.pdf',
       '[Image] Invalid image extension: .pdf',
     );
+  });
+
+  it('should rename an image to the supplied uuid and preserve its extension', async () => {
+    const renameMock = vi.spyOn(fs, 'rename').mockResolvedValue();
+    const currentPath = path.join('testFolder', 'original-image.jpg');
+    const newPath = path.join('testFolder', 'observation-id.jpg');
+
+    await repo.renameLocalImage(currentPath, 'observation-id');
+
+    expect(renameMock).toHaveBeenCalledWith(currentPath, newPath);
   });
 });

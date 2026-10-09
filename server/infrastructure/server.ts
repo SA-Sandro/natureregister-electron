@@ -62,6 +62,7 @@ export function createApp(prisma: PrismaClientType): express.Express {
   );
   const specimenObservationController = new SpecimenObservationController(
     specimenObservationManagementService,
+    imageRepository,
   );
   const specimenObservationRoutes = new SpecimenObservationRoutes(specimenObservationController);
 

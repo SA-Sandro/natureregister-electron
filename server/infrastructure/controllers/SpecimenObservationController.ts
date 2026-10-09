@@ -1,15 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
-import fs from 'fs/promises';
 import { SpecimenObservationManagementService } from '@application/SpecimenObservationManagementService';
 import { SpecimenObservationDTO } from '@infrastructure/DTOs/SpecimenObservationDTO';
 import { SpecimenObservation } from '@domain/entities/SpecimenObservation';
 import { ObservationDate } from '@domain/valueObjects/ObservationDate';
 import { SpecimenInfo } from '@domain/valueObjects/SpecimenInfo';
 import { GeospatialData } from '@domain/valueObjects/GeospatialData';
+import { FileSystemImageRepository } from '@infrastructure/repositories/FileSystemImageRepository';
+import { ObservationSuggestionField } from '@domain/repositories/SpecimenObservationRepository';
 
 export class SpecimenObservationController {
   constructor(
     private readonly specimenObservationManagementService: SpecimenObservationManagementService,
+    private readonly imageRepository: FileSystemImageRepository,
   ) {}
 
   public getAllSpecimenObservations = async (req: Request, res: Response, next: NextFunction) => {
@@ -22,6 +24,21 @@ export class SpecimenObservationController {
       );
 
       res.status(200).json(specimenObservationDTO);
+    } catch (error: unknown) {
+      next(error);
+    }
+  };
+
+  public getSpecimenInfoSuggestions = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { input, field } = req.query;
+
+      const suggestions =
+        await this.specimenObservationManagementService.getSpecimenInfoSuggestions(
+          input as string,
+          field as ObservationSuggestionField,
+        );
+      res.status(200).json(suggestions);
     } catch (error: unknown) {
       next(error);
     }
@@ -62,7 +79,7 @@ export class SpecimenObservationController {
       );
 
       try {
-        await this.renameLocalImage(req.body.imagePath, specimenObservationDTO.uuid);
+        await this.imageRepository.renameLocalImage(req.body.imagePath, specimenObservationDTO.uuid);
       } catch (error) {
         console.error('Error renombrando la imagen:', error); 
       }
@@ -74,19 +91,4 @@ export class SpecimenObservationController {
       next(error);
     }
   };
-
-  async renameLocalImage(currentPath: string, uuid: string): Promise<void> {
-    console.log(`Renombrando imagen: ${currentPath}`);
-    const splittedPath = currentPath.split(/[/\\]/);
-    splittedPath[splittedPath.length - 1] =
-      `${uuid}${splittedPath[splittedPath.length - 1].slice(splittedPath[splittedPath.length - 1].lastIndexOf('.'))}`;
-    const newPath = splittedPath.join('/');
-
-    if (currentPath === newPath) {
-      console.log(`⚠️ La imagen ya tiene el nombre correcto: ${currentPath}`);
-      return;
-    }
-    await fs.rename(currentPath, newPath);
-    console.log(`✅ Imagen renombrada a ${newPath}`);
-  }
 }

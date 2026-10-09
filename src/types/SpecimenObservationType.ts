@@ -22,7 +22,7 @@ type GeospatialData = {
 
 export type ImageLinkedToObservationType = {
   uuid: string;
-  date: Date;
+  date: string;
   imagePath: string;
   observation: SpecimenObservation | undefined;
 };

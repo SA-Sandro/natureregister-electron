@@ -6,6 +6,19 @@ import { ImageExtension } from '@domain/valueObjects/ImageExtension';
 import { DomainException } from '@domain/exceptions/DomainException';
 
 export class FileSystemImageRepository implements ImageRepository {
+  public async renameLocalImage(currentPath: string, uuid: string): Promise<void> {
+    console.log(`Renombrando imagen: ${currentPath}`);
+    const newPath = path.join(path.dirname(currentPath), `${uuid}${path.extname(currentPath)}`);
+
+    if (currentPath === newPath) {
+      console.log(`⚠️ La imagen ya tiene el nombre correcto: ${currentPath}`);
+      return;
+    }
+
+    await fs.rename(currentPath, newPath);
+    console.log(`✅ Imagen renombrada a ${newPath}`);
+  }
+
   public async getImagesFromFolder(folderPath: string): Promise<Image[]> {
     let files: string[];
 

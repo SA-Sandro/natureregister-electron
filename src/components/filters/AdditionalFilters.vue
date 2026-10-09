@@ -18,8 +18,8 @@ const showFiltersDialog = () => {
 
 const imageStore = useImageStore();
 
-const selectedStatus = ref<ObservationStatus>(ObservationStatus.ALL);
-const selectedSortDirection = ref<ObservationStatus>(ObservationStatus.ANY_SORT);
+const selectedStatus = ref<ObservationStatus>(imageStore.selectedObservationStatus);
+const selectedSortDirection = ref<ObservationStatus>(imageStore.selectedSortDirection);
 
 const onStatusFilterChange = () => {
   imageStore.filterBySpecifiedFilters(selectedStatus.value, selectedSortDirection.value);

@@ -29,4 +29,11 @@ describe('useObservationForm', () => {
 
     expect(areRequiredFieldsFilled()).toBe(false);
   });
+
+  it('formats the date input value as DD/MM/YYYY in the API payload', () => {
+    const { form, mapToSpecimenObservation } = useObservationForm('observation-id');
+    form.observedAt = '2022-10-14';
+
+    expect(mapToSpecimenObservation('image.jpg').observedAt).toBe('14/10/2022');
+  });
 });
