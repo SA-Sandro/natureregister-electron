@@ -64,7 +64,7 @@ const handleSelectCoordinates = (e: MouseEvent | KeyboardEvent) => {
           class="flex-1 rounded-lg overflow-hidden border border-gray-300 mb-4"
         ></div>
 
-        <div class="flex gap-2 justify-end">
+        <div class="flex gap-2 justify-end pt-4">
           <button
             id="dialog-overlay-cancel-button"
             type="button"
