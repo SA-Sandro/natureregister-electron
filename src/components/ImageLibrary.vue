@@ -1,29 +1,24 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useImageStore } from '@/stores/imageStore';
 import { useDialogStore } from '@/stores/dialogStore';
 import { useSpecimenInfoStore } from '@/stores/specimenInfoStore';
 import { DialogType } from '@/const/DialogType';
 import ZoomedInSelectedImageDialog from '@/components/ZoomedInSelectedImageDialog.vue';
+import ButtonDeleteObservation from '@/components/ButtonDeleteObservation.vue';
 import { ImageLinkedToObservationType } from '@/types/SpecimenObservationType';
 import ObservationRegisterForm from '@/components/ObservationRegisterForm.vue';
 import ObservationPagination from '@/components/ObservationPagination.vue';
 import { formatDate } from '@/utils/FormatDate';
 
+import { usePaginatedList } from '@/composables/usePaginatedList';
+
 const { DETAILS, ZOOM, FORM } = DialogType;
 const imageStore = useImageStore();
 const pageSize = 100;
-const currentPage = ref(1);
-const paginatedImages = computed(() => {
-  const startIndex = (currentPage.value - 1) * pageSize;
-  return imageStore.imagesWithObservations.slice(startIndex, startIndex + pageSize);
-});
-
-watch(
+const { currentPage, paginatedItems: paginatedImages } = usePaginatedList(
   () => imageStore.imagesWithObservations,
-  () => {
-    currentPage.value = 1;
-  },
+  pageSize,
 );
 
 const dialog = useDialogStore();
@@ -62,7 +57,7 @@ const openRegisterForm = (image: ImageLinkedToObservationType) => {
         :key="linkedImgWithObs.uuid"
         class="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform duration-200 flex flex-col h-full"
       >
-        <div class="relative w-full aspect-[4/3] cursor-zoom-in overflow-hidden">
+        <div class="relative isolate w-full aspect-[4/3] cursor-zoom-in overflow-hidden">
           <img
             @click="zoomImage(linkedImgWithObs.imagePath)"
             loading="lazy"
@@ -70,6 +65,7 @@ const openRegisterForm = (image: ImageLinkedToObservationType) => {
             :alt="linkedImgWithObs.observation?.specimenInfo?.scientificName ?? 'Sin determinar'"
             class="w-full h-full"
           />
+          <ButtonDeleteObservation :linked-img-with-obs="linkedImgWithObs" />
         </div>
 
         <div

@@ -35,12 +35,8 @@ export const useImageStore = defineStore('imageStore', {
     },
 
     async loadImages(selectedPath: string) {
-      const loader = useLoaderStore();
       try {
-        loader.setIsLoading(true);
-        const images = await new ImageApiImpl().getAll(selectedPath);
-        this.setImages(images);
-        await this.loadImagesLinkedToObservations();
+        await this.refreshImages(selectedPath);
       } catch (error) {
         popupNotifier.createNotification(
           TitleMessages.ERROR,
@@ -48,6 +44,20 @@ export const useImageStore = defineStore('imageStore', {
           'error',
         );
         console.error('Error loading images:', error);
+      }
+    },
+
+    async refreshImages(selectedPath?: string) {
+      const loader = useLoaderStore();
+      try {
+        loader.setIsLoading(true);
+        const path = selectedPath ?? new LocalStorageService().getItem('selectedFolderPath');
+        if (!path) {
+          throw new Error('No image folder is selected.');
+        }
+        const images = await new ImageApiImpl().getAll(path);
+        this.setImages(images);
+        await this.loadImagesLinkedToObservations();
       } finally {
         loader.setIsLoading(false);
       }

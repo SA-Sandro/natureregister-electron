@@ -7,6 +7,7 @@ declare global {
   interface Window {
     electronAPI: {
       selectFolder: () => Promise<string | null>;
+      moveToTrash: (imagePath: string) => Promise<void>;
     };
   }
 }
