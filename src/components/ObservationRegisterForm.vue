@@ -95,7 +95,7 @@ const registerObservation = async () => {
     <div
       v-if="isOpen"
       :id="`dialog-overlay-form_${props.uuid}`"
-      class="fixed inset-0 bg-black/40 flex items-center justify-center"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       @click="closeDialogHandler"
       @keydown="closeDialogHandler"
       tabindex="0"

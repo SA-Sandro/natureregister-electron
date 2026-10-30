@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { runPrismaMigrations } from './run-prisma-migrations.mjs';
@@ -115,4 +115,12 @@ ipcMain.handle('select-folder', async () => {
   const result = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   if (result.canceled || result.filePaths.length === 0) return null;
   return result.filePaths[0];
+});
+
+ipcMain.handle('move-to-trash', async (_event, imagePath) => {
+  if (typeof imagePath !== 'string' || imagePath.length === 0) {
+    throw new TypeError('A valid image path is required.');
+  }
+
+  await shell.trashItem(imagePath);
 });
